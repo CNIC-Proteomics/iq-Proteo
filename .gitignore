@@ -1,0 +1,18 @@
+# Virtual Environment
+
+
+# Visual Studio Code
+.vscode
+
+# R and RStudio files
+src/*/*.Rproj
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+# Snakemake files
+.snakemake
+wf/.snakemake
+
+
