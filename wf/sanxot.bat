@@ -13,6 +13,7 @@ SET TESTS_PATH=%QPROTEO%/test
 
 :: workflow variables
 SET WF_SMK_FILE=%WF_PATH%/sanxot.smk
+SET WF_NTHREADS=10
 
 :: interactive arguments
 :: default value to test
@@ -20,6 +21,6 @@ SET WF_CONF_FILE=%TESTS_PATH%/test1-conf.ptm.yml
 SET /p WF_CONF_FILE="Enter the input file for the config workflow (in YAML extension): "
 
 :: execute workflow
-CMD /k "%QPROTEO_VENV_ACTIVE% && snakemake.exe --configfile  %WF_CONF_FILE% --snakefile %WF_SMK_FILE%  -j 20 --verbose "
+CMD /k "%QPROTEO_VENV_ACTIVE% && snakemake.exe --configfile  %WF_CONF_FILE% --snakefile %WF_SMK_FILE%  -j %WF_NTHREADS% "
 
 SET /P DUMMY=Hit ENTER to continue...

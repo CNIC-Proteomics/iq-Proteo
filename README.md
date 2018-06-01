@@ -157,3 +157,9 @@ http://timmyreilly.azurewebsites.net/python-pip-virtualenv-installation-on-windo
 virtualenv won't activate on windows
 https://stackoverflow.com/questions/18713086/virtualenv-wont-activate-on-windows
 
+
+
+# How to Use Global System Environment Variables in Windows
+
+## Reference
+https://www.howtogeek.com/51807/how-to-create-and-use-global-system-environment-variables/
