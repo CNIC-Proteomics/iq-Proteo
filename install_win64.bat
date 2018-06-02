@@ -47,8 +47,9 @@ ECHO ** create virtualenv in python3x for the application
 :: active the virtualenv and install the required packages
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /k "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat && pip install snakemake && pip install pandas && pip install matplotlib && pip install scipy && pip install xlrd "
-
-
+CMD /C "%QPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat && pip install numpy && pip install matplotlib && pip install scipy && pip install xlrd "
+ECHO **
+ECHO ** active the virtualenv and install the required packages for each enviroment
+CMD /C "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat && pip install snakemake && pip install pandas  "
 
 SET /P DUMMY=Hit ENTER to continue...
