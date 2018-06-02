@@ -4,9 +4,27 @@ Snakemake workflow developed by the Proteomic Unit in CNIC
 
 # Installation
 
-## Prerequisites for installing
+## 1. Prerequisites for installing
 
 1. Python: 2.x and 3.x
+
+## 2. Add the environment variable "QPROTEO_HOME" into the PATH.
+
+For Windows:
+https://www.howtogeek.com/51807/how-to-create-and-use-global-system-environment-variables/
+For Linux:
+TODO!!!
+
+## 3. Execute the installation script
+
+
+
+
+
+---
+
+
+
 2. Pip for both versions of Python (2.x and 3.x)
 
 ## 1. Install the two versions of Python: 2.x and 3.x
