@@ -8,14 +8,25 @@ Snakemake workflow developed by the Proteomic Unit in CNIC
 
 1. Python: 2.x and 3.x
 
-## 2. Add the environment variable "QPROTEO_HOME" into the PATH.
+2. Active on windows the virtualenv you must to execute:
+
+Execute the following command using cmd
+
+```bash
+Set-ExecutionPolicy Unrestricted -Force
+```
+3. Check if the Path contains the system commands
+
+Path = %SystemRoot%\system32;
+
+4. Add the environment variable "QPROTEO_HOME" into the PATH.
 
 For Windows:
 https://www.howtogeek.com/51807/how-to-create-and-use-global-system-environment-variables/
 For Linux:
 TODO!!!
 
-## 3. Execute the installation script
+## 2. Execute the installation script
 
 
 
