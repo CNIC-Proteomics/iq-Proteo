@@ -4,8 +4,8 @@
 #
 #############################
 
-# # pwd <- "D:/projects/qProteo/.venv_win"
-pwd <- Sys.getenv(c("VIRTUAL_ENV"))
+# # pwd <- "D:\projects\qProteo\venv_win64"
+pwd <- paste0( Sys.getenv(c("QPROTEO_HOME")), "/venv_win64")
 lib_path <- paste0( pwd, "/R/lib")
 .libPaths( lib_path )
 

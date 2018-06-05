@@ -5,6 +5,7 @@ import pprint
 
 # Workflow home
 QPROTEO_HOME      = os.environ['QPROTEO_HOME']
+WF_R_SRC          = QPROTEO_HOME+"/venv_win64/R/bin"
 WF_PRESANXOT_SRC  = QPROTEO_HOME+"/src/Pre-SanXoT2"
 WF_SANXOT_VENV    = QPROTEO_HOME+"/venv_win64/venv_win64_py27"
 WF_SANXOT_SRC     = QPROTEO_HOME+"/src/SanXoT"
@@ -150,7 +151,7 @@ if WF_PRESANXOT_HOME["create_qall"]["enabled"]:
         log:
             "{outdir}/{exp}/presanxot2.log"
         shell:
-            "Rscript --vanilla {WF_PRESANXOT_SRC}/create_q-all.R \
+            "{WF_R_SRC}/Rscript --vanilla {WF_PRESANXOT_SRC}/create_q-all.R \
                 --indir {params.msfdir} \
                 --tags  {params.tags} \
                 --outfile {output.qallfile} 1>> {log} 2>&1 "
@@ -178,7 +179,7 @@ if WF_PRESANXOT_HOME["create_idq"]["enabled"]:
         log:
             "{outdir}/{exp}/presanxot2.log"
         shell:
-            "Rscript --vanilla {WF_PRESANXOT_SRC}/create_id-q.R \
+            "{WF_R_SRC}/Rscript --vanilla {WF_PRESANXOT_SRC}/create_id-q.R \
                 --in_ident {input.idenfile} \
                 --in_quant {input.qallfile} \
                 --tags  {params.tags} \
