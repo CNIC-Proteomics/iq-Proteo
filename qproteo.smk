@@ -5,7 +5,8 @@ import pprint
 
 # Workflow home
 QPROTEO_HOME      = os.environ['QPROTEO_HOME']
-WF_PRESANXOT_SRC  = QPROTEO_HOME+"/src/Pre-SanXoT2.01"
+WF_PRESANXOT_SRC  = QPROTEO_HOME+"/src/Pre-SanXoT2"
+WF_SANXOT_VENV    = QPROTEO_HOME+"/venv_win64/venv_win64_py27"
 WF_SANXOT_SRC     = QPROTEO_HOME+"/src/SanXoT"
 
 # Config variables for workflow
@@ -206,7 +207,7 @@ if WF_SANXOT_HOME["rels2sp"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/rels2sp.log"
         shell:
-            "{WF_SANXOT_SRC}/venv_win/Scripts/activate && python {WF_SANXOT_SRC}/rels2sp.py --idqfile {input.idqfile} --relfile {output.relfile} --scanfile {output.scanfile} --params \"{params.optparams}\" --logfile {log} "
+            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/rels2sp.py --idqfile {input.idqfile} --relfile {output.relfile} --scanfile {output.scanfile} --params \"{params.optparams}\" --logfile {log} "
 
 if WF_SANXOT_HOME["rels2pq"]["enabled"]:
     rule rels2pq:
@@ -224,7 +225,7 @@ if WF_SANXOT_HOME["rels2pq"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/rels2pq.log"
         shell:
-            "{WF_SANXOT_SRC}/venv_win/Scripts/activate && python {WF_SANXOT_SRC}/rels2pq.py --idqfile {input.idqfile} --relfile {output.relfile} --params \"{params.optparams}\" --logfile {log} "
+            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/rels2pq.py --idqfile {input.idqfile} --relfile {output.relfile} --params \"{params.optparams}\" --logfile {log} "
 
 if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
     rule scan2peptide:
@@ -244,7 +245,7 @@ if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            "{WF_SANXOT_SRC}/venv_win/Scripts/activate && python {WF_SANXOT_SRC}/scan2peptide.py --scanfile {input.scanfile} --relfile {input.relfile} --fdr {params.fdr} --pepfile {output.pepfile} --params \"{params.optparams}\" --logfile {log} "
+            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/scan2peptide.py --scanfile {input.scanfile} --relfile {input.relfile} --fdr {params.fdr} --pepfile {output.pepfile} --params \"{params.optparams}\" --logfile {log} "
 
 if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
     rule peptide2protein:
@@ -264,7 +265,7 @@ if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            "{WF_SANXOT_SRC}/venv_win/Scripts/activate && python {WF_SANXOT_SRC}/peptide2protein.py --pepfile {input.pepfile} --relfile {input.relfile} --fdr {params.fdr} --profile {output.profile} --params \"{params.optparams}\" --logfile {log} "
+            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/peptide2protein.py --pepfile {input.pepfile} --relfile {input.relfile} --fdr {params.fdr} --profile {output.profile} --params \"{params.optparams}\" --logfile {log} "
 
 if WF_SANXOT_HOME["protein2category"]["enabled"]:
     rule protein2category:
@@ -284,4 +285,4 @@ if WF_SANXOT_HOME["protein2category"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            "{WF_SANXOT_SRC}/venv_win/Scripts/activate && python {WF_SANXOT_SRC}/protein2category.py --profile {input.profile} --relfile {input.relfile} --fdr {params.fdr} --profile {output.catfile} --params \"{params.optparams}\" --logfile {log} "
+            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/protein2category.py --profile {input.profile} --relfile {input.relfile} --fdr {params.fdr} --profile {output.catfile} --params \"{params.optparams}\" --logfile {log} "
