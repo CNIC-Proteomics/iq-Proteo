@@ -5,7 +5,7 @@ import pprint
 
 # Workflow home
 QPROTEO_HOME      = os.environ['QPROTEO_HOME']
-WF_R_SRC          = QPROTEO_HOME+"/venv_win64/R/bin"
+R_HOME            = os.environ['R_HOME']
 WF_PRESANXOT_SRC  = QPROTEO_HOME+"/src/Pre-SanXoT2"
 WF_SANXOT_VENV    = QPROTEO_HOME+"/venv_win64/venv_win64_py27"
 WF_SANXOT_SRC     = QPROTEO_HOME+"/src/SanXoT"
@@ -17,9 +17,6 @@ WF_PRESANXOT_HOME = WF_HOME["presanxot2"]
 WF_SANXOT_HOME    = WF_HOME["sanxot"]
 
 # File names
-# FNAME_PRESANXOT_IDALL = "ID-all.txt"
-# FNAME_PRESANXOT_QALL  = "Q-all.csv"
-# FNAME_PRESANXOT_IDQ   = "ID-q.txt"
 FNAME_PRESANXOT_IDALL = config["idafile"]
 FNAME_PRESANXOT_QALL  = config["qallfile"]
 FNAME_PRESANXOT_IDQ   = config["idqfile"]
@@ -151,7 +148,7 @@ if WF_PRESANXOT_HOME["create_qall"]["enabled"]:
         log:
             "{outdir}/{exp}/presanxot2.log"
         shell:
-            "{WF_R_SRC}/Rscript --vanilla {WF_PRESANXOT_SRC}/create_q-all.R \
+            "{R_HOME}/bin/Rscript --vanilla {WF_PRESANXOT_SRC}/create_q-all.R \
                 --indir {params.msfdir} \
                 --tags  {params.tags} \
                 --outfile {output.qallfile} 1>> {log} 2>&1 "

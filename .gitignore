@@ -3,6 +3,7 @@ venv_win64/python27
 venv_win64/venv_win64_py27
 venv_win64/python3x
 venv_win64/venv_win64_py3x
+venv_win64/R/library
 
 # Visual Studio Code
 .vscode

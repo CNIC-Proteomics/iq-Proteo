@@ -21,7 +21,6 @@ SET WF_NTHREADS=25
 :: interactive arguments
 :: default value to test
 SET WF_CONF_FILE=%TESTS_PATH%/test3-conf.pesa.yml
-REM SET WF_CONF_FILE=%TESTS_PATH%/test2-conf.tmt.yml
 SET /p WF_CONF_FILE="Enter the input file for the config workflow (in YAML extension): "
 
 :: execute workflow
