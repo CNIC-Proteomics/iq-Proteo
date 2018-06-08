@@ -25,41 +25,41 @@ CD %QPROTEO_HOME%
 :: install the PIP packages
 ECHO **
 ECHO ** install the 'pip' package for python27
-"%PYTHON27_HOME%/python %QPROTEO_HOME%/venv_win64/get-pip.py"
+CMD /C " "%PYTHON27_HOME%/python" "%QPROTEO_HOME%/venv_win64/get-pip.py" "
 ECHO **
 ECHO ** install the 'pip' package for python3x
-"%PYTHON3x_HOME%/python  %QPROTEO_HOME%/venv_win64/get-pip.py"
+CMD /C " "%PYTHON3x_HOME%/python" "%QPROTEO_HOME%/venv_win64/get-pip.py" "
 
 :: install virtualenv packages
 ECHO **
 ECHO ** install the 'virtualenv' packages for python27
-"%PYTHON27_HOME%/Scripts/pip install virtualenv"
-"%PYTHON27_HOME%/Scripts/pip install virtualenvwrapper-win"
+CMD /C " "%PYTHON27_HOME%/Scripts/pip" install virtualenv"
+CMD /C " "%PYTHON27_HOME%/Scripts/pip" install virtualenvwrapper-win"
 ECHO **
 ECHO ** install the 'virtualenv' packages for python3x
-"%PYTHON3x_HOME%/Scripts/pip install virtualenv"
-"%PYTHON3x_HOME%/Scripts/pip install virtualenvwrapper-win"
+CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenv"
+CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenvwrapper-win"
 
 :: create virtual enviroment for the application in the local path
 ECHO **
 ECHO ** create virtualenv in python27 for the application
-"%PYTHON27_HOME%/Scripts/virtualenv -p %PYTHON27_HOME%/python %QPROTEO_HOME%/venv_win64/venv_win64_py27"
+CMD /C " "%PYTHON27_HOME%/Scripts/virtualenv" -p "%PYTHON27_HOME%/python" "%QPROTEO_HOME%/venv_win64/venv_win64_py27" "
 ECHO **
 ECHO ** create virtualenv in python3x for the application
-"%PYTHON3x_HOME%/Scripts/virtualenv -p %PYTHON3x_HOME%/python %QPROTEO_HOME%/venv_win64/venv_win64_py3x"
+CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%QPROTEO_HOME%/venv_win64/venv_win64_py3x" "
 
 :: active the virtualenv and install the required packages
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C "%QPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat " " && pip install numpy && pip install matplotlib && pip install scipy && pip install xlrd "
+CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install xlrd"
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat " " && pip install snakemake && pip install pandas  "
+CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake && pip install pandas"
 
 :: install R packages
 ECHO **
 ECHO ** install R packages
-CMD /C ""%R_HOME%/bin/Rscript" " --vanilla %QPROTEO_HOME%/install_Rlibs.R "
+CMD /C " "%R_HOME%/bin/Rscript" --vanilla "%QPROTEO_HOME%/install_Rlibs.R" "
 
 GOTO :EndProcess
 
