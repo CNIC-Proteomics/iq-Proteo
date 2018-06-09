@@ -59,7 +59,7 @@ CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip
 :: install R packages
 ECHO **
 ECHO ** install R packages
-CMD /C " "%R_HOME%/bin/Rscript" --vanilla "%QPROTEO_HOME%/install_Rlibs.R" "
+CMD /C " "%R_HOME%/bin/R" --vanilla < "%QPROTEO_HOME%/install_Rlibs.R" "
 
 GOTO :EndProcess
 
