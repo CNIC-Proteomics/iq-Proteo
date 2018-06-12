@@ -5,15 +5,8 @@ IF "%QPROTEO_HOME%"=="" GOTO :EndProcess1
 IF "%R_HOME%"=="" GOTO :EndProcess2
 
 :: get the python executable files
-:: default values
-SET PYTHON27_HOME=%QPROTEO_HOME%/venv_win64/python27
-SET PYTHON3x_HOME=%QPROTEO_HOME%/venv_win64/python3x
-:: from the interative shell
-SET /p PYTHON27_HOME="Write the path where is located the python3x files (complete path). With empty enter, takes the default path: "
-SET /p PYTHON3x_HOME="Write the path where is located the python3x files (complete path). With empty enter, takes the default path: "
-:: from command line
-IF NOT "%1" == "" ( SET PYTHON27_HOME="%1" )
-IF NOT "%2" == "" ( SET PYTHON3x_HOME="%2" )
+IF NOT "%PYTHON27_HOME%" == "" ( SET PYTHON27_HOME=%QPROTEO_HOME%/venv_win64/python27 )
+IF NOT "%PYTHON3x_HOME%" == "" ( SET PYTHON3x_HOME=%QPROTEO_HOME%/venv_win64/python3x )
 ECHO **
 ECHO ** use the following paths for python27 and python3x:
 ECHO %PYTHON27_HOME%
