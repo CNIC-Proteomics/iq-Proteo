@@ -1,0 +1,3 @@
+[submodule "src/SanXoT"]
+	path = src/SanXoT
+	url = https://github.com/CNIC-Proteomics/SanXoT.git
