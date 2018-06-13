@@ -148,10 +148,10 @@ if WF_PRESANXOT_HOME["create_qall"]["enabled"]:
         log:
             "{outdir}/{exp}/presanxot2.log"
         shell:
-            "{R_HOME}/bin/Rscript --vanilla {WF_PRESANXOT_SRC}/create_q-all.R \
-                --indir {params.msfdir} \
-                --tags  {params.tags} \
-                --outfile {output.qallfile} 1>> {log} 2>&1 "
+            '"{R_HOME}/bin/Rscript" --vanilla "{WF_PRESANXOT_SRC}/create_q-all.R" \
+                --indir "{params.msfdir}" \
+                --tags  "{params.tags}" \
+                --outfile "{output.qallfile}" 1>> "{log}" 2>&1 '
 
 if WF_PRESANXOT_HOME["create_idq"]["enabled"]:
     rule create_idq:
@@ -176,17 +176,17 @@ if WF_PRESANXOT_HOME["create_idq"]["enabled"]:
         log:
             "{outdir}/{exp}/presanxot2.log"
         shell:
-            "{WF_R_SRC}/Rscript --vanilla {WF_PRESANXOT_SRC}/create_id-q.R \
-                --in_ident {input.idenfile} \
-                --in_quant {input.qallfile} \
-                --tags  {params.tags} \
-                --ratio_numer  {params.ratio_numer} \
-                --ratio_denom  {params.ratio_denom} \
-                --abs_calc  {params.abs_calc} \
-                --random  {params.random} \
-                --filt_orphans  {params.filt_orphans} \
-                --no_mod_mass {params.no_mod_mass} \
-                --outfile {output.idqfile} 1>> {log} 2>&1 "
+            '"{R_HOME}/bin/Rscript" --vanilla "{WF_PRESANXOT_SRC}/create_id-q.R" \
+                --in_ident "{input.idenfile}" \
+                --in_quant "{input.qallfile}" \
+                --tags  "{params.tags}" \
+                --ratio_numer  "{params.ratio_numer}" \
+                --ratio_denom  "{params.ratio_denom}" \
+                --abs_calc  "{params.abs_calc}" \
+                --random  "{params.random}" \
+                --filt_orphans  "{params.filt_orphans}" \
+                --no_mod_mass "{params.no_mod_mass}" \
+                --outfile "{output.idqfile}" 1>> "{log}" 2>&1 '
 
 if WF_SANXOT_HOME["rels2sp"]["enabled"]:
     rule rels2sp:
@@ -205,7 +205,7 @@ if WF_SANXOT_HOME["rels2sp"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/rels2sp.log"
         shell:
-            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/rels2sp.py --idqfile {input.idqfile} --relfile {output.relfile} --scanfile {output.scanfile} --params \"{params.optparams}\" --logfile {log} "
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2sp.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --scanfile "{output.scanfile}" --params "{params.optparams}" --logfile "{log}" '
 
 if WF_SANXOT_HOME["rels2pq"]["enabled"]:
     rule rels2pq:
@@ -223,7 +223,7 @@ if WF_SANXOT_HOME["rels2pq"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/rels2pq.log"
         shell:
-            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/rels2pq.py --idqfile {input.idqfile} --relfile {output.relfile} --params \"{params.optparams}\" --logfile {log} "
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2pq.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --params "{params.optparams}" --logfile "{log}" '
 
 if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
     rule scan2peptide:
@@ -243,7 +243,7 @@ if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/scan2peptide.py --scanfile {input.scanfile} --relfile {input.relfile} --fdr {params.fdr} --pepfile {output.pepfile} --params \"{params.optparams}\" --logfile {log} "
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/scan2peptide.py" --scanfile "{input.scanfile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --pepfile "{output.pepfile}" --params "{params.optparams}" --logfile "{log}" '
 
 if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
     rule peptide2protein:
@@ -263,7 +263,7 @@ if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/peptide2protein.py --pepfile {input.pepfile} --relfile {input.relfile} --fdr {params.fdr} --profile {output.profile} --params \"{params.optparams}\" --logfile {log} "
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/peptide2protein.py" --pepfile "{input.pepfile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --profile "{output.profile}" --params "{params.optparams}" --logfile "{log}" '
 
 if WF_SANXOT_HOME["protein2category"]["enabled"]:
     rule protein2category:
@@ -283,4 +283,4 @@ if WF_SANXOT_HOME["protein2category"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            "{WF_SANXOT_VENV}/Scripts/activate && python {WF_SANXOT_SRC}/protein2category.py --profile {input.profile} --relfile {input.relfile} --fdr {params.fdr} --profile {output.catfile} --params \"{params.optparams}\" --logfile {log} "
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/protein2category.py" --profile "{input.profile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --profile "{output.catfile}" --params "{params.optparams}" --logfile "{log}" '

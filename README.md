@@ -18,29 +18,40 @@ Snakemake workflow developed by the Proteomic Unit in CNIC
 
     Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
 
-### Note:
+>#### Note:
+>
+>By default, the workflow will use the local pythons (tested in Windows 7) but it would be any problem executing the workflow, 
+>you have to install python 2.x and python 3.x, and declare new environment variables.
+>Read the following document [docs/install_pythons](docs/install_pythons.md) for more information.
 
-If your windows distribution is diferent than Windows 7, you have to install python 2.x and python 3.x, and 
-declare new environment variables.
-Read the following document [docs/install_pythons](docs/install_pythons.md) for more information.
+## Execute the install script
 
-## Execute the installation script
+### Windows distribution
+Execute the batch script "install_win64.bat"
 
-For Windows, execute the batch script "install_win64.bat"
+### Linux distribution
+UNDER CONTRUCTION
 
-For Linux, IT IS UNDER CONTRUCTION
+>#### Note:
+>
+>Take into account the following instructions:
+>
+>- Active on windows the virtualenv you must to execute the following command using cmd
+>```bash
+>Set-ExecutionPolicy Unrestricted -Force
+>```
+
+>- Check if the Path (environment variable) contains the system commands
+>```
+>Path = %SystemRoot%\system32;
+>```
 
 
+# Execute the workflow
 
-#### Note: Take into account the following instructions:
+## Windows distribution
+At the moment, executing the batch script **qproteo.bat**
 
-Active on windows the virtualenv you must to execute the following command using cmd
-```bash
-Set-ExecutionPolicy Unrestricted -Force
-```
-
-Check if the Path (environment variable) contains the system commands
-```
-Path = %SystemRoot%\system32;
-```
+## Linux distribution
+UNDER CONTRUCTION
 
