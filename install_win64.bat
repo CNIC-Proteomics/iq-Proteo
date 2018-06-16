@@ -5,8 +5,8 @@ IF "%QPROTEO_HOME%"=="" GOTO :EndProcess1
 IF "%R_HOME%"=="" GOTO :EndProcess2
 
 :: get the python executable files
-IF NOT "%PYTHON27_HOME%" == "" ( SET PYTHON27_HOME=%QPROTEO_HOME%/venv_win64/python27 )
-IF NOT "%PYTHON3x_HOME%" == "" ( SET PYTHON3x_HOME=%QPROTEO_HOME%/venv_win64/python3x )
+IF "%PYTHON27_HOME%" == "" SET PYTHON27_HOME=%QPROTEO_HOME%/venv_win64/python27
+IF "%PYTHON3x_HOME%" == "" SET PYTHON3x_HOME=%QPROTEO_HOME%/venv_win64/python3x
 ECHO **
 ECHO ** use the following paths for python27 and python3x:
 ECHO %PYTHON27_HOME%
@@ -15,7 +15,7 @@ ECHO %PYTHON3x_HOME%
 :: go to home
 CD %QPROTEO_HOME%
 
-:: install the PIP packages
+REM :: install the PIP packages
 ECHO **
 ECHO ** install the 'pip' package for python27
 CMD /C " "%PYTHON27_HOME%/python" "%QPROTEO_HOME%/venv_win64/get-pip.py" "
@@ -47,7 +47,7 @@ ECHO ** active the virtualenv and install the required packages for each envirom
 CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install xlrd"
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake && pip install pandas"
+CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake && pip install pandas && pip install xlrd"
 
 :: install R packages
 ECHO **

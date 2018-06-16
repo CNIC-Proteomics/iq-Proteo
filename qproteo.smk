@@ -11,15 +11,17 @@ WF_SANXOT_VENV    = QPROTEO_HOME+"/venv_win64/venv_win64_py27"
 WF_SANXOT_SRC     = QPROTEO_HOME+"/src/SanXoT"
 
 # Config variables for workflow
-WF_IDAT = config["indata"]
+INFILE_DAT = config["indata"]
+INFILE_CAT = config["catfile"]
 WF_HOME = config["workflow"]
 WF_PRESANXOT_HOME = WF_HOME["presanxot2"]
 WF_SANXOT_HOME    = WF_HOME["sanxot"]
+WF_VERBOSE_MODE   = " -v " if WF_HOME["verbose"] else ""
 
 # File names
-FNAME_PRESANXOT_IDALL = config["idafile"]
-FNAME_PRESANXOT_QALL  = config["qallfile"]
-FNAME_PRESANXOT_IDQ   = config["idqfile"]
+FNAME_PRESANXOT_IDALL = config["idafname"]
+FNAME_PRESANXOT_QALL  = config["qallfname"]
+FNAME_PRESANXOT_IDQ   = config["idqfname"]
 FNAME_SANXOT_RELS2P   = "s2p_rels.xls"
 FNAME_SANXOT_RELP2Q   = "p2q_rels.xls"
 FNAME_SANXOT_RELQ2C   = "q2c_rels.xls"
@@ -27,6 +29,9 @@ FNAME_SANXOT_SCNS     = "scans.xls"
 FNAME_SANXOT_PEPS     = "peptides.xls"
 FNAME_SANXOT_PROS     = "proteins.xls"
 FNAME_SANXOT_CATS     = "categories.xls"
+FNAME_SANXOT_P2ALL    = "pep2all.log"
+FNAME_SANXOT_Q2ALL    = "pro2all.log"
+FNAME_SANXOT_C2ALL    = "cat2all.log"
 
 # Config variables from the input data
 PARAMS = {}
@@ -46,7 +51,7 @@ def infiles(ifile):
     '''
     Handles the input data (output files for the workflow)
     '''
-    indata = pandas.read_csv(ifile, converters={ "msfdir":str, "idedir":str, "outdir":str, "experiment":str, "name":str, "tag":str, "ratio_numerator":str, "ratio_denominator":str})
+    indata = pandas.read_excel(ifile, converters={ "msfdir":str, "idedir":str, "outdir":str, "experiment":str, "name":str, "tag":str, "ratio_numerator":str, "ratio_denominator":str})
 
     # output files created by pre-sanxot workflow
     # get input values for every data
@@ -77,29 +82,35 @@ def infiles(ifile):
     
     # output files created by sanxot workflow
     # for each row
-    if WF_SANXOT_HOME["rels2sp"]["enabled"]:
-        for idx, indat in indata.iterrows():
-            outdir = indat["outdir"]
-            exp    = indat["experiment"]
-            name   = indat["name"]
-            tag    = indat["tag"]
-            ratio_num = indat["ratio_numerator"]
-            ratio_den = indat["ratio_denominator"]
-            PARAMS[exp]["names"][name] = {}
-            PARAMS[exp]["names"][name]["tag"] = tag
-            if not pandas.isnull(ratio_num) and not pandas.isnull(ratio_den):
-                PARAMS[exp]["names"][name]["ratio_num"] = ratio_num
-                PARAMS[exp]["names"][name]["ratio_den"] = ratio_den
-                if WF_SANXOT_HOME["rels2sp"]["enabled"]:
-                    yield expand(["{outdir}/{exp}/{name}/{fname1}", "{outdir}/{exp}/{name}/{fname2}"], outdir=outdir, exp=exp, name=name, fname1=FNAME_SANXOT_RELS2P, fname2=FNAME_SANXOT_SCNS)
-                if WF_SANXOT_HOME["rels2pq"]["enabled"]:                        
-                    yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_RELP2Q)
-                if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
-                    yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_PEPS)
-                if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
-                    yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_PROS)
-                if WF_SANXOT_HOME["protein2category"]["enabled"]:
-                    yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_CATS)
+    for idx, indat in indata.iterrows():
+        outdir = indat["outdir"]
+        exp    = indat["experiment"]
+        name   = indat["name"]
+        tag    = indat["tag"]
+        ratio_num = indat["ratio_numerator"]
+        ratio_den = indat["ratio_denominator"]
+        PARAMS[exp]["names"][name] = {}
+        PARAMS[exp]["names"][name]["tag"] = tag
+        # ratio numerator and denominator have to be defined
+        if not pandas.isnull(ratio_num) and not pandas.isnull(ratio_den):
+            PARAMS[exp]["names"][name]["ratio_num"] = ratio_num
+            PARAMS[exp]["names"][name]["ratio_den"] = ratio_den
+            if WF_SANXOT_HOME["rels2sp"]["enabled"]:
+                yield expand(["{outdir}/{exp}/{name}/{fname1}", "{outdir}/{exp}/{name}/{fname2}"], outdir=outdir, exp=exp, name=name, fname1=FNAME_SANXOT_RELS2P, fname2=FNAME_SANXOT_SCNS)
+            if WF_SANXOT_HOME["rels2pq"]["enabled"]:                        
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_RELP2Q)
+            if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_PEPS)
+            if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_PROS)
+            if WF_SANXOT_HOME["protein2category"]["enabled"]:
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_CATS)
+            if WF_SANXOT_HOME["peptide2all"]["enabled"]:
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_P2ALL)
+            if WF_SANXOT_HOME["protein2all"]["enabled"]:
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_Q2ALL)
+            if WF_SANXOT_HOME["category2all"]["enabled"]:
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_C2ALL)
 
 
 rule all:
@@ -107,7 +118,7 @@ rule all:
     Config the output files
     '''
     input:
-        infiles( WF_IDAT )
+        infiles( INFILE_DAT )
 
 # pprint.pprint( PARAMS )
 
@@ -205,7 +216,7 @@ if WF_SANXOT_HOME["rels2sp"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/rels2sp.log"
         shell:
-            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2sp.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --scanfile "{output.scanfile}" --params "{params.optparams}" --logfile "{log}" '
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2sp.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --scanfile "{output.scanfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
 if WF_SANXOT_HOME["rels2pq"]["enabled"]:
     rule rels2pq:
@@ -223,7 +234,7 @@ if WF_SANXOT_HOME["rels2pq"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/rels2pq.log"
         shell:
-            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2pq.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --params "{params.optparams}" --logfile "{log}" '
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2pq.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
 if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
     rule scan2peptide:
@@ -243,7 +254,7 @@ if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/scan2peptide.py" --scanfile "{input.scanfile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --pepfile "{output.pepfile}" --params "{params.optparams}" --logfile "{log}" '
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/scan2peptide.py" --scanfile "{input.scanfile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --pepfile "{output.pepfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
 if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
     rule peptide2protein:
@@ -263,7 +274,7 @@ if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/peptide2protein.py" --pepfile "{input.pepfile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --profile "{output.profile}" --params "{params.optparams}" --logfile "{log}" '
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/peptide2protein.py" --pepfile "{input.pepfile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --profile "{output.profile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
 if WF_SANXOT_HOME["protein2category"]["enabled"]:
     rule protein2category:
@@ -273,7 +284,7 @@ if WF_SANXOT_HOME["protein2category"]["enabled"]:
         threads: 1
         message: "Executing 'protein2category' with {threads} threads for {wildcards.exp}/{wildcards.name}"
         input:
-            relfile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_RELQ2C,
+            relfile = INFILE_CAT,
             profile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_PROS
         params:
             fdr       = WF_SANXOT_HOME["protein2category"]["fdr"],
@@ -283,4 +294,52 @@ if WF_SANXOT_HOME["protein2category"]["enabled"]:
         log:
             "{outdir}/{exp}/{name}/sanxot.log"
         shell:
-            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/protein2category.py" --profile "{input.profile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --profile "{output.catfile}" --params "{params.optparams}" --logfile "{log}" '
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/protein2category.py" --profile "{input.profile}" --relfile "{input.relfile}" --fdr "{params.fdr}" --catfile "{output.catfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
+
+if WF_SANXOT_HOME["peptide2all"]["enabled"]:
+    rule peptide2all:
+        '''
+        Execute peptide to all
+        '''
+        threads: 1
+        message: "Executing 'peptide2all' with {threads} threads for {wildcards.exp}/{wildcards.name}"
+        input:
+            pepfile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_PEPS
+        params:
+            optparams = replace_optparams(WF_SANXOT_HOME["peptide2all"]["optparams"])
+        output:
+            p2afile  = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_P2ALL
+        shell:
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/peptide2all.py" --pepfile "{input.pepfile}" --params "{params.optparams}" --logfile "{output.p2afile}" {WF_VERBOSE_MODE}'
+
+if WF_SANXOT_HOME["protein2all"]["enabled"]:
+    rule protein2all:
+        '''
+        Execute protein to all
+        '''
+        threads: 1
+        message: "Executing 'protein2all' with {threads} threads for {wildcards.exp}/{wildcards.name}"
+        input:
+            profile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_PROS
+        params:
+            optparams = replace_optparams(WF_SANXOT_HOME["protein2all"]["optparams"])
+        output:
+            q2afile  = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_Q2ALL
+        shell:
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/protein2all.py" --profile "{input.profile}" --params "{params.optparams}" --logfile "{output.q2afile}" {WF_VERBOSE_MODE}'
+
+if WF_SANXOT_HOME["category2all"]["enabled"]:
+    rule category2all:
+        '''
+        Execute category to all
+        '''
+        threads: 1
+        message: "Executing 'category2all' with {threads} threads for {wildcards.exp}/{wildcards.name}"
+        input:
+            catfile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_CATS
+        params:
+            optparams = replace_optparams(WF_SANXOT_HOME["category2all"]["optparams"])
+        output:
+            c2afile  = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_C2ALL
+        shell:
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/category2all.py" --catfile "{input.catfile}" --params "{params.optparams}" --logfile "{output.c2afile}" {WF_VERBOSE_MODE}'

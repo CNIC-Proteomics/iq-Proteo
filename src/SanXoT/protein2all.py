@@ -33,7 +33,7 @@ def main(args):
     # check parameters
     # extract params for the methods
     params = {}
-    methods = ["sanxot1", "sanxotsieve1", "sanxot2"]
+    methods = ["sanxot1"]
     for method in methods:
         if not method in args.params:
             _print_exception( 2, "checking the parameters for the {} method".format(method) )
@@ -44,7 +44,7 @@ def main(args):
             _print_exception( 2, "checking the parameters for the {} method".format(method) )
 
     # get directory from input files
-    outdir = os.path.dirname(os.path.realpath(args.catfile))
+    outdir = os.path.dirname(os.path.realpath(args.profile))
 
     # create builder ---
     logging.info("create workflow builder")
@@ -52,37 +52,17 @@ def main(args):
 
     logging.info("execute sanxot")
     w.sanxot({
-        "-a": "q2c_outs",
+        "-a": "q2a_outs",
         "-d": args.profile,
-        "-r": args.relfile
     }, params["sanxot1"])
-
-    logging.info("execute sanxotsieve")
-    w.sanxotsieve({
-        "-d": args.profile,
-        "-r": args.relfile,
-        "-f": args.fdr,
-        "-V": "q2c_outs_infoFile.txt"
-    }, params["sanxotsieve1"])
-
-    logging.info("execute sanxot")
-    tagfile = os.path.splitext( os.path.basename(args.profile) )[0] + "_tagged.xls"
-    w.sanxot({
-        "-a": "q2c_nouts",
-        "-d": args.profile,
-        "-r": tagfile,
-        "-o": args.catfile,
-        "-V": "q2c_outs_infoFile.txt",
-    }, params["sanxot2"])
-    
 
 if __name__ == "__main__":
     # parse arguments
     parser = argparse.ArgumentParser(
-        description='Create the relationship table for protein2category method',
+        description='Create the relationship table for peptide2protein method',
         epilog='''
         Example:
-            protein2category.py -i 
+            protein2all.py -i 
             -r 
             -s 
         Parameter example:
@@ -91,9 +71,6 @@ if __name__ == "__main__":
             {klibrate1: -g  -f }"
         ''')
     parser.add_argument('-q',  '--profile',  required=True, help='Input file with the peptides')    
-    parser.add_argument('-r',  '--relfile',  required=True, help='Input file with the relationship table')
-    parser.add_argument('-f',  '--fdr',  required=True, help='FDR value')
-    parser.add_argument('-c',  '--catfile',  required=True, help='Output file with the categories')
     parser.add_argument('-a',  '--params',  required=True, help='Input parameters for the sub-methods')
     parser.add_argument('-l',  '--logfile',  help='Output file with the log tracks')
     parser.add_argument('-v', dest='verbose', action='store_true', help="Increase output verbosity")
@@ -103,7 +80,7 @@ if __name__ == "__main__":
     scriptname = os.path.splitext( os.path.basename(__file__) )[0]
 
     # add filehandler
-    logfile = os.path.basename(args.catfile) + "/"+ scriptname +".log"
+    logfile = os.path.basename(args.profile) + "/"+ scriptname +".log"
     if args.logfile:
         logfile = args.logfile
 

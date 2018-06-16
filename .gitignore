@@ -21,4 +21,5 @@ wf/.snakemake
 
 # SanXoT
 src/SanXoT/.svn
+src/SanXoT/*.pyc
 

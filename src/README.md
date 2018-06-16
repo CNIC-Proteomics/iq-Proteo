@@ -5,6 +5,14 @@
 Desribes the scripts.
 
 
+## SanXoT (integrator)
+
+Checkout the current version from the SVN repository
+```bash
+svn co svn://aitne.cnic.es/proteomica/integrador/tags/current SanXoT
+```
+
+
 ## pRatio
 
 Temporal!!:

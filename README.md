@@ -40,7 +40,7 @@ UNDER CONTRUCTION
 >```bash
 >Set-ExecutionPolicy Unrestricted -Force
 >```
-
+>
 >- Check if the Path (environment variable) contains the system commands
 >```
 >Path = %SystemRoot%\system32;
