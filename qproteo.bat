@@ -1,12 +1,4 @@
-@echo off
-
-:: get current path
-REM SET PWD=%~dp0
-REM SET PWD=%PWD:~0,-1%
-
-:: environment variables
-REM SET QPROTEO=%PWD%
-REM SET VENV=%QPROTEO%/venv_win64/venv_win64_py3x
+@ECHO OFF
 
 :: environment variables
 SET VENV=%QPROTEO_HOME%/venv_win64/venv_win64_py3x
@@ -27,4 +19,4 @@ SET /p WF_CONF_FILE="Enter the input file for the config workflow (in YAML exten
 :: execute workflow
 CMD /k "%VENV_ACTIVE% && snakemake.exe --configfile %WF_CONF_FILE% --snakefile %WF_SMK_FILE% --unlock && snakemake.exe --configfile %WF_CONF_FILE% --snakefile %WF_SMK_FILE% -j %WF_NTHREADS% --rerun-incomplete "
 
-REM SET /P DUMMY=Hit ENTER to continue...
+SET /P DUMMY=Hit ENTER to continue...

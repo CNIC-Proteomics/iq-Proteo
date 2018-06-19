@@ -99,6 +99,8 @@ def infiles(ifile):
                 yield expand(["{outdir}/{exp}/{name}/{fname1}", "{outdir}/{exp}/{name}/{fname2}"], outdir=outdir, exp=exp, name=name, fname1=FNAME_SANXOT_RELS2P, fname2=FNAME_SANXOT_SCNS)
             if WF_SANXOT_HOME["rels2pq"]["enabled"]:                        
                 yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_RELP2Q)
+            if WF_SANXOT_HOME["rels2pq_unique"]["enabled"]:                        
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_RELP2Q)
             if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
                 yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_PEPS)
             if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
@@ -235,6 +237,26 @@ if WF_SANXOT_HOME["rels2pq"]["enabled"]:
             "{outdir}/{exp}/{name}/rels2pq.log"
         shell:
             '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2pq.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
+
+if WF_SANXOT_HOME["rels2pq_unique"]["enabled"]:
+    rule rels2pq_unique:
+        '''
+        Create the relationship tables for peptide2protein
+        '''
+        threads: 1
+        message: "Executing 'rels2pq_unique' with {threads} threads for {wildcards.exp}/{wildcards.name}"
+        input:
+            idqfile = lambda wc: PARAMS[wc.exp]["outdir"] +"/"+ wc.exp +"/"+FNAME_PRESANXOT_IDQ if WF_PRESANXOT_HOME["create_idq"]["enabled"] else PARAMS[wc.exp]["idedir"]+"/"+FNAME_PRESANXOT_IDQ
+        params:
+            species   = WF_SANXOT_HOME["rels2pq_unique"]["species"],
+            pretxt    = expand(["\"{ptxt}\""], ptxt=WF_SANXOT_HOME["rels2pq_unique"]["pretxt"]),
+            optparams = lambda wc: replace_optparams(WF_SANXOT_HOME["rels2pq_unique"]["optparams"])
+        output:
+            relfile  = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_RELP2Q
+        log:
+            "{outdir}/{exp}/{name}/rels2pq_unique.log"
+        shell:
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2pq_unique.py" --idqfile "{input.idqfile}" --species "{params.species}" --pretxt {params.pretxt} --relfile "{output.relfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
 if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
     rule scan2peptide:

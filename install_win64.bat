@@ -1,4 +1,4 @@
-@ECHO off
+@ECHO OFF
 
 :: check env varibles are defined
 IF "%QPROTEO_HOME%"=="" GOTO :EndProcess1
@@ -44,7 +44,7 @@ CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%QPRO
 :: active the virtualenv and install the required packages
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install xlrd"
+CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pandas && pip install xlrd"
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
 CMD /C " "%QPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake && pip install pandas && pip install xlrd"
