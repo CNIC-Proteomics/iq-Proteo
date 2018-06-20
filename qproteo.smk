@@ -4,11 +4,11 @@ import pprint
 
 
 # Workflow home
-QPROTEO_HOME      = os.environ['QPROTEO_HOME']
+IQPROTEO_HOME      = os.environ['IQPROTEO_HOME']
 R_HOME            = os.environ['R_HOME']
-WF_PRESANXOT_SRC  = QPROTEO_HOME+"/src/Pre-SanXoT2"
-WF_SANXOT_VENV    = QPROTEO_HOME+"/venv_win64/venv_win64_py27"
-WF_SANXOT_SRC     = QPROTEO_HOME+"/src/SanXoT"
+WF_PRESANXOT_SRC  = IQPROTEO_HOME+"/src/Pre-SanXoT2"
+WF_SANXOT_VENV    = IQPROTEO_HOME+"/venv_win64/venv_win64_py27"
+WF_SANXOT_SRC     = IQPROTEO_HOME+"/src/SanXoT"
 
 # Config variables for workflow
 INFILE_DAT = config["indata"]

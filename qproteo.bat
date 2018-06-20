@@ -1,10 +1,10 @@
 @ECHO OFF
 
 :: environment variables
-SET VENV=%QPROTEO_HOME%/venv_win64/venv_win64_py3x
+SET VENV=%IQPROTEO_HOME%/venv_win64/venv_win64_py3x
 SET VENV_ACTIVE=%VENV%/Scripts/activate.bat
-SET WF_PATH=%QPROTEO_HOME%
-SET TESTS_PATH=%QPROTEO_HOME%/test
+SET WF_PATH=%IQPROTEO_HOME%
+SET TESTS_PATH=%IQPROTEO_HOME%/test
 
 :: workflow variables
 SET WF_SMK_FILE=%WF_PATH%/qproteo.smk

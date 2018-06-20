@@ -14,7 +14,7 @@ Snakemake workflow developed by the Proteomic Unit in CNIC
 
     Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
 
-3. Add the environment variable "QPROTEO_HOME"
+3. Add the environment variable "IQPROTEO_HOME"
 
     Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
 
@@ -50,8 +50,10 @@ UNDER CONTRUCTION
 # Execute the workflow
 
 ## Windows distribution
-At the moment, executing the batch script **qproteo.bat**
 
+Executing the batch script **qproteo.bat**
+
+The script needs the config 
 ## Linux distribution
 UNDER CONTRUCTION
 
