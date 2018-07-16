@@ -1,0 +1,98 @@
+{
+    "indata": "",
+    "catfile": "S:/U_Proteomica/PROYECTOS/PESA_omicas/AteroPreclin_140_V1/Proteomics/Resultados/scripts-miscelaneas/q2cIPA-DAVID-CORUM-Manual-Human3_nd.txt",
+    "idafname": "ID-all.txt",
+    "qallfname": "Q-all.csv",
+    "idqfname": "ID-q.txt",
+    "workflow": {
+      "verbose": false,
+      "presanxot2": {
+        "create_qall": {
+          "enabled": true
+        },
+        "create_idq": {
+          "enabled": true,
+          "abs_calc": "Both",
+          "random": true,
+          "filt_orphans": false,
+          "no_mod_mass": null
+        }
+      },
+      "sanxot": {
+        "rels2sp": {
+          "enabled": true,
+          "optparams": {
+            "aljamia1": " -i [Raw_FirstScan]-[Charge] -j [Xs_-TAG-_-CONTROLTAG-] -k [Vs_-TAG-_-CONTROLTAG-] -l [Tags] ",
+            "aljamia2": " -i [Sequence] -j [Raw_FirstScan]-[Charge] -k [Tags] "
+          }
+        },
+        "rels2pq": {
+          "enabled": false,
+          "optparams": {
+            "aljamia1": " -i [FASTAProteinDescription] -j [Sequence] -k [Tags] "
+          }
+        },
+        "rels2pq_unique": {
+          "enabled": true,
+          "species": "Homo sapiens",
+          "pretxt": [
+            ">sp"
+          ],
+          "optparams": {
+            "aljamia1": " -i 1 -j [FASTAProteinDescription] -k [Sequence] -l [Redundances] --c5 [Tags] "
+          }
+        },
+        "klibratescan": {
+          "enabled": true,
+          "optparams": {
+            "klibrate1": " -g  "
+          }
+        },      
+        "scan2peptide": {
+          "enabled": true,
+          "fdr": 0.01,
+          "optparams": {
+            "sanxot1": " -g -b -s ",
+            "sanxotsieve1": "",
+            "sanxot2": " --tags !out -g  -f "
+          }
+        },
+        "peptide2protein": {
+          "enabled": true,
+          "fdr": 0.01,
+          "optparams": {
+            "sanxot1": " -g -b -s ",
+            "sanxotsieve1": "",
+            "sanxot2": " --tags !out -g  -f "
+          }
+        },
+        "protein2category": {
+          "enabled": true,
+          "fdr": 0.01,
+          "optparams": {
+            "sanxot1": " -g -b -s ",
+            "sanxotsieve1": "",
+            "sanxot2": " --tags !out -g  -f "
+          }
+        },
+        "peptide2all": {
+          "enabled": true,
+          "optparams": {
+            "sanxot1": " -C -g "
+          }
+        },
+        "protein2all": {
+          "enabled": true,
+          "optparams": {
+            "sanxot1": " -C -g -f "
+          }
+        },
+        "category2all": {
+          "enabled": true,
+          "optparams": {
+            "sanxot1": " -v 0 -C -g -f "
+          }
+        }
+      }
+    }
+  }

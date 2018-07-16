@@ -1,0 +1,22 @@
+{
+  "name": "iq-Proteo",
+  "version": "1.0.0",
+  "description": "A minimal Electron application",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "https://github.com/CNIC-Proteomics/iq-Proteo",
+  "keywords": [
+    "iq-Prote",
+    "proteomics",
+    "identification",
+    "quentification",
+    "peptides"
+  ],
+  "author": "CNIC-Proteomics-Unit",
+  "license": "CC0-1.0",
+  "devDependencies": {
+    "electron": "^2.0.0"
+  }
+}

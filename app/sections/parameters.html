@@ -1,0 +1,114 @@
+<template class="task-template" id="parameters">
+  <input type="text" placeholder="Please select a folder" id="actual-folder" disabled="disabled"/>
+  <input type="button" value="Choose a folder" id="select-folder"/>
+  <section class="content tabs-parameters">
+    <ul class="nav nav-tabs" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="identification-tab" data-toggle="tab" href="#identification" role="tab" aria-controls="identification" aria-selected="false">Identification</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="quantification-tab" data-toggle="tab" href="#quantification" role="tab" aria-controls="quantification" aria-selected="true">Quantification</a>
+      </li>
+    </ul>  
+    <div class="tab-content">
+      <div class="tab-pane active" id="identification" role="tabpanel" aria-labelledby="identification-tab">
+
+          <div class="form-group row col-md-5">
+          <label for="absCalc" class="col-md-1 col-form-label">Absolute Quantification</label>
+          <select class="form-control" id="absCalc">
+            <option>True</option>
+            <option>False</option>
+            <option>Both</option>
+          </select>
+          <small id="absCalcHelp" class="form-text text-muted">(True = Absolute Quantification, False = Relative Quantification or Both = Both)</small>
+        </div>
+        <div class="form-group row col-md-5">
+          <input class="col-md-1 col-form-label" type="checkbox" value="" id="ptmFlag">
+          <div class="">
+            <label class="form-check-label" for="ptmFlag">PTMs</label>
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <label for="noModMass" class="col-md-1 col-form-label">Mass of No modified</label>
+          <div class="">
+            <input class="form-control" id="noModMass" value="-0.000163">
+          </div>
+        </div>
+              
+      </div> <!-- end tab-pane -->
+
+      <div class="tab-pane" id="quantification" role="tabpanel" aria-labelledby="quantification-tab">
+
+        <h6>Scan to peptide</h6>
+        <div class="form-group row col-md-5">
+          <label for="fdr" class="col-md-1 col-form-label">FDR</label>
+          <div class="">
+            <input type="number" class="form-control" id="fdr" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <label for="fdr" class="col-md-1 col-form-label">Variance</label>
+          <div class="">
+            <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance">
+          <div class="">
+            <label class="form-check-label" for="forceVariance">Force the variance</label>
+          </div>
+        </div>
+        <!-- end Scan to peptide -->
+
+        <h6>Peptide to protein</h6>
+        <div class="form-group row col-md-5">
+          <label for="fdr" class="col-md-1 col-form-label">FDR</label>
+          <div class="">
+            <input type="number" class="form-control" id="fdr" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <label for="fdr" class="col-md-1 col-form-label">Variance</label>
+          <div class="">
+            <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance">
+          <div class="">
+            <label class="form-check-label" for="forceVariance">Force the variance</label>
+          </div>
+        </div>
+        <!-- end Peptide to Protein -->
+
+        <h6>Protein to category</h6>
+        <div class="form-group row col-md-5">
+          <label for="fdr" class="col-md-1 col-form-label">FDR</label>
+          <div class="">
+            <input type="number" class="form-control" id="fdr" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <label for="fdr" class="col-md-1 col-form-label">Variance</label>
+          <div class="">
+            <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance">
+          <div class="">
+            <label class="form-check-label" for="forceVariance">Force the variance</label>
+          </div>
+        </div>
+        <div class="form-group row col-md-5">
+          <label for="catFile">Category file input</label>
+          <input type="file" class="form-control-file" id="catFile">
+        </div>        
+        <!-- end Protein to category -->
+
+      </div> <!-- end tab-pane -->
+  </section>
+  <script type="text/javascript">
+    var parameters = require('./renderer-process//parameters.js')
+  </script>
+</template>
