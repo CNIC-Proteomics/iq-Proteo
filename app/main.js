@@ -24,7 +24,11 @@ const menu = Menu.buildFromTemplate(template)
 function createWindow () {
 
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1600, height: 850})
+  mainWindow = new BrowserWindow({
+    width: 1600,
+    height: 850,
+    icon: __dirname + '/assets/icons/molecule.png'
+  })
 
   // and load the index.html of the app.
   mainWindow.loadFile('index.html')
