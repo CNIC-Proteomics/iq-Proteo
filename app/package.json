@@ -9,14 +9,14 @@
   },
   "repository": "https://github.com/CNIC-Proteomics/iq-Proteo",
   "keywords": [
-    "iq-Prote",
+    "iq-Proteo",
     "proteomics",
     "identification",
     "quentification",
     "peptides"
   ],
   "author": "CNIC-Proteomics-Unit",
-  "license": "CC0-1.0",
+  "license": "Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)",
   "devDependencies": {
     "electron": "^2.0.0"
   }

@@ -1,6 +1,16 @@
 <template class="task-template" id="datatable">
-    <!-- <button id="export-csv">Export CSV</button> -->
-    <div id="hot" class="handsontable"></div>
+  <div class="dirs">
+    <!-- <div class="in">
+      <input type="text" placeholder="Please select the input folder" id="indir" disabled="disabled"/>
+      <input type="button" value="Choose a folder" id="select-indir"/>
+    </div> -->
+    <div class="out">
+        <input type="text" placeholder="Please select an output folder" id="outdir" disabled="disabled"/>
+        <input type="button" value="Choose a folder" id="select-outdir"/>
+    </div>      
+  </div>
+   
+  <div id="hot" class="handsontable"></div>
 
   <script type="text/javascript">
     require('./renderer-process/datatable')

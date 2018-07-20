@@ -43,8 +43,14 @@ footer {
 }
 
 /* Datatable */
-input#actual-folder {
+input#indir, input#outdir {
     width: 400px;
+}
+.dirs {
+    margin-bottom: 10px;
+}
+.dirs > .in {
+    margin-bottom: 5px;
 }
 .handsontable {
     /* font-size: 1em; */

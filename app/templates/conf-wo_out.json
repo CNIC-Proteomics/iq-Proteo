@@ -1,6 +1,6 @@
 {
     "indata": "",
-    "catfile": "S:/U_Proteomica/PROYECTOS/PESA_omicas/AteroPreclin_140_V1/Proteomics/Resultados/scripts-miscelaneas/q2cIPA-DAVID-CORUM-Manual-Human3_nd.txt",
+    "catfile": "",
     "idafname": "ID-all.txt",
     "qallfname": "Q-all.csv",
     "idqfname": "ID-q.txt",
@@ -8,7 +8,7 @@
       "verbose": false,
       "presanxot2": {
         "create_qall": {
-          "enabled": true
+          "enabled": false
         },
         "create_idq": {
           "enabled": true,
@@ -16,9 +16,7 @@
           "random": true,
           "filt_orphans": false,
           "no_mod_mass": null
-        }
-      },
-      "sanxot": {
+        },
         "rels2sp": {
           "enabled": true,
           "optparams": {
@@ -41,7 +39,9 @@
           "optparams": {
             "aljamia1": " -i 1 -j [FASTAProteinDescription] -k [Sequence] -l [Redundances] --c5 [Tags] "
           }
-        },
+        }
+      },
+      "sanxot": {
         "klibratescan": {
           "enabled": true,
           "optparams": {

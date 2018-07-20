@@ -2,8 +2,6 @@
 function appendToDroidOutput(msg) { getDroidOutput().value += msg; };
 function setStatus(msg)           { getStatus().innerHTML = msg; };
 
-let fs = require('fs');
-
 function backgroundProcess(cmd) {
   "use strict";
   // The path to the .bat file
@@ -71,11 +69,12 @@ function backgroundProcess(cmd) {
   const ls = exec( cmd );
 
   ls.stdout.on('data', (data) => {
-      appendToDroidOutput(data);
-          console.log(`stdout: ${data}`);
+    appendToDroidOutput(data);
+    // console.log(`stdout: ${data}`);
   });
 
   ls.stderr.on('data', (data) => {
+    exceptor.showMessageBox('Error Running the workflow', data);
     appendToDroidOutput(data);
     console.log(`stderr: ${data}`);
   });
@@ -87,117 +86,21 @@ function backgroundProcess(cmd) {
 };
 
 /*
- * Export Datatable to CSV
- */
-function parseRow(sizeData, index, infoArray) {
-  let cont = "";
-  if (index < sizeData - 1) {
-      dataString = "";
-          infoArray.forEach(function(col,i) {            
-          dataString += _.contains(col, ",") ? "\"" + col + "\"" : col;
-          dataString += i < _.size(infoArray) - 1 ? "," : "";
-      })
-      cont = index < sizeData - 2 ? dataString + "\n" : dataString;
-  }
-  return cont;
-}
-function exportDatatableCSV(datatable) {
-  // add header
-  let csvContent = datatable.getColHeader().join(",") + "\n";
-  let data = datatable.getData();
-  let sizeData = data.length;
-  data.forEach(function(row,idx) {
-      csvContent += parseRow(sizeData, idx, row);
-  });
-  return csvContent;
-}
-// Create Datatable file
-function createDatatableFile(outdir) {
-  let datatable = $("#hot").data('handsontable');
-
-  let file = outdir + '/iq-proteo_data.csv';
-  if (file === undefined) {
-    throw("You didn't save the file");
-  }
-
-  // export Datatable to CSV
-  try {
-    var cont = exportDatatableCSV(datatable);
-  } catch (err) {
-    //if error
-    throw("Error exporting datatable: " + err);
-  }
-
-  // write file sync
-  try {
-    fs.writeFileSync(file, cont, 'utf-8');
-  } catch (err) {    
-    throw("Error writing datatable file: " + err);
-  }
-
-  return file;
-};
-
-
-/*
- * Create config file 
- */
-function createConfFile(conf, outdir) {
-
-  let file = outdir + '/iq-proteo_conf.json';
-  if (file === undefined) {
-      console.log("You didn't save the file");
-      return;
-  }
-
-  // read template file
-  try {
-    let d = fs.readFileSync(conf); //file exists, get the contents
-    let data = JSON.parse(d);
-    data['indata'] = "MIERDA";
-    var cont = JSON.stringify(data, undefined, 2);
-  } catch (err) {
-    //if error
-    console.log("Error creating config file: " + err);
-    return;
-  }
-
-  // write file sync
-  try {
-    fs.writeFileSync(file, cont, 'utf-8');
-  } catch (err) {    
-    console.log("Error writing config file: " + err);
-    return;
-  }
-
-  // Create Datatable file
-  createDatatableFile(outdir); 
-
-  return file;
-};
-
-/*
  * Click Executor
  */
 document.getElementById('executor').addEventListener('click', function() {
 
   // Check and retrieves parameters
-  let params = parameters.checkParams();
-  if ( params ) {    
-    // Create Config file
-    let conffile = parameters.createConfFile(params.conf, params.outdir);
+  let params = parameters.createParameters();
+  if ( params ) {
 
     // Execute the workflow
-    if ( conffile !== undefined ) {
-      let cmd = 'D:/projects/qProteo/venv_win64/venv_win64_py3x/Scripts/activate.bat && ';
-      cmd += 'snakemake.exe --configfile "'+conffile+'" --snakefile "D:/projects/qProteo/qproteo.smk" --unlock && ';
-      cmd += 'snakemake.exe --configfile "'+conffile+'" --snakefile "D:/projects/qProteo/qproteo.smk" -j '+params.nthreads+' --rerun-incomplete';
-      alert( cmd );
-      // backgroundProcess( cmd );  
-    }
-    else {
-      alert("Error creating config file");
-    }  
+    let smkfile = process.env.IQPROTEO_HOME + '/qproteo.smk';
+    let cmd = process.env.IQPROTEO_HOME + '/venv_win64/venv_win64_py3x/Scripts/activate.bat && ';
+    cmd += 'snakemake.exe --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" --unlock && ';
+    cmd += 'snakemake.exe --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" -j '+params.nthreads+' --rerun-incomplete';
+    console.log( cmd );
+    backgroundProcess( cmd );
   }
 
 });

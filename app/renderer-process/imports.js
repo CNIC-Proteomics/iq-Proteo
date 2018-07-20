@@ -5,5 +5,5 @@ Array.prototype.forEach.call(links, function (link) {
     let template = link.import.querySelector('.task-template');
     let clone = document.importNode(template.content, true);
     let tid = template.id;
-    document.querySelector('.tab-content > '+'#'+tid).appendChild(clone);
+    document.querySelector('#'+tid).appendChild(clone);
 })

@@ -25,6 +25,7 @@ FNAME_PRESANXOT_IDQ   = config["idqfname"]
 FNAME_SANXOT_RELS2P   = "s2p_rels.xls"
 FNAME_SANXOT_RELP2Q   = "p2q_rels.xls"
 FNAME_SANXOT_RELQ2C   = "q2c_rels.xls"
+FNAME_SANXOT_USCNS    = "u_scans.xls"
 FNAME_SANXOT_SCNS     = "scans.xls"
 FNAME_SANXOT_PEPS     = "peptides.xls"
 FNAME_SANXOT_PROS     = "proteins.xls"
@@ -51,7 +52,7 @@ def infiles(ifile):
     '''
     Handles the input data (output files for the workflow)
     '''
-    indata = pandas.read_excel(ifile, converters={ "msfdir":str, "idedir":str, "outdir":str, "experiment":str, "name":str, "tag":str, "ratio_numerator":str, "ratio_denominator":str})
+    indata = pandas.read_excel(ifile, converters={ "idedir":str, "outdir":str, "experiment":str, "name":str, "tag":str, "ratio_numerator":str, "ratio_denominator":str})
 
     # output files created by pre-sanxot workflow
     # get input values for every data
@@ -59,7 +60,6 @@ def infiles(ifile):
         # create a list with the unique values and extract the first element
         PARAMS[exp] = {}
         PARAMS[exp]["names"] = {}        
-        PARAMS[exp]["msfdir"] = indata.loc[indata["experiment"] == exp, "msfdir"].unique()[0]
         PARAMS[exp]["idedir"] = indata.loc[indata["experiment"] == exp, "idedir"].unique()[0]        
         PARAMS[exp]["outdir"] = indata.loc[indata["experiment"] == exp, "outdir"].unique()[0]
         PARAMS[exp]["tags"] = ",".join( [str(x).strip() for x in indata.loc[indata["experiment"] == exp, "tag"]] )
@@ -96,11 +96,13 @@ def infiles(ifile):
             PARAMS[exp]["names"][name]["ratio_num"] = ratio_num
             PARAMS[exp]["names"][name]["ratio_den"] = ratio_den
             if WF_SANXOT_HOME["rels2sp"]["enabled"]:
-                yield expand(["{outdir}/{exp}/{name}/{fname1}", "{outdir}/{exp}/{name}/{fname2}"], outdir=outdir, exp=exp, name=name, fname1=FNAME_SANXOT_RELS2P, fname2=FNAME_SANXOT_SCNS)
+                yield expand(["{outdir}/{exp}/{name}/{fname1}", "{outdir}/{exp}/{name}/{fname2}"], outdir=outdir, exp=exp, name=name, fname1=FNAME_SANXOT_RELS2P, fname2=FNAME_SANXOT_USCNS)
             if WF_SANXOT_HOME["rels2pq"]["enabled"]:                        
                 yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_RELP2Q)
             if WF_SANXOT_HOME["rels2pq_unique"]["enabled"]:                        
                 yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_RELP2Q)
+            if WF_SANXOT_HOME["klibratescan"]["enabled"]:
+                yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_SCNS)
             if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
                 yield "{outdir}/{exp}/{name}/{fname}".format(outdir=outdir, exp=exp, name=name, fname=FNAME_SANXOT_PEPS)
             if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
@@ -144,28 +146,9 @@ def replace_optparams(optparams, tag=None, controltags=None):
         a += "{"+met +":"+ pattern.sub( lambda m: optrep[re.escape(m.group(0))], pval ) +"}"
     return a
 
-
-
-if WF_PRESANXOT_HOME["create_qall"]["enabled"]:   
-    rule create_qall:
-        '''
-        Create the Q-all from the MSF information of PD
-        '''
-        threads: 1
-        message: "Executing 'create_qall' with {threads} threads for {wildcards.exp}"
-        params:
-            msfdir = lambda wc: PARAMS[wc.exp]["msfdir"],
-            tags   = lambda wc: PARAMS[wc.exp]["tags"]
-        output:
-            qallfile = "{outdir}/{exp}/"+FNAME_PRESANXOT_QALL
-        log:
-            "{outdir}/{exp}/presanxot2.log"
-        shell:
-            '"{R_HOME}/bin/Rscript" --vanilla "{WF_PRESANXOT_SRC}/create_q-all.R" \
-                --indir "{params.msfdir}" \
-                --tags  "{params.tags}" \
-                --outfile "{output.qallfile}" 1>> "{log}" 2>&1 '
-
+# -------------------- #
+# Pre-SanXoT2: methods #
+# -------------------- #
 if WF_PRESANXOT_HOME["create_idq"]["enabled"]:
     rule create_idq:
         '''
@@ -174,8 +157,8 @@ if WF_PRESANXOT_HOME["create_idq"]["enabled"]:
         threads: 1
         message: "Executing 'create_idq' with {threads} threads for {wildcards.exp}"
         input:
-            idenfile = lambda wc: PARAMS[wc.exp]["idedir"]+"/"+ FNAME_PRESANXOT_IDALL,
-            qallfile = lambda wc: PARAMS[wc.exp]["outdir"]+"/"+wc.exp+"/"+FNAME_PRESANXOT_QALL if WF_PRESANXOT_HOME["create_qall"]["enabled"] else PARAMS[wc.exp]["msfdir"]+"/"+FNAME_PRESANXOT_QALL
+            idenfile = lambda wc: PARAMS[wc.exp]["idedir"]+"/"++wc.exp+"/"+FNAME_PRESANXOT_IDALL,
+            qallfile = lambda wc: PARAMS[wc.exp]["idedir"]+"/"+wc.exp+"/"+FNAME_PRESANXOT_QALL
         params:
             tags         = lambda wc: PARAMS[wc.exp]["tags"],
             ratio_numer  = lambda wc: PARAMS[wc.exp]["ratio_numerator"],
@@ -201,7 +184,7 @@ if WF_PRESANXOT_HOME["create_idq"]["enabled"]:
                 --no_mod_mass "{params.no_mod_mass}" \
                 --outfile "{output.idqfile}" 1>> "{log}" 2>&1 '
 
-if WF_SANXOT_HOME["rels2sp"]["enabled"]:
+if WF_PRESANXOT_HOME["rels2sp"]["enabled"]:
     rule rels2sp:
         '''
         Create the relationship tables for scan2peptide
@@ -214,13 +197,13 @@ if WF_SANXOT_HOME["rels2sp"]["enabled"]:
             optparams = lambda wc: replace_optparams(WF_SANXOT_HOME["rels2sp"]["optparams"], PARAMS[wc.exp]["names"][wc.name]["tag"], PARAMS[wc.exp]["names"][wc.name]["ratio_den"])
         output:
             relfile  = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_RELS2P,
-            scanfile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_SCNS
+            scanfile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_USCNS
         log:
             "{outdir}/{exp}/{name}/rels2sp.log"
         shell:
             '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2sp.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --scanfile "{output.scanfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
-if WF_SANXOT_HOME["rels2pq"]["enabled"]:
+if WF_PRESANXOT_HOME["rels2pq"]["enabled"]:
     rule rels2pq:
         '''
         Create the relationship tables for peptide2protein
@@ -238,7 +221,7 @@ if WF_SANXOT_HOME["rels2pq"]["enabled"]:
         shell:
             '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2pq.py" --idqfile "{input.idqfile}" --relfile "{output.relfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
-if WF_SANXOT_HOME["rels2pq_unique"]["enabled"]:
+if WF_PRESANXOT_HOME["rels2pq_unique"]["enabled"]:
     rule rels2pq_unique:
         '''
         Create the relationship tables for peptide2protein
@@ -257,6 +240,28 @@ if WF_SANXOT_HOME["rels2pq_unique"]["enabled"]:
             "{outdir}/{exp}/{name}/rels2pq_unique.log"
         shell:
             '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/rels2pq_unique.py" --idqfile "{input.idqfile}" --species "{params.species}" --pretxt {params.pretxt} --relfile "{output.relfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
+
+# --------------- #
+# SanXoT: methods #
+# --------------- #
+if WF_SANXOT_HOME["klibratescan"]["enabled"]:
+    rule klibratescan:
+        '''
+        Calibrate the scans
+        '''
+        threads: 1
+        message: "Executing 'scan2peptide' with {threads} threads for {wildcards.exp}/{wildcards.name}"
+        input:
+            relfile  = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_RELS2P,
+            scanfile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_USCNS
+        params:
+            optparams = replace_optparams(WF_SANXOT_HOME["klibratescan"]["optparams"])
+        output:
+            scanfile = "{outdir}/{exp}/{name}/"+FNAME_SANXOT_SCNS
+        log:
+            "{outdir}/{exp}/{name}/sanxot.log"
+        shell:
+            '"{WF_SANXOT_VENV}/Scripts/activate" && python "{WF_SANXOT_SRC}/klibratescan.py" --uscanfile "{input.scanfile}" --relfile "{input.relfile}" --scanfile "{output.scanfile}" --params "{params.optparams}" --logfile "{log}" {WF_VERBOSE_MODE}'
 
 if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
     rule scan2peptide:
