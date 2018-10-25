@@ -33,12 +33,12 @@ class builder:
     '''
     Handle SanXoT workflow
     '''
-    def __init__(self, outdir, logger=None):
+    def __init__(self, tmpdir, logger=None):
         '''
         Workflow builder
         '''
         # prepare tmp workspace ---
-        self.tmpdir = outdir +"/tmp"
+        self.tmpdir = tmpdir
         try:
             os.makedirs(self.tmpdir)
         except:
@@ -145,187 +145,189 @@ class builder:
             self._print_exception(2, "Exception occured: executing sanxotsieve")
 
 
-    def scan2peptide(self, iparams, optparams=None):
-        '''
-        Function scan to peptide
-        '''
-        corename = "scan2peptide"
-        coreabrv = "S2P"
+    # DEPRECATED ------------------------
 
-        # execution ---
-        method = 'aljamia1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.aljamia({
-            "-x": iparams['-x'],
-            "-o": "s2p_uncalibrated.xls",
-        }, optparam)
+    # def scan2peptide(self, iparams, optparams=None):
+    #     '''
+    #     Function scan to peptide
+    #     '''
+    #     corename = "scan2peptide"
+    #     coreabrv = "S2P"
 
-        # execution ---
-        method = 'aljamia2'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.aljamia({
-            "-x": iparams['-x'],
-            "-o": iparams['-r'],
-        }, optparam)
+    #     # execution ---
+    #     method = 'aljamia1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.aljamia({
+    #         "-x": iparams['-x'],
+    #         "-o": "s2p_uncalibrated.xls",
+    #     }, optparam)
 
-        # execution ---
-        method = 'klibrate1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.klibrate({
-            "-d": "s2p_uncalibrated.xls",
-            "-r": iparams['-r'],
-            "-o": iparams['-d'],
-        }, optparam)
+    #     # execution ---
+    #     method = 'aljamia2'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.aljamia({
+    #         "-x": iparams['-x'],
+    #         "-o": iparams['-r'],
+    #     }, optparam)
 
-        # execution ---
-        method = 'sanxot1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxot({
-            "-a": "s2p_outs",
-            "-d": iparams['-d'],
-            "-r": iparams['-r'],
-        }, optparam)
+    #     # execution ---
+    #     method = 'klibrate1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.klibrate({
+    #         "-d": "s2p_uncalibrated.xls",
+    #         "-r": iparams['-r'],
+    #         "-o": iparams['-d'],
+    #     }, optparam)
 
-        # execution ---
-        method = 'sanxotsieve1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxotsieve({
-            "-d": iparams['-d'],
-            "-r": iparams['-r'],
-            "-f": iparams['-f'],
-            "-V": "s2p_outs_infoFile.txt",
-        }, optparam)
+    #     # execution ---
+    #     method = 'sanxot1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxot({
+    #         "-a": "s2p_outs",
+    #         "-d": iparams['-d'],
+    #         "-r": iparams['-r'],
+    #     }, optparam)
 
-        # execution ---
-        method = 'sanxot2'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxot({
-            "-a": "s2p_nouts",
-            "-d": iparams['-d'],
-            "-r": "scans_tagged.xls",
-            "-o": iparams['-o'],
-            "-V": "s2p_outs_infoFile.txt",
-        }, optparam)
+    #     # execution ---
+    #     method = 'sanxotsieve1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxotsieve({
+    #         "-d": iparams['-d'],
+    #         "-r": iparams['-r'],
+    #         "-f": iparams['-f'],
+    #         "-V": "s2p_outs_infoFile.txt",
+    #     }, optparam)
+
+    #     # execution ---
+    #     method = 'sanxot2'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxot({
+    #         "-a": "s2p_nouts",
+    #         "-d": iparams['-d'],
+    #         "-r": "scans_tagged.xls",
+    #         "-o": iparams['-o'],
+    #         "-V": "s2p_outs_infoFile.txt",
+    #     }, optparam)
         
 
-    def peptide2protein(self, iparams, optparams=None):
-        '''
-        Function peptide to protein
-        '''
-        corename = "peptide2protein"
-        coreabrv = "P2Q"
+    # def peptide2protein(self, iparams, optparams=None):
+    #     '''
+    #     Function peptide to protein
+    #     '''
+    #     corename = "peptide2protein"
+    #     coreabrv = "P2Q"
 
-        # execution ---
-        method = 'aljamia1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.aljamia({
-            "-x": iparams['-x'],
-            "-o": iparams['-r'],
-        }, optparam)
+    #     # execution ---
+    #     method = 'aljamia1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.aljamia({
+    #         "-x": iparams['-x'],
+    #         "-o": iparams['-r'],
+    #     }, optparam)
 
-        # execution ---
-        method = 'sanxot1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxot({
-            "-a": "p2q_outs",
-            "-d": iparams['-d'],
-            "-r": iparams['-r'],
-        }, optparam)
+    #     # execution ---
+    #     method = 'sanxot1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxot({
+    #         "-a": "p2q_outs",
+    #         "-d": iparams['-d'],
+    #         "-r": iparams['-r'],
+    #     }, optparam)
 
-        # execution ---
-        method = 'sanxotsieve1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxotsieve({
-            "-d": iparams['-d'],
-            "-r": iparams['-r'],
-            "-f": iparams['-f'],
-            "-V": "p2q_outs_infoFile.txt",
-        }, optparam)
+    #     # execution ---
+    #     method = 'sanxotsieve1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxotsieve({
+    #         "-d": iparams['-d'],
+    #         "-r": iparams['-r'],
+    #         "-f": iparams['-f'],
+    #         "-V": "p2q_outs_infoFile.txt",
+    #     }, optparam)
 
-        # execution ---
-        method = 'sanxot2'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxot({
-            "-a": "p2q_nouts",
-            "-d": iparams['-d'],
-            "-r": "peptides_tagged.xls",
-            "-o": iparams['-o'],
-            "-V": "p2q_outs_infoFile.txt",
-        }, optparam)
-
-
-    def peptide2category(self):
-        '''
-        Function peptide to category
-        '''
-        print("peptide to category")
+    #     # execution ---
+    #     method = 'sanxot2'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxot({
+    #         "-a": "p2q_nouts",
+    #         "-d": iparams['-d'],
+    #         "-r": "peptides_tagged.xls",
+    #         "-o": iparams['-o'],
+    #         "-V": "p2q_outs_infoFile.txt",
+    #     }, optparam)
 
 
-    def protein2category(self, iparams, optparams=None):
-        '''
-        Function protein to category
-        '''
-        corename = "protein2category"
-        coreabrv = "Q2C"
-
-        # execution ---
-        method = 'sanxot1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxot({
-            "-a": "q2c_outs",
-            "-d": iparams['-d'],
-            "-r": iparams['-r'],
-        }, optparam)
-
-        # execution ---
-        method = 'sanxotsieve1'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxotsieve({
-            "-d": iparams['-d'],
-            "-r": iparams['-r'],
-            "-f": iparams['-f'],
-            "-V": "q2c_outs_infoFile.txt",
-        }, optparam)
-
-        # execution ---
-        method = 'sanxot2'
-        self.logger.info(coreabrv+": execute "+method)
-        optparam = self._get_opt_params(corename, method, optparams)
-        self.sanxot({
-            "-a": "q2c_nouts",
-            "-d": iparams['-d'],
-            "-r": "proteins_tagged.xls",
-            "-o": iparams['-o'],
-            "-V": "q2c_outs_infoFile.txt",
-        }, optparam)
+    # def peptide2category(self):
+    #     '''
+    #     Function peptide to category
+    #     '''
+    #     print("peptide to category")
 
 
-    def peptide2all(self):
-        '''
-        Function peptide to all
-        '''
-        print("peptide to all")
+    # def protein2category(self, iparams, optparams=None):
+    #     '''
+    #     Function protein to category
+    #     '''
+    #     corename = "protein2category"
+    #     coreabrv = "Q2C"
 
-    def protein2all(self):
-        '''
-        Function protein to all
-        '''
-        print("protein to all")
+    #     # execution ---
+    #     method = 'sanxot1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxot({
+    #         "-a": "q2c_outs",
+    #         "-d": iparams['-d'],
+    #         "-r": iparams['-r'],
+    #     }, optparam)
 
-    def protein2all(self):
-        '''
-        Function category to all
-        '''
-        print("category to all")
+    #     # execution ---
+    #     method = 'sanxotsieve1'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxotsieve({
+    #         "-d": iparams['-d'],
+    #         "-r": iparams['-r'],
+    #         "-f": iparams['-f'],
+    #         "-V": "q2c_outs_infoFile.txt",
+    #     }, optparam)
+
+    #     # execution ---
+    #     method = 'sanxot2'
+    #     self.logger.info(coreabrv+": execute "+method)
+    #     optparam = self._get_opt_params(corename, method, optparams)
+    #     self.sanxot({
+    #         "-a": "q2c_nouts",
+    #         "-d": iparams['-d'],
+    #         "-r": "proteins_tagged.xls",
+    #         "-o": iparams['-o'],
+    #         "-V": "q2c_outs_infoFile.txt",
+    #     }, optparam)
+
+
+    # def peptide2all(self):
+    #     '''
+    #     Function peptide to all
+    #     '''
+    #     print("peptide to all")
+
+    # def protein2all(self):
+    #     '''
+    #     Function protein to all
+    #     '''
+    #     print("protein to all")
+
+    # def protein2all(self):
+    #     '''
+    #     Function category to all
+    #     '''
+    #     print("category to all")

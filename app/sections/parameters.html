@@ -2,16 +2,23 @@
   <section class="content tabs-parameters">
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="identification-tab" data-toggle="tab" href="#identification" role="tab" aria-controls="identification" aria-selected="false">Identification</a>
+        <a class="nav-link active" id="presanxot2-tab" data-toggle="tab" href="#presanxot2" role="tab" aria-controls="presanxot2" aria-selected="false">Pre-SanXoT2</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="quantification-tab" data-toggle="tab" href="#quantification" role="tab" aria-controls="quantification" aria-selected="true">Quantification</a>
+        <a class="nav-link" id="sanxot-tab" data-toggle="tab" href="#sanxot" role="tab" aria-controls="sanxot" aria-selected="true">SanXoT</a>
       </li>
     </ul>  
     <div class="tab-content">
-      <div class="tab-pane active" id="identification" role="tabpanel" aria-labelledby="identification-tab">
+      <div class="tab-pane active" id="presanxot2" role="tabpanel" aria-labelledby="presanxot2-tab">
 
-          <div class="form-group row col-md-5">
+        <div class="form-group row col-md-5">
+          <input class="col-md-1 col-form-label" type="checkbox" value="" id="includeTags">
+          <div class="">
+            <label class="form-check-label" for="includeTags">The ID-q contains tags</label>
+          </div>
+        </div> 
+    
+        <!-- <div class="form-group row col-md-5">
           <label for="absCalc" class="col-md-1 col-form-label">Absolute Quantification</label>
           <select class="form-control" id="absCalc">
             <option>True</option>
@@ -31,11 +38,19 @@
           <div class="">
             <input class="form-control" id="noModMass" value="-0.000163">
           </div>
-        </div>
+        </div> -->
               
       </div> <!-- end tab-pane -->
 
-      <div class="tab-pane" id="quantification" role="tabpanel" aria-labelledby="quantification-tab">
+      <div class="tab-pane" id="sanxot" role="tabpanel" aria-labelledby="sanxot-tab">
+
+        <div class="form-group row col-md-5">
+          <input class="col-md-1 col-form-label" type="checkbox" value="" id="discardOutliers" checked="checked">
+          <div class="">
+            <label class="form-check-label" for="discardOutliers">Discard outliers</label>
+          </div>
+        </div>
+  
         <div class="scan2peptide">
           <h6>Scan to peptide</h6>
           <div class="form-group row col-md-5">
@@ -45,15 +60,15 @@
             </div>
           </div>
           <div class="form-group row col-md-5">
-            <label for="fdr" class="col-md-1 col-form-label">Variance</label>
+            <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance" onchange="document.querySelector('.scan2peptide #variance').disabled = !this.checked;">
             <div class="">
-              <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+              <label class="form-check-label" for="forceVariance">Force the variance</label>
             </div>
           </div>
           <div class="form-group row col-md-5">
-            <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance">
+            <label for="variance" class="col-md-1 col-form-label">Variance</label>
             <div class="">
-              <label class="form-check-label" for="forceVariance">Force the variance</label>
+              <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber" disabled="disabled">
             </div>
           </div>
         </div>
@@ -68,15 +83,15 @@
             </div>
           </div>
           <div class="form-group row col-md-5">
-            <label for="fdr" class="col-md-1 col-form-label">Variance</label>
+            <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance" onchange="document.querySelector('.peptide2protein #variance').disabled = !this.checked;">
             <div class="">
-              <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
+              <label class="form-check-label" for="forceVariance">Force the variance</label>
             </div>
           </div>
           <div class="form-group row col-md-5">
-            <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance">
+            <label for="variance" class="col-md-1 col-form-label">Variance</label>
             <div class="">
-              <label class="form-check-label" for="forceVariance">Force the variance</label>
+              <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber" disabled="disabled">
             </div>
           </div>
         </div>
@@ -91,27 +106,27 @@
             </div>
           </div>
           <div class="form-group row col-md-5">
-            <label for="fdr" class="col-md-1 col-form-label">Variance</label>
-            <div class="">
-              <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber">
-            </div>
-          </div>
-          <div class="form-group row col-md-5">
-            <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance">
+            <input class="col-md-1 col-form-label" type="checkbox" value="" id="forceVariance" onchange="document.querySelector('.protein2category #variance').disabled = !this.checked;">
             <div class="">
               <label class="form-check-label" for="forceVariance">Force the variance</label>
             </div>
           </div>
           <div class="form-group row col-md-5">
-            <label for="catFile">Category file input</label>
-            <input type="file" class="form-control-file" id="catFile">
+            <label for="variance" class="col-md-1 col-form-label">Variance</label>
+            <div class="">
+              <input type="number" class="form-control" id="variance" min="0" step="0.01" value="0.01" data-bind="value:replyNumber" disabled="disabled">
+            </div>
+          </div>
+          <div class="form-group row col-md-5">
+            <input type="text" placeholder="Please select a category file" id="catfile" disabled="disabled"/>
+            <input type="button" value="Choose a file" id="select-catfile"/>
           </div>    
         </div>
         <!-- end Protein to category -->
-
+ 
       </div> <!-- end tab-pane -->
   </section>
   <script type="text/javascript">
-    var parameters = require('./renderer-process//parameters.js')
+    var parameters = require('./renderer-process/parameters.js')
   </script>
 </template>

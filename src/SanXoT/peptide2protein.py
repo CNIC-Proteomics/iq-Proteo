@@ -42,13 +42,16 @@ def main(args):
             params[method] = match.group(1)
         else:
             _print_exception( 2, "checking the parameters for the {} method".format(method) )
-
-    # get directory from input files
-    outdir = os.path.dirname(os.path.realpath(args.relfile))
-
+    # extract temporal working directory...
+    if args.tmpdir:
+        tmpdir = args.tmpdir
+    # otherwisae, get directory from input files
+    else:
+        tmpdir = os.path.dirname(os.path.realpath(args.relfile))+"/tmp"
+    
     # create builder ---
     logging.info("create workflow builder")
-    w = wf.builder(outdir, logging)
+    w = wf.builder(tmpdir, logging)
 
     logging.info("execute sanxot")
     w.sanxot({
@@ -58,22 +61,22 @@ def main(args):
     }, params["sanxot1"])
 
     logging.info("execute sanxotsieve")
-    w.sanxotsieve({
-        "-d": args.pepfile,
-        "-r": args.relfile,
-        "-f": args.fdr,
-        "-V": "p2q_outs_infoFile.txt"
-    }, params["sanxotsieve1"])
+    p = { "-d": args.pepfile, "-r": args.relfile, "-f": args.fdr }
+    if args.variance: # force the variance
+        p["-v"] = args.variance
+    else: # use the file variance
+        p["-V"] = "p2q_outs_infoFile.txt"
+    w.sanxotsieve(p, params["sanxotsieve1"])
 
     logging.info("execute sanxot")
     tagfile = os.path.splitext( os.path.basename(args.pepfile) )[0] + "_tagged.xls"
-    w.sanxot({
-        "-a": "p2q_nouts",
-        "-d": args.pepfile,
-        "-r": tagfile,
-        "-o": args.profile,
-        "-V": "p2q_outs_infoFile.txt",
-    }, params["sanxot2"])
+    p = { "-a": "p2q_nouts", "-d": args.pepfile, "-r": tagfile, "-o": args.profile }
+    if args.variance:
+        p["-v"] = args.variance
+    else:
+        p["-V"] = "p2q_outs_infoFile.txt"
+    w.sanxot(p, params["sanxot2"])
+
 
 if __name__ == "__main__":
     # parse arguments
@@ -92,17 +95,19 @@ if __name__ == "__main__":
     parser.add_argument('-p',  '--pepfile',  required=True, help='Input file with the peptides')    
     parser.add_argument('-r',  '--relfile',  required=True, help='Input file with the relationship table')
     parser.add_argument('-f',  '--fdr',  required=True, help='FDR value')
+    parser.add_argument('-v',  '--variance',  help='Force the variance value')
     parser.add_argument('-q',  '--profile',  required=True, help='Output file with the proteins')
     parser.add_argument('-a',  '--params',  required=True, help='Input parameters for the sub-methods')
+    parser.add_argument('-t',  '--tmpdir',   help='Temporal working directory')
     parser.add_argument('-l',  '--logfile',  help='Output file with the log tracks')
-    parser.add_argument('-v', dest='verbose', action='store_true', help="Increase output verbosity")
+    parser.add_argument('-vv', dest='verbose', action='store_true', help="Increase output verbosity")
     args = parser.parse_args()
 
     # set-up logging
     scriptname = os.path.splitext( os.path.basename(__file__) )[0]
 
     # add filehandler
-    logfile = os.path.basename(args.relfile) + "/"+ scriptname +".log"
+    logfile = os.path.dirname(os.path.realpath(args.relfile)) + "/"+ scriptname +".log"
     if args.logfile:
         logfile = args.logfile
 

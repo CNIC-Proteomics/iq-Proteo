@@ -54,6 +54,12 @@ ECHO **
 ECHO ** install R packages
 CMD /C " "%R_HOME%/bin/R" --vanilla < "%IQPROTEO_HOME%/install_Rlibs.R" "
 
+:: install electron package
+ECHO **
+ECHO ** install electron package
+CMD /C " cd "%IQPROTEO_HOME%/app" && "%IQPROTEO_HOME%/venv_win64/node-v8.11.3/npm" config set scripts-prepend-node-path true"
+CMD /C " cd "%IQPROTEO_HOME%/app" && "%IQPROTEO_HOME%/venv_win64/node-v8.11.3/npm" install electron --save-dev --save-exact"
+
 GOTO :EndProcess
 
 :EndProcess1

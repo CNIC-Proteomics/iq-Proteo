@@ -18,7 +18,8 @@ library("readr")
 
 # get input parameters
 option_list = list(
-  make_option(c("-i", "--indir"), type="character", default=NULL, help="dataset directory", metavar="character"),
+  make_option(c("-i", "--msf_dir"), type="character", default=NULL, help="input directory (per experiment) with MSF files", metavar="character"),
+  make_option(c("-r", "--regex"), type="character", default=NULL, help="Regular expression that select specific MSF files parsing the file name. By default, we take all files", metavar="character"),
   make_option(c("-s", "--pd_version"), type="integer", default=2, help="Version of ProteinDiscover [default= %default]", metavar="character"),
   make_option(c("-d", "--daemon"), type="logical", default=TRUE, help="Daemon used [default= %default]", metavar="character"),
   make_option(c("-t", "--tags"), type="character", default=NULL, help="Tags Used in the Experiment. Eg. '126,127_N,127_C,128_N,128_C,129_N,129_C,130_N,130_C,131'", metavar="character"),
@@ -28,20 +29,20 @@ opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
 # BEGIN: IMPORTANT!!!! HARD-CORE inputs!!!
-# opt$indir <- "D:/projects/qProteo/test/PESA_omicas/6a_Cohorte_70_Female_V1_V2/TMT_Fraccionamiento/TMT9/MSF"
+# opt$msf_dir <- "D:/projects/qProteo/test/PESA_omicas/6a_Cohorte_70_Female_V1_V2/TMT_Fraccionamiento/TMT9"
 # opt$pd_version <- 2
 # opt$daemon <- TRUE
 # opt$tags <- "126,127_N,127_C,128_N,128_C,129_N,129_C,130_N,130_C,131"
 # opt$outfile <- "D:/projects/qProteo/test/PESA_omicas/6a_Cohorte_70_Female_V1_V2/TMT_Fraccionamiento/TMT9/PreSanxot2/Q-all.csv"
 # END: IMPORTANT!!!! HARD-CORE inputs!!!
 
-if ( is.null(opt$indir) || is.null(opt$tags) || is.null(opt$outfile) ){
+if ( is.null(opt$msf_dir) || is.null(opt$tags) || is.null(opt$outfile) ){
   print_help(opt_parser)
   stop("All arguments must be supplied.n", call.=FALSE)
 }
 
 # transform some input parameters
-opt$indir <- normalizePath(opt$indir, winslash = "/")
+opt$msf_dir <- normalizePath(opt$msf_dir, winslash = "/")
 opt$tags <- unlist( strsplit(opt$tags, ",") )
 opt$outfile <- normalizePath(opt$outfile, winslash = "/")
 opt$outdir <- dirname(opt$outfile)
@@ -52,13 +53,19 @@ print( opt )
 # create workspace if not exit
 dir.create(opt$outdir, showWarnings = FALSE, recursive = TRUE)
 
-print("extract the MSF files and create a df with all information")
+# get the list of MSF files from the two ways from the given directory
+# we take into account the regular expression for the file names
+print("extract the MSF files")
 db = NULL
 q_all <- NULL
-dbfiles <- list.files(path = opt$indir, pattern="*.msf", recursive = TRUE, full.names = TRUE)
-for (dbfile in dbfiles) {
-  print( paste0("extract dbfile: ", dbfile) )
-  db = dbConnect(SQLite(), dbname = dbfile)
+msf_files <- list.files(path = opt$msf_dir, pattern="*.msf$", full.names = TRUE, recursive = TRUE)
+if ( !is.null(opt$regex) ) {
+  msf_files <- grep(opt$regex, msf_files, perl=TRUE, value = TRUE)
+}
+print(msf_files)
+for (msf_file in msf_files) {
+  print( paste0("extract msf_file: ", msf_file) )
+  db = dbConnect(SQLite(), dbname = msf_file)
   if(opt$pd_version == 2) {
     data=dbGetQuery(conn = db,
                     "SELECT [SpectrumHeaders].[FirstScan],

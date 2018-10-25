@@ -33,7 +33,7 @@ def main(args):
     # check parameters
     # extract params for the methods
     params = {}
-    methods = ["sanxot1", "sanxotsieve1", "sanxot2"]
+    methods = ["klibrate1", "sanxot1", "sanxotsieve1", "sanxot2"]
     for method in methods:
         if not method in args.params:
             _print_exception( 2, "checking the parameters for the {} method".format(method) )
@@ -42,13 +42,23 @@ def main(args):
             params[method] = match.group(1)
         else:
             _print_exception( 2, "checking the parameters for the {} method".format(method) )
-
-    # get directory from input files
-    outdir = os.path.dirname(os.path.realpath(args.relfile))
-
+    # extract temporal working directory...
+    if args.tmpdir:
+        tmpdir = args.tmpdir
+    # otherwisae, get directory from input files
+    else:
+        tmpdir = os.path.dirname(os.path.realpath(args.relfile))+"/tmp"
+    
     # create builder ---
     logging.info("create workflow builder")
-    w = wf.builder(outdir, logging)
+    w = wf.builder(tmpdir, logging)
+
+    logging.info("klibrate scans")
+    w.klibrate({
+        "-d": args.uscanfile,
+        "-r": args.relfile,
+        "-o": args.scanfile
+    }, params["klibrate1"])
 
     logging.info("execute sanxot")
     w.sanxot({
@@ -58,22 +68,22 @@ def main(args):
     }, params["sanxot1"])
 
     logging.info("execute sanxotsieve")
-    w.sanxotsieve({
-        "-d": args.scanfile,
-        "-r": args.relfile,
-        "-f": args.fdr,
-        "-V": "s2p_outs_infoFile.txt"
-    }, params["sanxotsieve1"])
+    p = { "-d": args.scanfile, "-r": args.relfile, "-f": args.fdr }
+    if args.variance: # force the variance
+        p["-v"] = args.variance
+    else: # use the file variance
+        p["-V"] = "s2p_outs_infoFile.txt"
+    w.sanxotsieve(p, params["sanxotsieve1"])
 
     logging.info("execute sanxot")
-    tagfile = os.path.splitext( os.path.basename(args.scanfile) )[0] + "_tagged.xls"    
-    w.sanxot({
-        "-a": "s2p_nouts",
-        "-d": args.scanfile,
-        "-r": tagfile,
-        "-o": args.pepfile,
-        "-V": "s2p_outs_infoFile.txt"
-    }, params["sanxot2"])
+    tagfile = os.path.splitext( os.path.basename(args.scanfile) )[0] + "_tagged.xls"
+    p = { "-a": "s2p_nouts", "-d": args.scanfile, "-r": tagfile, "-o": args.pepfile }
+    if args.variance:
+        p["-v"] = args.variance
+    else:
+        p["-V"] = "s2p_outs_infoFile.txt"
+    w.sanxot(p, params["sanxot2"])
+
 
 if __name__ == "__main__":
     # parse arguments
@@ -89,20 +99,23 @@ if __name__ == "__main__":
             {aljamia2: -i [Sequence] -j [Raw_FirstScan]-[Charge] }
             {klibrate1: -g  -f }"
         ''')
-    parser.add_argument('-s',  '--scanfile',  required=True, help='Input file with the scans')    
+    parser.add_argument('-u',  '--uscanfile', required=True, help='Input file with the scans (uncalibrated)')
     parser.add_argument('-r',  '--relfile',  required=True, help='Input file with the relationship table')
     parser.add_argument('-f',  '--fdr',  required=True, help='FDR value')
+    parser.add_argument('-v',  '--variance',  help='Force the variance value')
+    parser.add_argument('-s',  '--scanfile',  required=True, help='Output file with the scans')
     parser.add_argument('-p',  '--pepfile',  required=True, help='Output file with the peptides')
     parser.add_argument('-a',  '--params',  required=True, help='Input parameters for the sub-methods')
+    parser.add_argument('-t',  '--tmpdir',   help='Temporal working directory')
     parser.add_argument('-l',  '--logfile',  help='Output file with the log tracks')
-    parser.add_argument('-v', dest='verbose', action='store_true', help="Increase output verbosity")
+    parser.add_argument('-vv', dest='verbose', action='store_true', help="Increase output verbosity")
     args = parser.parse_args()
 
     # set-up logging
     scriptname = os.path.splitext( os.path.basename(__file__) )[0]
 
     # add filehandler
-    logfile = os.path.basename(args.relfile) + "/"+ scriptname +".log"
+    logfile = os.path.dirname(os.path.realpath(args.relfile)) + "/"+ scriptname +".log"
     if args.logfile:
         logfile = args.logfile
 

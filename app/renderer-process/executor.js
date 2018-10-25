@@ -1,86 +1,70 @@
+const { ipcRenderer } = require('electron');
 
-function appendToDroidOutput(msg) { getDroidOutput().value += msg; };
-function setStatus(msg)           { getStatus().innerHTML = msg; };
+/*
+  Global variables
+*/
+let cProcess = require('child_process');
+let psTree = require('ps-tree');
+let proc = null;
+
+
+function appendToDroidOutput(msg) {
+  let elem = document.getElementById("droid-output"); 
+  elem.value += msg;
+}
 
 function backgroundProcess(cmd) {
-  "use strict";
-  // The path to the .bat file
-  // var myBatFilePath = 'D:/projects/qProteo/venv_win64/venv_win64_py3x/Scripts/activate.bat && snakemake.exe --configfile "S:/LAB_JVC/RESULTADOS/JM RC/qProteo/test/test3-conf.pesa.json" --snakefile "D:/projects/qProteo/qproteo.smk" --unlock && snakemake.exe --configfile "S:/LAB_JVC/RESULTADOS/JM RC/qProteo/test/test3-conf.pesa.json" --snakefile "D:/projects/qProteo/qproteo.smk" -j 20 --rerun-incomplete';
-  // console.log( myBatFilePath )
+  // eexecute command line
+  proc = cProcess.exec( cmd );
 
-// const spawn = require('child_process').spawn;
-// const bat = spawn('cmd.exe', ['/c', '/s', myBatFilePath]);
+  // send the process id to main js
+  ipcRenderer.send('pid-message', proc.pid);
 
-
-// // Handle normal output
-// bat.stdout.on('data', (data) => {
-//     // As said before, convert the Uint8Array to a readable string.
-//     var str = String.fromCharCode.apply(null, data);
-//     console.info(str);
-//     appendToDroidOutput(str);
-// });
-
-// // Handle error output
-// bat.stderr.on('data', (data) => {
-//     // As said before, convert the Uint8Array to a readable string.
-//     var str = String.fromCharCode.apply(null, data);
-//     console.error(str);
-//     appendToDroidOutput(str);
-// });
-
-// // Handle on exit event
-// bat.on('exit', (code) => {
-//     var preText = `Child exited with code ${code} : `;
-
-//     switch(code){
-//         case 0:
-//             console.info(preText+"Something unknown happened executing the batch.");
-//             break;
-//         case 1:
-//             console.info(preText+"The file already exists");
-//             break;
-//         case 2:
-//             console.info(preText+"The file doesn't exists and now is created");
-//             break;
-//         case 3:
-//             console.info(preText+"An error ocurred while creating the file");
-//             break;
-//     }
-// });
+  // psTree(proc.pid, function (err, children) {  // check if it works always
+  //   children.map(function (p) {
+  //     console.log( 'Process %s has been killed!', p.PID );
+  //     // ipcRenderer.send('pid-message', p.PID );
+  //     // process.kill(p.PID);           
+  //   });
+  // });
 
 
-// const { exec } = require('child_process');
-// exec(myBatFilePath, (error, stdout, stderr) => {
-//   if (error) {
-//     console.error(`exec error: ${error}`);
-//     appendToDroidOutput(str);
-//     return;
-//   }
-//   appendToDroidOutput(stdout);
-//   appendToDroidOutput(stderr);
-//   console.log(`stdout: ${stdout}`);
-//   console.log(`stderr: ${stderr}`);
-// });
+  // psTree(proc.pid, function (err, children) {  // check if it works always
+  //   children.map(function (p) {
+  //     console.log( 'Process %s has been killed!', p.PID );
+  //     ipcRenderer.send('pid-message', p.PID );
+  //     process.kill(p.PID);                
+  //   });
+  // });
 
 
-  // const { spawn } = require('child_process');
-  // const ls = spawn( myBatFilePath );
-  const { exec } = require('child_process');
-  const ls = exec( cmd );
-
-  ls.stdout.on('data', (data) => {
+  proc.stdout.on('data', (data) => {
     appendToDroidOutput(data);
     // console.log(`stdout: ${data}`);
   });
 
-  ls.stderr.on('data', (data) => {
-    exceptor.showMessageBox('Error Running the workflow', data);
+  proc.stderr.on('data', (data) => {
     appendToDroidOutput(data);
     console.log(`stderr: ${data}`);
   });
 
-  ls.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
+  // Handle on exit event
+  proc.on('close', (code) => {
+    var preText = `Child exited with code ${code} : `;
+    switch(code){
+        case 0:
+            console.info(preText+"Something unknown happened executing the batch.");
+            break;
+        case 1:
+            console.info(preText+"The file already exists");
+            break;
+        case 2:
+            console.info(preText+"The file doesn't exists and now is created");
+            break;
+        case 3:
+            console.info(preText+"An error ocurred while creating the file");
+            break;
+    }
   });
 
 };
@@ -93,14 +77,35 @@ document.getElementById('executor').addEventListener('click', function() {
   // Check and retrieves parameters
   let params = parameters.createParameters();
   if ( params ) {
-
     // Execute the workflow
     let smkfile = process.env.IQPROTEO_HOME + '/qproteo.smk';
+    let cmd_smk = 'snakemake.exe --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" -j '+params.nthreads+' -d "'+params.outdir+'" ';
     let cmd = process.env.IQPROTEO_HOME + '/venv_win64/venv_win64_py3x/Scripts/activate.bat && ';
-    cmd += 'snakemake.exe --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" --unlock && ';
-    cmd += 'snakemake.exe --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" -j '+params.nthreads+' --rerun-incomplete';
+    cmd += cmd_smk+' --unlock && ';
+    cmd += cmd_smk+' --rerun-incomplete ';
     console.log( cmd );
     backgroundProcess( cmd );
+
+    // active the log tab
+    $('.nav-tabs a#processes-tab').tab('show');
+
+    // disable Start button
+    document.getElementById('executor').disabled = true;
   }
 
+});
+
+// Kill all shell processes
+document.getElementById('stopproc').addEventListener('click', function() {
+  if ( proc != null ) {
+    console.log("Look for child processes from: ", proc.pid);
+    psTree(proc.pid, function (err, children) {  // check if it works always
+      children.forEach(function (p) {
+        console.log( 'Process %s has been killed!', p.PID );
+        process.kill(p.PID); 
+      });
+      // enable the Start button
+      document.getElementById('executor').disabled = false;
+    });
+  }
 });

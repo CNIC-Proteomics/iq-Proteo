@@ -257,13 +257,16 @@ def main(args):
             params[method] = match.group(1)
         else:
             _print_exception( 2, "checking the parameters for the {} method".format(method) )
-
-    # get directory from input files
-    outdir = os.path.dirname(os.path.realpath(args.relfile))
+    # extract temporal working directory...
+    if args.tmpdir:
+        tmpdir = args.tmpdir
+    # otherwisae, get directory from input files
+    else:
+        tmpdir = os.path.dirname(os.path.realpath(args.relfile))+"/tmp"
 
     # create builder ---
     logging.info("create workflow builder")
-    w = wf.builder(outdir, logging)
+    w = wf.builder(tmpdir, logging)
 
     logging.info("aljamia for peptide to protein")
     w.aljamia({
@@ -297,10 +300,11 @@ if __name__ == "__main__":
     parser.add_argument('-r',  '--relfile',  required=True, help='Output file with the relationship table')
 
     parser.add_argument('-s',  '--species', help='First filter based on the species name')
-    parser.add_argument('-t',  '--pretxt', nargs='+', type=str, help='in the case of a tie, we apply teh preferenced text checked in the comment line of a protein. Eg. Organism, etc.')
-    parser.add_argument('-d',  '--indb',  help='in the case of a tie, we apply the sorted protein sequence using the given FASTA file')
+    parser.add_argument('-p',  '--pretxt',  nargs='+', type=str, help='in the case of a tie, we apply teh preferenced text checked in the comment line of a protein. Eg. Organism, etc.')
+    parser.add_argument('-d',  '--indb',    help='in the case of a tie, we apply the sorted protein sequence using the given FASTA file')
 
-    parser.add_argument('-a',  '--params',  required=True, help='Input parameters for the sub-methods')
+    parser.add_argument('-a',  '--params',   required=True, help='Input parameters for the sub-methods')
+    parser.add_argument('-t',  '--tmpdir',   help='Temporal working directory')
     parser.add_argument('-l',  '--logfile',  help='Output file with the log tracks')
     parser.add_argument('-v', dest='verbose', action='store_true', help="Increase output verbosity")
     args = parser.parse_args()
@@ -309,7 +313,7 @@ if __name__ == "__main__":
     scriptname = os.path.splitext( os.path.basename(__file__) )[0]
 
     # init logfile
-    logfile = os.path.basename(args.relfile) + "/"+ scriptname +".log"
+    logfile = os.path.dirname(os.path.realpath(args.relfile)) + "/"+ scriptname +".log"
     if args.logfile:
         logfile = args.logfile
 

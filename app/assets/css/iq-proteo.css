@@ -3,8 +3,6 @@ body {
     font-size: .8em;
 }
 section.content {
-    /* margin-top: 20px;
-    margin-bottom: 20px; */
     margin-top: 1em;
     margin-bottom: 1em;
 }
@@ -42,28 +40,7 @@ footer {
     padding: .5em;
 }
 
-/* Datatable */
-input#indir, input#outdir {
-    width: 400px;
-}
-.dirs {
-    margin-bottom: 10px;
-}
-.dirs > .in {
-    margin-bottom: 5px;
-}
-.handsontable {
-    /* font-size: 1em; */
-}
-
-/* Executor */
-button#executor {
-    color: #fff;
-    background-color: slategray;
-    border-color: black;
-}
-
-/* Parameters */
+/* parameters */
 .form-group.row {
     margin-right: 0;
     margin-left: 0;
@@ -77,4 +54,24 @@ button#executor {
 }
 .form-control {
     font-size: inherit;
+}
+
+input#indir, input#outdir, input#modfile, input#catfile {
+    width: 400px;
+}
+input#modfile, input#catfile {
+    margin-right: 3px;
+}
+.dirs {
+    margin-bottom: 10px;
+}
+.dirs > .in {
+    margin-bottom: 5px;
+}
+
+/* executor */
+button#executor {
+    color: #fff;
+    background-color: slategray;
+    border-color: black;
 }

@@ -1,14 +1,25 @@
 {
     "indata": "",
+    "outdir": "",
     "catfile": "",
+    "modfile": "",
     "idafname": "ID-all.txt",
     "qallfname": "Q-all.csv",
     "idqfname": "ID-q.txt",
     "workflow": {
       "verbose": false,
+      "pratio": {
+        "pratio": {
+          "enabled": true,
+          "threshold": 15,
+          "delta_mass": 5,
+          "tag_mass": 229.162932,
+          "lab_decoy": "_INV_"
+        }
+      },
       "presanxot2": {
         "create_qall": {
-          "enabled": false
+          "enabled": true
         },
         "create_idq": {
           "enabled": true,
@@ -20,14 +31,14 @@
         "rels2sp": {
           "enabled": true,
           "optparams": {
-            "aljamia1": " -i [Raw_FirstScan]-[Charge] -j [Xs_-TAG-_-CONTROLTAG-] -k [Vs_-TAG-_-CONTROLTAG-] -l [Tags] ",
-            "aljamia2": " -i [Sequence] -j [Raw_FirstScan]-[Charge] -k [Tags] "
+            "aljamia1": " -i [Raw_FirstScan]-[Charge] -j [Xs_-TAG-_-CONTROLTAG-] -k [Vs_-TAG-_-CONTROLTAG-] ",
+            "aljamia2": " -i [Sequence] -j [Raw_FirstScan]-[Charge] "
           }
         },
         "rels2pq": {
           "enabled": false,
           "optparams": {
-            "aljamia1": " -i [FASTAProteinDescription] -j [Sequence] -k [Tags] "
+            "aljamia1": " -i [FASTAProteinDescription] -j [Sequence] "
           }
         },
         "rels2pq_unique": {
@@ -37,24 +48,19 @@
             ">sp"
           ],
           "optparams": {
-            "aljamia1": " -i 1 -j [FASTAProteinDescription] -k [Sequence] -l [Redundances] --c5 [Tags] "
+            "aljamia1": " -i 1 -j [FASTAProteinDescription] -k [Sequence] -l [Redundances] "
           }
         }
       },
       "sanxot": {
-        "klibratescan": {
-          "enabled": true,
-          "optparams": {
-            "klibrate1": " -g  "
-          }
-        },      
         "scan2peptide": {
           "enabled": true,
           "fdr": 0.01,
           "optparams": {
+            "klibrate1": " -g  ",
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
-            "sanxot2": " --tags !out -g  -f "
+            "sanxot2": " -g  -f  "
           }
         },
         "peptide2protein": {
@@ -63,7 +69,7 @@
           "optparams": {
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
-            "sanxot2": " --tags !out -g  -f "
+            "sanxot2": " -g  -f "
           }
         },
         "protein2category": {
@@ -72,7 +78,7 @@
           "optparams": {
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
-            "sanxot2": " --tags !out -g  -f "
+            "sanxot2": " -g  -f "
           }
         },
         "peptide2all": {

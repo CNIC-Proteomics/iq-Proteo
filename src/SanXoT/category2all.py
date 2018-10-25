@@ -42,18 +42,22 @@ def main(args):
             params[method] = match.group(1)
         else:
             _print_exception( 2, "checking the parameters for the {} method".format(method) )
-
-    # get directory from input files
-    outdir = os.path.dirname(os.path.realpath(args.catfile))
-
+    # extract temporal working directory...
+    if args.tmpdir:
+        tmpdir = args.tmpdir
+    # otherwisae, get directory from input files
+    else:
+        tmpdir = os.path.dirname(os.path.realpath(args.catfile))+"/tmp"
+    
     # create builder ---
     logging.info("create workflow builder")
-    w = wf.builder(outdir, logging)
+    w = wf.builder(tmpdir, logging)
 
     logging.info("execute sanxot")
     w.sanxot({
-        "-a": "q2a_outs",
+        "-a": "c2a_outs",
         "-d": args.catfile,
+        "-o": args.c2afile
     }, params["sanxot1"])
 
 if __name__ == "__main__":
@@ -71,7 +75,9 @@ if __name__ == "__main__":
             {klibrate1: -g  -f }"
         ''')
     parser.add_argument('-c',  '--catfile',  required=True, help='Input file with the categories')
+    parser.add_argument('-o',  '--c2afile',  required=True, help='Output file with the category2all')
     parser.add_argument('-a',  '--params',  required=True, help='Input parameters for the sub-methods')
+    parser.add_argument('-t',  '--tmpdir',   help='Temporal working directory')
     parser.add_argument('-l',  '--logfile',  help='Output file with the log tracks')
     parser.add_argument('-v', dest='verbose', action='store_true', help="Increase output verbosity")
     args = parser.parse_args()
@@ -80,7 +86,7 @@ if __name__ == "__main__":
     scriptname = os.path.splitext( os.path.basename(__file__) )[0]
 
     # add filehandler
-    logfile = os.path.basename(args.catfile) + "/"+ scriptname +".log"
+    logfile = os.path.dirname(os.path.realpath(args.catfile)) + "/"+ scriptname +".log"
     if args.logfile:
         logfile = args.logfile
 
