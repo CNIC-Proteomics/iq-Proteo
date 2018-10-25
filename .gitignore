@@ -59,3 +59,8 @@ src/SanXoT/xp_vpCollector.py
 # DBs
 dbs/*
 
+# Disable package list
+app/package-lock.json
+app/package.json
+
+
