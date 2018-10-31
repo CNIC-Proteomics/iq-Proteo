@@ -61,6 +61,5 @@ dbs/*
 
 # Disable package list
 app/package-lock.json
-app/package.json
 
 

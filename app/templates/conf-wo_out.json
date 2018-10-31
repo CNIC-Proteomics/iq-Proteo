@@ -3,53 +3,55 @@
     "outdir": "",
     "catfile": "",
     "modfile": "",
-    "idafname": "ID-all.txt",
-    "qallfname": "Q-all.csv",
-    "idqfname": "ID-q.txt",
     "workflow": {
-      "verbose": false,
-      "pratio": {
+      "verbose": true,
+      "presanxot2": {
         "pratio": {
           "enabled": true,
           "threshold": 15,
           "delta_mass": 5,
           "tag_mass": 229.162932,
-          "lab_decoy": "_INV_"
-        }
-      },
-      "presanxot2": {
+          "lab_decoy": "_INV_",
+          "outfile": "ID-all.txt"
+        },
         "create_qall": {
-          "enabled": true
+          "enabled": true,
+          "outfile": "Q-all.csv"          
         },
         "create_idq": {
           "enabled": true,
           "abs_calc": "Both",
           "random": true,
           "filt_orphans": false,
-          "no_mod_mass": null
+          "no_mod_mass": null,
+          "outfile": "ID-q.txt"
         },
         "rels2sp": {
           "enabled": true,
           "optparams": {
             "aljamia1": " -i [Raw_FirstScan]-[Charge] -j [Xs_-TAG-_-CONTROLTAG-] -k [Vs_-TAG-_-CONTROLTAG-] ",
             "aljamia2": " -i [Sequence] -j [Raw_FirstScan]-[Charge] "
-          }
+          },
+          "outfile":  "s2p_rels.tsv",
+          "outfile2": "u_scans.tsv"
         },
         "rels2pq": {
-          "enabled": false,
+          "enabled": true,
           "optparams": {
             "aljamia1": " -i [FASTAProteinDescription] -j [Sequence] "
-          }
+          },
+          "outfile": "p2q_rels.tsv"
         },
         "rels2pq_unique": {
-          "enabled": true,
+          "enabled": false,
           "species": "Homo sapiens",
           "pretxt": [
             ">sp"
           ],
           "optparams": {
             "aljamia1": " -i 1 -j [FASTAProteinDescription] -k [Sequence] -l [Redundances] "
-          }
+          },
+          "outfile": "p2q_rels.tsv"
         }
       },
       "sanxot": {
@@ -61,7 +63,11 @@
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
             "sanxot2": " -g  -f  "
-          }
+          },
+          "outfile":  "scans.tsv",
+          "outfile2": "peptides.tsv",
+          "outfile3": "s2p_nouts_outStats.xls",
+          "outfile4": "s2p_outs_outStats.xls"
         },
         "peptide2protein": {
           "enabled": true,
@@ -70,7 +76,10 @@
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
             "sanxot2": " -g  -f "
-          }
+          },
+          "outfile":  "proteins.tsv",
+          "outfile2": "p2q_nouts_outStats.xls",
+          "outfile3": "p2q_outs_outStats.xls"
         },
         "protein2category": {
           "enabled": true,
@@ -79,25 +88,50 @@
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
             "sanxot2": " -g  -f "
-          }
+          },
+          "outfile":  "categories.tsv",
+          "outfile2": "q2c_nouts_outStats.xls",
+          "outfile3": "q2c_outs_outStats.xls"
         },
         "peptide2all": {
           "enabled": true,
           "optparams": {
             "sanxot1": " -C -g "
-          }
+          },
+          "outfile":  "pep2all.tsv",
+          "outfile2": "p2a_outs_outStats.xls"
         },
         "protein2all": {
           "enabled": true,
           "optparams": {
             "sanxot1": " -C -g -f "
-          }
+          },
+          "outfile":  "pro2all.tsv",
+          "outfile2": "q2a_outs_outStats.xls"
         },
         "category2all": {
           "enabled": true,
           "optparams": {
             "sanxot1": " -v 0 -C -g -f "
-          }
+          },
+          "outfile":  "cat2all.tsv",
+          "outfile2": "c2a_outs_outStats.xls"
+        }
+      },
+      "compilator": {
+        "compilator": {
+          "enabled": true,
+          "prefixes": [
+            "s2p_nouts_outStats.xls",
+            "s2p_outs_outStats.xls",
+            "p2q_nouts_outStats.xls",
+            "p2q_outs_outStats.xls",
+            "q2c_nouts_outStats.xls",
+            "q2c_outs_outStats.xls",
+            "p2a_outs_outStats.xls",
+            "q2a_outs_outStats.xls",
+            "c2a_outs_outStats.xls"
+          ]
         }
       }
     }

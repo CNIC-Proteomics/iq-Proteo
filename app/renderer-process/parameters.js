@@ -81,15 +81,14 @@ function addConfParams(file, indir, outdir, dtable, modfile, catfile) {
 
     // wf parameters
     let wf = data['workflow'];
-    let wf_pratio = wf['pratio'];
-    // let wf_presanxot2 = wf['presanxot2'];
+    let wf_presanxot2 = wf['presanxot2'];
     let wf_sanxot = wf['sanxot'];
 
     /* --- pRatio --- */
-    wf_pratio['pratio']['threshold'] = parseInt(document.querySelector('#deltaMassThreshold').value);
-    wf_pratio['pratio']['delta_mass'] = parseInt(document.querySelector('#deltaMassAreas').value);
-    wf_pratio['pratio']['tag_mass'] = parseFloat(document.querySelector('#tagMass').value);
-    wf_pratio['pratio']['lab_decoy'] = document.querySelector('#tagDecoy').value;
+    wf_presanxot2['pratio']['threshold'] = parseInt(document.querySelector('#deltaMassThreshold').value);
+    wf_presanxot2['pratio']['delta_mass'] = parseInt(document.querySelector('#deltaMassAreas').value);
+    wf_presanxot2['pratio']['tag_mass'] = parseFloat(document.querySelector('#tagMass').value);
+    wf_presanxot2['pratio']['lab_decoy'] = document.querySelector('#tagDecoy').value;
 
 
     /* --- Pre-SanXoT2 --- */

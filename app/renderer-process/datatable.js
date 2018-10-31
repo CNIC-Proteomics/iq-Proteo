@@ -6,6 +6,31 @@
 // let remote = require('electron').remote; 
 // let dialog = remote.dialog;
 
+let data_test = [
+    [
+        "TMT1",
+        "wt 1",
+        "126",
+        "",
+        ""
+    ],
+    [
+        "TMT1",
+        "wt 2",
+        "127_N",
+        "127_N",
+        "126,131"
+    ],
+    [
+        "TMT2",
+        "wt 2",
+        "127_N",
+        "127_N",
+        "126,131"
+    ]
+];
+    
+    
 let data = [
 [
     "TMT1",

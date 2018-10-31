@@ -3,10 +3,13 @@
 :: check env varibles are defined
 IF "%IQPROTEO_HOME%"=="" GOTO :EndProcess1
 IF "%R_HOME%"=="" GOTO :EndProcess2
+IF "%PYTHON27_HOME%"=="" GOTO :EndProcess3
+IF "%PYTHON3x_HOME%"=="" GOTO :EndProcess4
+IF "%NODEJS_HOME%"=="" GOTO :EndProcess5
 
 :: get the python executable files
-IF "%PYTHON27_HOME%" == "" SET PYTHON27_HOME=%IQPROTEO_HOME%/venv_win64/python27
-IF "%PYTHON3x_HOME%" == "" SET PYTHON3x_HOME=%IQPROTEO_HOME%/venv_win64/python3x
+REM IF "%PYTHON27_HOME%" == "" SET PYTHON27_HOME=%IQPROTEO_HOME%/venv_win64/python27
+REM IF "%PYTHON3x_HOME%" == "" SET PYTHON3x_HOME=%IQPROTEO_HOME%/venv_win64/python3x
 ECHO **
 ECHO ** use the following paths for python27 and python3x:
 ECHO %PYTHON27_HOME%
@@ -57,17 +60,28 @@ CMD /C " "%R_HOME%/bin/R" --vanilla < "%IQPROTEO_HOME%/install_Rlibs.R" "
 :: install electron package
 ECHO **
 ECHO ** install electron package
-CMD /C " cd "%IQPROTEO_HOME%/app" && "%IQPROTEO_HOME%/venv_win64/node-v8.11.3/npm" config set scripts-prepend-node-path true"
-CMD /C " cd "%IQPROTEO_HOME%/app" && "%IQPROTEO_HOME%/venv_win64/node-v8.11.3/npm" install electron --save-dev --save-exact"
+CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" config set scripts-prepend-node-path true"
+CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" install electron --save-dev --save-exact"
+CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" install ps-tree"
+
 
 GOTO :EndProcess
 
+:: error messages
 :EndProcess1
     ECHO IQPROTEO_HOME env. variable is NOT defined
     GOTO :EndProcess
-
 :EndProcess2
     ECHO R_HOME env. variable is NOT defined
+    GOTO :EndProcess
+:EndProcess3
+    ECHO PYTHON27_HOME env. variable is NOT defined
+    GOTO :EndProcess
+:EndProcess4
+    ECHO PYTHON3x_HOME env. variable is NOT defined
+    GOTO :EndProcess
+:EndProcess5
+    ECHO NODEJS_HOME env. variable is NOT defined
     GOTO :EndProcess
 
 :: wait to Enter => Good installation

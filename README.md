@@ -1,4 +1,4 @@
-# qProteo
+# iq-Proteo
 Snakemake workflow developed by the Proteomic Unit in CNIC
 
 
@@ -6,17 +6,41 @@ Snakemake workflow developed by the Proteomic Unit in CNIC
 
 ## Prerequisites for installing
 
-1. Install R
+1. Add the environment variable "IQPROTEO_HOME"
+
+    Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
+
+2. Install R
 
     Read the following document [docs/install_r](docs/install_r.md) for more information.
 
-2. Add the environment variable "R_HOME"
+    2.1. Add the environment variable "R_HOME"
 
-    Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
+        Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
 
-3. Add the environment variable "IQPROTEO_HOME"
+3. Install Python2.7
 
-    Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
+    Read the following document [docs/install_pythons](docs/install_pythons.md) for more information.
+
+    3.1. Add the environment variable "PYTHON27_HOME"
+
+        Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
+
+4. Install Python3.x
+
+    Read the following document [docs/install_pythons](docs/install_pythons.md) for more information.
+
+    4.1. Add the environment variable "PYTHON3x_HOME"
+
+        Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
+
+5. Install NodeJS
+
+    Read the following document [docs/install_nodejs](docs/install_nodejs.md) for more information.
+
+    5.1. Add the environment variable "NODEJS_HOME"
+
+        Read the following document [docs/add_env_variables](docs/add_env_variables.md) for more information.
 
 >#### Note:
 >
@@ -51,7 +75,7 @@ UNDER CONTRUCTION
 
 ## Windows distribution
 
-Executing the batch script **qproteo.bat**
+Executing the batch script **iq-qproteo.bat**
 
 The script needs the config 
 ## Linux distribution
