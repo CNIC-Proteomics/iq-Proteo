@@ -64,8 +64,13 @@ CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" config set scripts-prep
 CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" install electron --save-dev --save-exact"
 CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" install ps-tree"
 
+:: rename package.json file because github security
+ECHO **
+ECHO ** rename package.json file because github security
+CMD /C " cd "%IQPROTEO_HOME%/app" && ren package.json.sample package.json"
 
 GOTO :EndProcess
+
 
 :: error messages
 :EndProcess1
