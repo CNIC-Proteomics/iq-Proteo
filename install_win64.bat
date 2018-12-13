@@ -47,10 +47,12 @@ CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%IQPR
 :: active the virtualenv and install the required packages
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pandas && pip install xlrd"
+REM CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pandas && pip install xlrd"
+CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy"
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake && pip install pandas && pip install xlrd"
+REM CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake && pip install pandas && pip install xlrd"
+CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake"
 
 :: install R packages
 ECHO **
