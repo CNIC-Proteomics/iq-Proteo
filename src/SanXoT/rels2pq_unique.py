@@ -15,7 +15,7 @@ import wf
 
 # Module metadata variables
 __author__ = "Jose Rodriguez"
-__credits__ = ["Marco Trevisan", "Jesus Vazquez"]
+__credits__ = ["Jose Rodriguez", "Jesus Vazquez"]
 __license__ = "Creative Commons Attribution-NonCommercial-NoDerivs 4.0 Unported License https://creativecommons.org/licenses/by-nc-nd/4.0/"
 __version__ = "1.0.1"
 __maintainer__ = "Jose Rodriguez"
@@ -306,7 +306,7 @@ if __name__ == "__main__":
     parser.add_argument('-a',  '--params',   required=True, help='Input parameters for the sub-methods')
     parser.add_argument('-t',  '--tmpdir',   help='Temporal working directory')
     parser.add_argument('-l',  '--logfile',  help='Output file with the log tracks')
-    parser.add_argument('-v', dest='verbose', action='store_true', help="Increase output verbosity")
+    parser.add_argument('-vv', dest='verbose', action='store_true', help="Increase output verbosity")
     args = parser.parse_args()
 
     # set-up logging
