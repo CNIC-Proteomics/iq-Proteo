@@ -12,7 +12,7 @@ ECHO **
 SET iq_lib=""
 SET /p iq_lib="** Enter the path where iq-Proteo libraries will be saved: "
 IF %iq_lib% =="" GOTO :EndProcess1
-SETX IQPROTEO_LIBRARY %iq_lib%/IQPROTEO_LIB_VERSION
+SETX IQPROTEO_LIBRARY "%iq_lib%/%IQPROTEO_LIB_VERSION%"
 
 ECHO **
 SET p_home=""
@@ -40,7 +40,7 @@ ECHO %NODE_PATH%
 
 
 :: create library directory ----------------------
-IF NOT EXIST %IQPROTEO_LIBRARY% MD IQPROTEO_LIBRARY
+IF NOT EXIST "%IQPROTEO_LIBRARY%" MD "%IQPROTEO_LIBRARY%"
 
 
 
