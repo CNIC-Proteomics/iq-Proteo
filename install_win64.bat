@@ -88,12 +88,6 @@ CMD /C " "%NODE_HOME%/npm" install electron --save-dev --save-exact --global "
 CMD /C " "%NODE_HOME%/npm" install ps-tree --global "
 
 
-:: rename package.json file because github security ----------------------
-ECHO **
-ECHO **
-ECHO ** rename package.json file because github security
-CMD /C " cd "%PWD%/app" && ren package.json.sample package.json"
-
 
 
 
