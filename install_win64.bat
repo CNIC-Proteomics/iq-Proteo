@@ -1,33 +1,47 @@
 @ECHO OFF
 
-:: Sets the env. variables from input parameters ----------------------
+:: stablish local directory ----------------------
+SET IQPROTEO_LIB_VERSION=0.1
+
+:: sets the env. variables from input parameters ----------------------
 ECHO **
 ECHO **
 ECHO ** sets the env. variables from input parameters:
+
 ECHO **
 SET iq_lib=""
 SET /p iq_lib="** Enter the path where iq-Proteo libraries will be saved: "
 IF %iq_lib% =="" GOTO :EndProcess1
-SETX IQPROTEO_LIBRARY %iq_lib%
+SETX IQPROTEO_LIBRARY %iq_lib%/IQPROTEO_LIB_VERSION
+
 ECHO **
 SET p_home=""
 SET /p p_home="** Enter the path to Python 3 (3.6.7 version!!): "
 IF %p_home% =="" GOTO :EndProcess2
 SETX PYTHON3x_HOME %p_home%
+
 ECHO **
 SET r_home=""
 SET /p r_home="** Enter the path to R: "
 IF %r_home% =="" GOTO :EndProcess3
 SETX R_HOME %r_home%
+
 ECHO **
 SET  NODE_URL=https://nodejs.org/dist/v10.14.2/node-v10.14.2-win-x64.zip
 SET  NODE_HOME=%IQPROTEO_LIBRARY%/node-v10.14.2
 SETX NODE_PATH %NODE_HOME%/node_modules
+
 ECHO **
 ECHO %IQPROTEO_LIBRARY%
 ECHO %PYTHON3x_HOME%
 ECHO %R_HOME%
 ECHO %NODE_PATH%
+
+
+
+:: create library directory ----------------------
+IF NOT EXIST %IQPROTEO_LIBRARY% MD IQPROTEO_LIBRARY
+
 
 
 :: stablish local directory ----------------------
