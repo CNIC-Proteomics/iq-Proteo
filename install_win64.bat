@@ -1,13 +1,18 @@
 @ECHO OFF
 
 :: stablish lib version ----------------------
+ECHO **
+ECHO **
+ECHO ** sets the env. variables
 SET  IQPROTEO_LIB_VERSION=0.1
-SETX IQPROTEO_LIB "%IQPROTEO_LIB_HOME%/%IQPROTEO_LIB_VERSION%"
+SET lib_home=%IQPROTEO_LIB_HOME%
+SETX IQPROTEO_LIB "%lib_home%/%IQPROTEO_LIB_VERSION%"
+SET IQPROTEO_LIB_PATH=%IQPROTEO_LIB%
 
 :: sets the env. variables from input parameters ----------------------
-ECHO **
-ECHO **
-ECHO ** sets the env. variables from input parameters:
+REM ECHO **
+REM ECHO **
+REM ECHO ** sets the env. variables from input parameters:
 
 REM ECHO **
 REM SET iq_lib=""
@@ -33,21 +38,21 @@ REM SET  NODE_HOME=%IQPROTEO_LIB%/node-v10.14.2
 REM SETX NODE_PATH %NODE_HOME%/node_modules
 
 
-ECHO **
 SET  NODE_URL=https://nodejs.org/dist/v10.14.2/node-v10.14.2-win-x64.zip
-SET  NODE_HOME="%IQPROTEO_LIB%/node-v10.14.2"
+SET  NODE_HOME=%IQPROTEO_LIB_PATH%/node-v10.14.2
 SETX NODE_PATH "%NODE_HOME%/node_modules"
 
 ECHO **
-ECHO %IQPROTEO_LIB%
+ECHO %IQPROTEO_LIB_PATH%
 ECHO %PYTHON3x_HOME%
 ECHO %R_HOME%
+ECHO %NODE_HOME%
 ECHO %NODE_PATH%
 
 
 
 :: create library directory ----------------------
-IF NOT EXIST "%IQPROTEO_LIB%" MD "%IQPROTEO_LIB%"
+IF NOT EXIST "%IQPROTEO_LIB_PATH%" MD "%IQPROTEO_LIB_PATH%"
 
 
 :: stablish local directory ----------------------
@@ -75,14 +80,14 @@ CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenvwrapper-win --no-warn-s
 ECHO **
 ECHO **
 ECHO ** create virtualenv in python for the application
-CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%IQPROTEO_LIB%/python_venv" "
+CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%IQPROTEO_LIB_PATH%/python_venv" "
 
 
 :: active the virtualenv and install the required packages ----------------------
 ECHO **
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C " "%IQPROTEO_LIB%/python_venv/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake"
+CMD /C " "%IQPROTEO_LIB_PATH%/python_venv/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake"
 
 
 :: install R packages ----------------------
@@ -96,7 +101,7 @@ CMD /C " "%R_HOME%/bin/R" --vanilla < "%PWD%/install_Rlibs.R" "
 ECHO **
 ECHO **
 ECHO ** download and install npm
-CMD /C " "%IQPROTEO_LIB%/python_venv/Scripts/activate.bat" && python install_url_pkg.py "%NODE_URL%" "%NODE_HOME%" move "
+CMD /C " "%IQPROTEO_LIB_PATH%/python_venv/Scripts/activate.bat" && python install_url_pkg.py "%NODE_URL%" "%NODE_HOME%" move "
 
 
 :: install electron package ----------------------
@@ -118,7 +123,7 @@ GOTO :EndProcess
 
 :: error messages
 :EndProcess1
-    ECHO IQPROTEO_LIB env. variable is NOT defined
+    ECHO IQPROTEO_LIB_PATH env. variable is NOT defined
     GOTO :EndProcess
 :EndProcess2
     ECHO PYTHON3x_HOME env. variable is NOT defined

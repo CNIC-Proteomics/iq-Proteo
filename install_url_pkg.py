@@ -9,7 +9,7 @@ import shutil
 
 
 # Environmnet variable
-IQPROTEO_LIBRARY     = os.environ['IQPROTEO_LIBRARY'] # path to library
+IQPROTEO_LIB     = os.environ['IQPROTEO_LIB'] # path to library
 
 
 ###################
@@ -70,10 +70,10 @@ def main(sys):
     url = sys.argv[1]
     outdir = sys.argv[2]
     flag_move = True if len(sys.argv) == 4 else False
-    tmpdir = IQPROTEO_LIBRARY+"/tmp"
+    tmpdir = IQPROTEO_LIB+"/tmp"
 
     print("-- prepare workspaces")
-    prepare_workspace(IQPROTEO_LIBRARY)
+    prepare_workspace(IQPROTEO_LIB)
     prepare_workspace(tmpdir)
 
     print("-- download files: "+url+" > "+tmpdir)
@@ -87,8 +87,8 @@ def main(sys):
         print("-- unzip files: "+file+" > "+outdir)
         unzip_file(file, outdir)
 
-#     print("-- remove tmpdir")
-#     remove_dir(tmpdir)
+    print("-- remove tmpdir")
+    remove_dir(tmpdir)
 
 
 
