@@ -1,7 +1,5 @@
 # stablish the library path
-pwd <- paste0( Sys.getenv(c("IQPROTEO_HOME")), "/venv_win64")
-print(pwd)
-lib_path <- paste0( pwd, "/R/library")
+lib_path <- paste0( Sys.getenv(c("IQPROTEO_LIBRARY")), "/R")
 print( lib_path )
 .libPaths( lib_path )
 

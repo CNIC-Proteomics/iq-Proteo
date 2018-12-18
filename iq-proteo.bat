@@ -1,23 +1,25 @@
 @ECHO OFF
 
 :: check env varibles are defined
-IF "%IQPROTEO_HOME%"=="" GOTO :EndProcess1
+IF "%NODE_PATH%"=="" GOTO :EndProcess1
 
 :: go to home
-CD %IQPROTEO_HOME%
+SET PWD=%~dp0
+SET PWD=%PWD:~0,-1%
+CD "%PWD%"
 
-REM :: execute iq-Proteo application
+:: execute iq-Proteo application
 ECHO **
 ECHO ** execute iq-Proteo application
-CMD /C " "%IQPROTEO_HOME%/app/node_modules/electron/dist/electron.exe" app "
+CMD /C " "%NODE_PATH%/electron/dist/electron.exe" app "
+
 
 GOTO :EndProcess
 
 
-
 REM :: checking "functions"
 :EndProcess1
-    ECHO IQPROTEO_HOME env. variable is NOT defined
+    ECHO NODE_PATH env. variable is NOT defined
     GOTO :EndProcess
 
 

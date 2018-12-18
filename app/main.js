@@ -6,7 +6,7 @@ const { app, Menu, BrowserWindow, ipcMain } = require('electron')
 let mainWindow
 
 // Variables with the processes IDs
-let psTree = require('ps-tree')
+let psTree = require(process.env.NODE_PATH + '/ps-tree')
 let pids = []
 
 // Menu

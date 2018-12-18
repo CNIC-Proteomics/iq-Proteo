@@ -1,94 +1,116 @@
 @ECHO OFF
 
-:: check env varibles are defined
-IF "%IQPROTEO_HOME%"=="" GOTO :EndProcess1
-IF "%R_HOME%"=="" GOTO :EndProcess2
-IF "%PYTHON27_HOME%"=="" GOTO :EndProcess3
-IF "%PYTHON3x_HOME%"=="" GOTO :EndProcess4
-IF "%NODEJS_HOME%"=="" GOTO :EndProcess5
-
-:: get the python executable files
-REM IF "%PYTHON27_HOME%" == "" SET PYTHON27_HOME=%IQPROTEO_HOME%/venv_win64/python27
-REM IF "%PYTHON3x_HOME%" == "" SET PYTHON3x_HOME=%IQPROTEO_HOME%/venv_win64/python3x
+:: Sets the env. variables from input parameters ----------------------
 ECHO **
-ECHO ** use the following paths for python27 and python3x:
-ECHO %PYTHON27_HOME%
+ECHO **
+ECHO ** sets the env. variables from input parameters:
+ECHO **
+SET iq_lib=""
+SET /p iq_lib="** Enter the path where iq-Proteo libraries will be saved: "
+IF %iq_lib% =="" GOTO :EndProcess1
+SETX IQPROTEO_LIBRARY %iq_lib%
+ECHO **
+SET p_home=""
+SET /p p_home="** Enter the path to Python 3 (3.6.7 version!!): "
+IF %p_home% =="" GOTO :EndProcess2
+SETX PYTHON3x_HOME %p_home%
+ECHO **
+SET r_home=""
+SET /p r_home="** Enter the path to R: "
+IF %r_home% =="" GOTO :EndProcess3
+SETX R_HOME %r_home%
+ECHO **
+SET  NODE_URL=https://nodejs.org/dist/v10.14.2/node-v10.14.2-win-x64.zip
+SET  NODE_HOME=%IQPROTEO_LIBRARY%/node-v10.14.2
+SETX NODE_PATH %NODE_HOME%/node_modules
+ECHO **
+ECHO %IQPROTEO_LIBRARY%
 ECHO %PYTHON3x_HOME%
+ECHO %R_HOME%
+ECHO %NODE_PATH%
 
-:: go to home
-CD %IQPROTEO_HOME%
 
-REM :: install the PIP packages
-ECHO **
-ECHO ** install the 'pip' package for python27
-CMD /C " "%PYTHON27_HOME%/python" "%IQPROTEO_HOME%/venv_win64/get-pip.py" "
-ECHO **
-ECHO ** install the 'pip' package for python3x
-CMD /C " "%PYTHON3x_HOME%/python" "%IQPROTEO_HOME%/venv_win64/get-pip.py" "
+:: stablish local directory ----------------------
+SET PWD=%~dp0
+SET PWD=%PWD:~0,-1%
+CD "%PWD%"
 
-:: install virtualenv packages
-ECHO **
-ECHO ** install the 'virtualenv' packages for python27
-CMD /C " "%PYTHON27_HOME%/Scripts/pip" install virtualenv"
-CMD /C " "%PYTHON27_HOME%/Scripts/pip" install virtualenvwrapper-win"
-ECHO **
-ECHO ** install the 'virtualenv' packages for python3x
-CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenv"
-CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenvwrapper-win"
 
-:: create virtual enviroment for the application in the local path
+:: install the PIP packages ----------------------
 ECHO **
-ECHO ** create virtualenv in python27 for the application
-CMD /C " "%PYTHON27_HOME%/Scripts/virtualenv" -p "%PYTHON27_HOME%/python" "%IQPROTEO_HOME%/venv_win64/venv_win64_py27" "
 ECHO **
-ECHO ** create virtualenv in python3x for the application
-CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%IQPROTEO_HOME%/venv_win64/venv_win64_py3x" "
+ECHO ** install the 'pip' package for python
+CMD /C " "%PYTHON3x_HOME%/python" "%PWD%/venv_win64/get-pip.py"  --no-warn-script-location "
 
-:: active the virtualenv and install the required packages
+
+:: install virtualenv packages ----------------------
+ECHO **
+ECHO **
+ECHO ** install the 'virtualenv' packages for python
+CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenv --no-warn-script-location "
+CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenvwrapper-win --no-warn-script-location "
+
+
+:: create virtual enviroment for the application in the local path ----------------------
+ECHO **
+ECHO **
+ECHO ** create virtualenv in python for the application
+CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%IQPROTEO_LIBRARY%/python_venv" "
+
+
+:: active the virtualenv and install the required packages ----------------------
+ECHO **
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-REM CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pandas && pip install xlrd"
-CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py27/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy"
-ECHO **
-ECHO ** active the virtualenv and install the required packages for each enviroment
-REM CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake && pip install pandas && pip install xlrd"
-CMD /C " "%IQPROTEO_HOME%/venv_win64/venv_win64_py3x/Scripts/activate.bat" && pip install snakemake"
+CMD /C " "%IQPROTEO_LIBRARY%/python_venv/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake"
 
-:: install R packages
+
+:: install R packages ----------------------
+ECHO **
 ECHO **
 ECHO ** install R packages
-CMD /C " "%R_HOME%/bin/R" --vanilla < "%IQPROTEO_HOME%/install_Rlibs.R" "
+CMD /C " "%R_HOME%/bin/R" --vanilla < "%PWD%/install_Rlibs.R" "
 
-:: install electron package
+
+:: download and install npm ----------------------
+ECHO **
+ECHO **
+ECHO ** download and install npm
+CMD /C " "%IQPROTEO_LIBRARY%/python_venv/Scripts/activate.bat" && python install_url_pkg.py "%NODE_URL%" "%NODE_HOME%" move "
+
+
+:: install electron package ----------------------
+ECHO **
 ECHO **
 ECHO ** install electron package
-CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" config set scripts-prepend-node-path true"
-CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" install electron --save-dev --save-exact"
-CMD /C " cd "%IQPROTEO_HOME%/app" && "%NODEJS_HOME%/npm" install ps-tree"
+CMD /C " "%NODE_HOME%/npm" config set scripts-prepend-node-path true"
+CMD /C " "%NODE_HOME%/npm" install electron --save-dev --save-exact --global "
+CMD /C " "%NODE_HOME%/npm" install ps-tree --global "
 
-:: rename package.json file because github security
+
+:: rename package.json file because github security ----------------------
+ECHO **
 ECHO **
 ECHO ** rename package.json file because github security
-CMD /C " cd "%IQPROTEO_HOME%/app" && ren package.json.sample package.json"
+CMD /C " cd "%PWD%/app" && ren package.json.sample package.json"
+
+
+
 
 GOTO :EndProcess
 
 
+
+
 :: error messages
 :EndProcess1
-    ECHO IQPROTEO_HOME env. variable is NOT defined
+    ECHO IQPROTEO_LIBRARY env. variable is NOT defined
     GOTO :EndProcess
 :EndProcess2
-    ECHO R_HOME env. variable is NOT defined
-    GOTO :EndProcess
-:EndProcess3
-    ECHO PYTHON27_HOME env. variable is NOT defined
-    GOTO :EndProcess
-:EndProcess4
     ECHO PYTHON3x_HOME env. variable is NOT defined
     GOTO :EndProcess
-:EndProcess5
-    ECHO NODEJS_HOME env. variable is NOT defined
+:EndProcess3
+    ECHO R_HOME env. variable is NOT defined
     GOTO :EndProcess
 
 :: wait to Enter => Good installation
