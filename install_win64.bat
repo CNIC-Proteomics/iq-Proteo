@@ -1,38 +1,45 @@
 @ECHO OFF
 
-:: stablish local directory ----------------------
-SET IQPROTEO_LIB_VERSION=0.1
+:: stablish lib version ----------------------
+SET  IQPROTEO_LIB_VERSION=0.1
+SETX IQPROTEO_LIB "%IQPROTEO_LIB_HOME%/%IQPROTEO_LIB_VERSION%"
 
 :: sets the env. variables from input parameters ----------------------
 ECHO **
 ECHO **
 ECHO ** sets the env. variables from input parameters:
 
-ECHO **
-SET iq_lib=""
-SET /p iq_lib="** Enter the path where iq-Proteo libraries will be saved: "
-IF %iq_lib% =="" GOTO :EndProcess1
-SETX IQPROTEO_LIBRARY "%iq_lib%/%IQPROTEO_LIB_VERSION%"
+REM ECHO **
+REM SET iq_lib=""
+REM SET /p iq_lib="** Enter the path where iq-Proteo libraries will be saved: "
+REM IF %iq_lib% =="" GOTO :EndProcess1
+REM SETX IQPROTEO_LIB "%iq_lib%/%IQPROTEO_LIB_VERSION%"
 
-ECHO **
-SET p_home=""
-SET /p p_home="** Enter the path to Python 3 (3.6.7 version!!): "
-IF %p_home% =="" GOTO :EndProcess2
-SETX PYTHON3x_HOME %p_home%
+REM ECHO **
+REM SET p_home=""
+REM SET /p p_home="** Enter the path to Python 3 (3.6.7 version!!): "
+REM IF %p_home% =="" GOTO :EndProcess2
+REM SETX PYTHON3x_HOME %p_home%
 
-ECHO **
-SET r_home=""
-SET /p r_home="** Enter the path to R: "
-IF %r_home% =="" GOTO :EndProcess3
-SETX R_HOME %r_home%
+REM ECHO **
+REM SET r_home=""
+REM SET /p r_home="** Enter the path to R: "
+REM IF %r_home% =="" GOTO :EndProcess3
+REM SETX R_HOME %r_home%
+
+REM ECHO **
+REM SET  NODE_URL=https://nodejs.org/dist/v10.14.2/node-v10.14.2-win-x64.zip
+REM SET  NODE_HOME=%IQPROTEO_LIB%/node-v10.14.2
+REM SETX NODE_PATH %NODE_HOME%/node_modules
+
 
 ECHO **
 SET  NODE_URL=https://nodejs.org/dist/v10.14.2/node-v10.14.2-win-x64.zip
-SET  NODE_HOME=%IQPROTEO_LIBRARY%/node-v10.14.2
-SETX NODE_PATH %NODE_HOME%/node_modules
+SET  NODE_HOME="%IQPROTEO_LIB%/node-v10.14.2"
+SETX NODE_PATH "%NODE_HOME%/node_modules"
 
 ECHO **
-ECHO %IQPROTEO_LIBRARY%
+ECHO %IQPROTEO_LIB%
 ECHO %PYTHON3x_HOME%
 ECHO %R_HOME%
 ECHO %NODE_PATH%
@@ -40,8 +47,7 @@ ECHO %NODE_PATH%
 
 
 :: create library directory ----------------------
-IF NOT EXIST "%IQPROTEO_LIBRARY%" MD "%IQPROTEO_LIBRARY%"
-
+IF NOT EXIST "%IQPROTEO_LIB%" MD "%IQPROTEO_LIB%"
 
 
 :: stablish local directory ----------------------
@@ -69,14 +75,14 @@ CMD /C " "%PYTHON3x_HOME%/Scripts/pip" install virtualenvwrapper-win --no-warn-s
 ECHO **
 ECHO **
 ECHO ** create virtualenv in python for the application
-CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%IQPROTEO_LIBRARY%/python_venv" "
+CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%IQPROTEO_LIB%/python_venv" "
 
 
 :: active the virtualenv and install the required packages ----------------------
 ECHO **
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C " "%IQPROTEO_LIBRARY%/python_venv/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake"
+CMD /C " "%IQPROTEO_LIB%/python_venv/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake"
 
 
 :: install R packages ----------------------
@@ -90,7 +96,7 @@ CMD /C " "%R_HOME%/bin/R" --vanilla < "%PWD%/install_Rlibs.R" "
 ECHO **
 ECHO **
 ECHO ** download and install npm
-CMD /C " "%IQPROTEO_LIBRARY%/python_venv/Scripts/activate.bat" && python install_url_pkg.py "%NODE_URL%" "%NODE_HOME%" move "
+CMD /C " "%IQPROTEO_LIB%/python_venv/Scripts/activate.bat" && python install_url_pkg.py "%NODE_URL%" "%NODE_HOME%" move "
 
 
 :: install electron package ----------------------
@@ -112,7 +118,7 @@ GOTO :EndProcess
 
 :: error messages
 :EndProcess1
-    ECHO IQPROTEO_LIBRARY env. variable is NOT defined
+    ECHO IQPROTEO_LIB env. variable is NOT defined
     GOTO :EndProcess
 :EndProcess2
     ECHO PYTHON3x_HOME env. variable is NOT defined
