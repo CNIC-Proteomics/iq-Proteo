@@ -8,10 +8,6 @@ import zipfile
 import shutil
 
 
-# Environmnet variable
-IQPROTEO_LIB_HOME     = os.environ['IQPROTEO_LIB_HOME'] # path to library
-
-
 ###################
 # LOCAL FUNCTIONS #
 ###################
@@ -69,26 +65,28 @@ def main(sys):
     # Get input parameters
     url = sys.argv[1]
     outdir = sys.argv[2]
-    flag_move = True if len(sys.argv) == 4 else False
-    tmpdir = IQPROTEO_LIB_HOME+"/tmp"
+    tdir = sys.argv[3]
+    tmpdir = tdir+"/tmp"
+    print( tmpdir )
 
-    print("-- prepare workspaces")
-    prepare_workspace(IQPROTEO_LIB_HOME)
-    prepare_workspace(tmpdir)
+    # flag_move = True if len(sys.argv) == 5 else False
 
-    print("-- download files: "+url+" > "+tmpdir)
-    file = download_url(url, tmpdir)
-    if flag_move:
-        print("-- unzip files: "+file+" > "+tmpdir)
-        unzip_file(file, tmpdir)
-        print("-- move files to outdir")
-        move_files(tmpdir, outdir)
-    else:
-        print("-- unzip files: "+file+" > "+outdir)
-        unzip_file(file, outdir)
+    # print("-- prepare workspaces")
+    # prepare_workspace(tmpdir)
 
-    print("-- remove tmpdir")
-    remove_dir(tmpdir)
+    # print("-- download files: "+url+" > "+tmpdir)
+    # file = download_url(url, tmpdir)
+    # if flag_move:
+    #     print("-- unzip files: "+file+" > "+tmpdir)
+    #     unzip_file(file, tmpdir)
+    #     print("-- move files to outdir")
+    #     move_files(tmpdir, outdir)
+    # else:
+    #     print("-- unzip files: "+file+" > "+outdir)
+    #     unzip_file(file, outdir)
+
+    # print("-- remove tmpdir")
+    # remove_dir(tmpdir)
 
 
 

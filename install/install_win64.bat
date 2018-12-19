@@ -13,25 +13,25 @@ SET  SRC_HOME=%SRC_HOME:"=%
 
 ECHO **
 SET  LIB_VERSION=0.1
-SET  LIB_PATH=""
-SET  /p LIB_PATH="** Enter the path where iq-Proteo libraries will be saved: "
-REM SET  LIB_PATH="D:\iq Proteo\library"
+REM SET  LIB_PATH=""
+REM SET  /p LIB_PATH="** Enter the path where iq-Proteo libraries will be saved: "
+SET  LIB_PATH="D:\iq Proteo\library"
 IF   %LIB_PATH% =="" GOTO :EndProcess1
 SET  LIB_PATH=%LIB_PATH:"=%
 SET  LIB_HOME=%LIB_PATH%/%LIB_VERSION%
 SET  PYENV_HOME=%LIB_HOME%/python_venv
 
 ECHO **
-SET  PYTHON3x_HOME=""
-SET  /p PYTHON3x_HOME="** Enter the path to Python 3 (3.6.7 version!!): "
-REM SET  PYTHON3x_HOME="D:\softwares\Python3.6.7"
+REM SET  PYTHON3x_HOME=""
+REM SET  /p PYTHON3x_HOME="** Enter the path to Python 3 (3.6.7 version!!): "
+SET  PYTHON3x_HOME="D:\softwares\Python3.6.7"
 IF   %PYTHON3x_HOME% =="" GOTO :EndProcess2
 SET  PYTHON3x_HOME=%PYTHON3x_HOME:"=%
 
 ECHO **
-SET  R_HOME=""
-SET  /p R_HOME="** Enter the path to R: "
-REM SET  R_HOME="C:\Program Files\R\R-3.5.1"
+REM SET  R_HOME=""
+REM SET  /p R_HOME="** Enter the path to R: "
+SET  R_HOME="C:\Program Files\R\R-3.5.1"
 IF   %R_HOME% =="" GOTO :EndProcess3
 SET  R_HOME=%R_HOME:"=%
 SET  R_LIB=%LIB_HOME%/R
@@ -61,8 +61,6 @@ CD   "%SRC_HOME%"
 
 :: create library directory ----------------------
 IF NOT EXIST "%LIB_HOME%" MD "%LIB_HOME%"
-
-
 
 
 :: install the PIP packages ----------------------
@@ -95,18 +93,25 @@ ECHO ** active the virtualenv and install the required packages for each envirom
 CMD /C " "%PYENV_HOME%/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake && pip install pandas && pip install pprint"
 
 
+
+
 :: install R packages ----------------------
 ECHO **
 ECHO **
 ECHO ** install R packages
-CMD /C " "%R_HOME%/bin/R" --vanilla < "%SRC_HOME%/install/win/install_Rlibs.R" "
+REM CMD /C " "%R_HOME%/bin/R" --vanilla < "%SRC_HOME%/install/src/install_Rlibs.R" "
+CMD /C " "%R_HOME%/bin/Rscript" --vanilla "%SRC_HOME%/install/src/install_Rlibs.R" "%R_LIB%" "
+
+
 
 
 :: download and install npm ----------------------
 ECHO **
 ECHO **
 ECHO ** download and install npm
-CMD /C " "%PYENV_HOME%/Scripts/activate.bat" && python "%SRC_HOME%/install/win/install_url_pkg.py" "%NODE_URL%" "%NODE_HOME%" move "
+CMD /C " "%PYENV_HOME%/Scripts/activate.bat" && python "%SRC_HOME%/install/src/install_url_pkg.py" "%NODE_URL%" "%NODE_HOME%" "%LIB_HOME%" move "
+
+
 
 
 :: install electron package ----------------------
