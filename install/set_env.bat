@@ -13,7 +13,7 @@ ECHO **
 SET  LIB_VERSION=0.1
 SET  LIB_PATH=""
 SET  /p LIB_PATH="** Enter the path where iq-Proteo libraries will be saved: "
-SET  LIB_PATH="D:\iq Proteo\library"
+REM SET  LIB_PATH="D:\iq Proteo\library"
 IF   %LIB_PATH% =="" GOTO :EndProcess1
 SET  LIB_PATH=%LIB_PATH:"=%
 SET  LIB_HOME=%LIB_PATH%/%LIB_VERSION%
