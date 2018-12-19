@@ -33,7 +33,8 @@ SET  R_HOME=""
 SET  /p R_HOME="** Enter the path to R: "
 REM SET  R_HOME="C:\Program Files\R\R-3.5.1"
 IF   %R_HOME% =="" GOTO :EndProcess3
-SET R_HOME=%R_HOME:"=%
+SET  R_HOME=%R_HOME:"=%
+SET  R_LIB=%LIB_HOME%/R
 
 ECHO **
 SET  NODE_URL=https://nodejs.org/dist/v10.14.2/node-v10.14.2-win-x64.zip
@@ -44,6 +45,7 @@ SETX IQPROTEO_SRC_HOME "%SRC_HOME%"
 SETX IQPROTEO_LIB_HOME "%LIB_HOME%"
 SETX IQPROTEO_PYENV_HOME "%PYENV_HOME%"
 SETX IQPROTEO_R_HOME "%R_HOME%"
+SETX IQPROTEO_R_LIB "%R_LIB%"
 SETX IQPROTEO_NODE_PATH "%NODE_PATH%"
 
 ECHO **
@@ -90,7 +92,7 @@ CMD /C " "%PYTHON3x_HOME%/Scripts/virtualenv" -p "%PYTHON3x_HOME%/python" "%PYEN
 ECHO **
 ECHO **
 ECHO ** active the virtualenv and install the required packages for each enviroment
-CMD /C " "%PYENV_HOME%/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake"
+CMD /C " "%PYENV_HOME%/Scripts/activate.bat" && pip install numpy && pip install matplotlib && pip install scipy && pip install pytest-shutil && pip install snakemake && pip install pandas && pip install pprint"
 
 
 :: install R packages ----------------------

@@ -1,16 +1,8 @@
 ################################################################################################################
 
-# Install packages if they don't exit
+# Get Params
 
 ################################################################################################################
-
-pwd <- paste0( Sys.getenv(c("IQPROTEO_HOME")), "/venv_win64")
-lib_path <- paste0( pwd, "/R/library")
-.libPaths( lib_path )
-
-list.of.packages <- c("optparse", "RSQLite", "readr", "stringi", "plyr", "Peptides", "XML")
-new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
-if(length(new.packages)) install.packages(new.packages, repos="http://cran.us.r-project.org", lib=lib_path)
 
 # Libraries
 
@@ -21,12 +13,6 @@ library("stringi")
 library("plyr")
 library("Peptides")
 library("XML")
-
-################################################################################################################
-
-# Get Params
-
-################################################################################################################
 
 # get input parameters
 option_list = list(

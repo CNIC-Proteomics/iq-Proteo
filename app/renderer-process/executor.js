@@ -4,7 +4,7 @@ const { ipcRenderer } = require('electron');
   Global variables
 */
 let cProcess = require('child_process');
-let psTree = require('ps-tree');
+let psTree = require(process.env.IQPROTEO_NODE_PATH + '/ps-tree')
 let proc = null;
 
 
@@ -78,9 +78,9 @@ document.getElementById('executor').addEventListener('click', function() {
   let params = parameters.createParameters();
   if ( params ) {
     // Execute the workflow
-    let smkfile = process.env.IQPROTEO_HOME + '/qproteo.smk';
+    let smkfile = process.env.IQPROTEO_SRC_HOME + '/qproteo.smk';
     let cmd_smk = 'snakemake.exe --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" -j '+params.nthreads+' -d "'+params.outdir+'" ';
-    let cmd = process.env.IQPROTEO_HOME + '/venv_win64/venv_win64_py3x/Scripts/activate.bat && ';
+    let cmd = '"'+process.env.IQPROTEO_LIB_HOME + '/python_venv/Scripts/activate.bat" && ';
     cmd += cmd_smk+' --unlock && ';
     cmd += cmd_smk+' --rerun-incomplete ';
     console.log( cmd );
