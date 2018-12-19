@@ -67,26 +67,24 @@ def main(sys):
     outdir = sys.argv[2]
     tdir = sys.argv[3]
     tmpdir = tdir+"/tmp"
-    print( tmpdir )
+    flag_move = True if len(sys.argv) == 5 else False
 
-    # flag_move = True if len(sys.argv) == 5 else False
+    print("-- prepare workspaces")
+    prepare_workspace(tmpdir)
 
-    # print("-- prepare workspaces")
-    # prepare_workspace(tmpdir)
+    print("-- download files: "+url+" > "+tmpdir)
+    file = download_url(url, tmpdir)
+    if flag_move:
+        print("-- unzip files: "+file+" > "+tmpdir)
+        unzip_file(file, tmpdir)
+        print("-- move files to outdir")
+        move_files(tmpdir, outdir)
+    else:
+        print("-- unzip files: "+file+" > "+outdir)
+        unzip_file(file, outdir)
 
-    # print("-- download files: "+url+" > "+tmpdir)
-    # file = download_url(url, tmpdir)
-    # if flag_move:
-    #     print("-- unzip files: "+file+" > "+tmpdir)
-    #     unzip_file(file, tmpdir)
-    #     print("-- move files to outdir")
-    #     move_files(tmpdir, outdir)
-    # else:
-    #     print("-- unzip files: "+file+" > "+outdir)
-    #     unzip_file(file, outdir)
-
-    # print("-- remove tmpdir")
-    # remove_dir(tmpdir)
+    print("-- remove tmpdir")
+    remove_dir(tmpdir)
 
 
 
