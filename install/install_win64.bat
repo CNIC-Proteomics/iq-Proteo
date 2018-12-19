@@ -6,11 +6,10 @@ ECHO **
 ECHO ** sets the env. variables from input parameters:
 
 ECHO **
-SET  pwd=%~dp0
-SET  pwd=%pwd:~0,-1%
-for %%i in ("%~dp0..") do SET "SRC_HOME=%%~fi"
-SETX IQPROTEO_SRC_HOME %SRC_HOME%
-CD   %SRC_HOME%
+REM  SET  pwd=%~dp0
+REM  SET  pwd=%pwd:~0,-1%
+FOR  %%i in ("%~dp0..") do SET "SRC_HOME=%%~fi"
+SET  SRC_HOME=%SRC_HOME:"=%
 
 ECHO **
 SET  LIB_VERSION=0.1
@@ -18,29 +17,34 @@ SET  LIB_PATH=""
 SET  /p LIB_PATH="** Enter the path where iq-Proteo libraries will be saved: "
 REM SET  LIB_PATH="D:\iq Proteo\library"
 IF   %LIB_PATH% =="" GOTO :EndProcess1
+SET  LIB_PATH=%LIB_PATH:"=%
 SET  LIB_HOME=%LIB_PATH%/%LIB_VERSION%
 SET  PYENV_HOME=%LIB_HOME%/python_venv
-SETX IQPROTEO_LIB_HOME %LIB_HOME%
-SETX IQPROTEO_PYENV_HOME %PYENV_HOME%
 
 ECHO **
 SET  PYTHON3x_HOME=""
 SET  /p PYTHON3x_HOME="** Enter the path to Python 3 (3.6.7 version!!): "
 REM SET  PYTHON3x_HOME="D:\softwares\Python3.6.7"
 IF   %PYTHON3x_HOME% =="" GOTO :EndProcess2
+SET  PYTHON3x_HOME=%PYTHON3x_HOME:"=%
 
 ECHO **
 SET  R_HOME=""
 SET  /p R_HOME="** Enter the path to R: "
 REM SET  R_HOME="C:\Program Files\R\R-3.5.1"
 IF   %R_HOME% =="" GOTO :EndProcess3
-SETX IQPROTEO_R_HOME %R_HOME%
+SET R_HOME=%R_HOME:"=%
 
 ECHO **
 SET  NODE_URL=https://nodejs.org/dist/v10.14.2/node-v10.14.2-win-x64.zip
 SET  NODE_HOME=%LIB_HOME%/node-v10.14.2
 SET  NODE_PATH=%NODE_HOME%/node_modules
-SETX IQPROTEO_NODE_PATH %NODE_PATH%
+
+SETX IQPROTEO_SRC_HOME "%SRC_HOME%"
+SETX IQPROTEO_LIB_HOME "%LIB_HOME%"
+SETX IQPROTEO_PYENV_HOME "%PYENV_HOME%"
+SETX IQPROTEO_R_HOME "%R_HOME%"
+SETX IQPROTEO_NODE_PATH "%NODE_PATH%"
 
 ECHO **
 ECHO %SRC_HOME%
@@ -50,7 +54,8 @@ ECHO %R_HOME%
 ECHO %NODE_PATH%
 
 
-
+:: stablish the local directory ----------------------
+CD   "%SRC_HOME%"
 
 :: create library directory ----------------------
 IF NOT EXIST "%LIB_HOME%" MD "%LIB_HOME%"
