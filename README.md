@@ -53,6 +53,13 @@ Snakemake workflow developed by the Proteomic Unit in CNIC
 ### Windows distribution
 Execute the batch script "install_win64.bat"
 
+Requirements Microsoft Visual Studio but with the C++ languange!!!
+
+<!-- Visual C++ Redistributable para Visual Studio 2015 -->
+<!-- https://stackoverflow.com/questions/44290672/how-to-download-visual-studio-community-edition-2015-not-2017 -->
+<!-- https://go.microsoft.com/fwlink/?LinkId=532606&clcid=0x409 -->
+<!-- https://www.microsoft.com/es-es/download/details.aspx?id=48145 -->
+
 ### Linux distribution
 UNDER CONTRUCTION
 
