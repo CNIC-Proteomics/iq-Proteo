@@ -1,5 +1,5 @@
 # stablish the library path
-lib_path <- Sys.getenv(c("IQPROTEO_R_LIB"))
+lib_path <- paste0( Sys.getenv(c("IQPROTEO_R_LIB")), "")
 .libPaths( lib_path )
 
 # create library directory
