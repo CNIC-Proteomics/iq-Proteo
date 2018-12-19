@@ -8,6 +8,10 @@ import zipfile
 import shutil
 
 
+# Environmnet variable
+IQPROTEO_LIB_HOME     = os.environ['IQPROTEO_LIB_HOME'] # path to library
+
+
 ###################
 # LOCAL FUNCTIONS #
 ###################
@@ -65,11 +69,11 @@ def main(sys):
     # Get input parameters
     url = sys.argv[1]
     outdir = sys.argv[2]
-    tdir = sys.argv[3]
-    tmpdir = tdir+"/tmp"
-    flag_move = True if len(sys.argv) == 5 else False
+    flag_move = True if len(sys.argv) == 4 else False
+    tmpdir = IQPROTEO_LIB_HOME+"/tmp"
 
     print("-- prepare workspaces")
+    prepare_workspace(IQPROTEO_LIB_HOME)
     prepare_workspace(tmpdir)
 
     print("-- download files: "+url+" > "+tmpdir)

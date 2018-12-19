@@ -1,10 +1,5 @@
-args = commandArgs(trailingOnly=TRUE)
-
 # stablish the library path
-if ( length(args) == 0 ) {
-    stop("At least one argument must be supplied (R library path).n", call.=FALSE)
-}
-lib_path <- args[1]
+lib_path <- paste0( Sys.getenv(c("IQPROTEO_R_LIB")), "")
 .libPaths( lib_path )
 
 # create library directory
