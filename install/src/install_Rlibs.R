@@ -7,7 +7,7 @@ if ( length(args) == 0 ) {
 lib_path <- args[1]
 .libPaths( lib_path )
 
-create library directory
+# create library directory
 dir.create(lib_path, showWarnings = FALSE, recursive = TRUE)
 
 install the list of packages
