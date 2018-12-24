@@ -1,4 +1,4 @@
-﻿import pdb
+import pdb
 import sys
 import getopt
 import operator
@@ -30,7 +30,7 @@ def fdr_calculator(full_list):
 	for line in full_list:
 		if str(line[7]).lower() != "nan":
 			Rank_dic[line[7]] = 0
-	Rkey = Rank_dic.keys()
+	Rkey = list(Rank_dic.keys())
 	Rkey.sort()
 	
 	## assign rank
@@ -92,7 +92,7 @@ def graphZij(ZijList,
 		defaultColour = "#000000"
 		plotStyle = ["#FF0000", "#0000FF", "#00FF00", "#FF00FF", "#00FFFF", "#FFFF00", "#800000", "#008000", "#000080", "#808000", "#800080", "#008080", "#808080", "#C00000", "#00C000", "#0000C0", "#C0C000", "#C000C0", "#00C0C0", "#C0C0C0", "#400000", "#004000", "#000040", "#404000", "#400040", "#004040", "#404040", "#200000", "#002000", "#000020", "#202000", "#200020", "#002020", "#202020", "#600000", "#006000", "#000060", "#606000", "#600060", "#006060", "#606060", "#A00000", "#00A000", "#0000A0", "#A0A000", "#A000A0", "#00A0A0", "#A0A0A0", "#E00000", "#00E000", "#0000E0", "#E0E000", "#E000E0", "#00E0E0", "#E0E0E0"]
 
-		for j in xrange(len(ZijList)):
+		for j in range(len(ZijList)):
 			i = len(ZijList) - (j + 1)
 			if i > 0:
 				graph = ZijList[i]
@@ -204,9 +204,9 @@ def zeroMatrix(x, y = -1, defaultValue = 0.0):
 
 	if y == -1: y = x # so, absence of y provides a square matrix
 	zMatrix = []
-	for i in xrange(x):
+	for i in range(x):
 		zRow = []
-		for j in xrange(y):
+		for j in range(y):
 			zRow.append(defaultValue)
 		zMatrix.append(zRow)
 	
@@ -218,8 +218,8 @@ def booleaniseMatrix(myMatrix, threshold = 0):
 
 	booleanMatrix = zeroMatrix(len(myMatrix))
 	
-	for i in xrange(len(myMatrix)):
-		for j in xrange(len(myMatrix)):
+	for i in range(len(myMatrix)):
+		for j in range(len(myMatrix)):
 
 			if type(myMatrix[i][j]) == type(0) or type(myMatrix[i][j]) == type(0.0):
 			
@@ -232,10 +232,10 @@ def booleaniseMatrix(myMatrix, threshold = 0):
 	
 def booleaniseMatrix2(myMatrix, threshold = 0):
 
-	print "booleanising matrix"
-	for i in xrange(len(myMatrix)):
-		if i % 500 == 0: print "Booleanising row #%i of %i" % (i, len(myMatrix))
-		for j in xrange(len(myMatrix)):
+	print("booleanising matrix")
+	for i in range(len(myMatrix)):
+		if i % 500 == 0: print("Booleanising row #%i of %i" % (i, len(myMatrix)))
+		for j in range(len(myMatrix)):
 
 			if type(myMatrix[i][j]) == type(0) or type(myMatrix[i][j]) == type(0.0):
 			
@@ -315,13 +315,13 @@ def extractVariableFromInfoFile(infoFile, varName = "Variance", defaultSeed = fl
 
 	for line in fileContents[::-1]: # [::-1] is to search from the end of the file
 		if varName + " not found" in line[0]:
-			if verbose: print varName + " not found in previous integration"
+			if verbose: print(varName + " not found in previous integration")
 			variableOk = False
 			return defaultSeed, variableOk
 		if varName + " = " in line[0]:
 			return (double)(line[0].split("=")[1].strip()), variableOk
 	
-	if verbose: print """the file does not contain any "%s = [float]" line; the default seed will be used.""" % varName
+	if verbose: print("""the file does not contain any "%s = [float]" line; the default seed will be used.""" % varName)
 	
 	return defaultSeed, variableOk
 	
@@ -374,7 +374,7 @@ def getRandomList(inputList):
 	conversionTable = []
 	i = 0
 	
-	for i in xrange(len(lowerList)):
+	for i in range(len(lowerList)):
 		conversionTable.append([i, random.random()])
 
 	conversionTable = sortByIndex(conversionTable, 1)
@@ -388,7 +388,7 @@ def getRandomList(inputList):
 			# i += 1
 
 	# assigning new relations according to conversion table
-	for i in xrange(len(outputList)):
+	for i in range(len(outputList)):
 		
 		# switching lower elements
 		# while keeping structure (distribution of lower elements per higher element)
@@ -401,7 +401,7 @@ def getRandomList(inputList):
 		outputList[i] = [inputList[i][0], newElement]
 			
 	if -1 in outputList:
-		print "Error while generating the randomised relations table"
+		print("Error while generating the randomised relations table")
 		sys.exit()
 	
 	return outputList
@@ -646,7 +646,7 @@ def nodeColourReduced(colourList):
 		else: i += 1
 	
 	newColourList = ""
-	for i in xrange(len(splitColours)):
+	for i in range(len(splitColours)):
 		newColourList += splitColours[i] + ":"
 	
 	newColourList = newColourList[:-1]
@@ -671,7 +671,7 @@ def getNodeColour(node,
 	if extraData:
 		# this needs to be implemented ****
 		nodeIndex = -1
-		for i in xrange(len(extraData)):
+		for i in range(len(extraData)):
 			if node == extraData[i][0]:
 				nodeIndex = i
 				break
@@ -775,11 +775,11 @@ def load2stringList(fileName, removeCommas = False, splitChar = "\t"):
 		if len(myRowStrip) > 0:
 			thisRow = myRowStrip.split(splitChar)
 			
-			for i in xrange(len(thisRow)):
+			for i in range(len(thisRow)):
 				thisRow[i] = thisRow[i].strip()
 				
 			if removeCommas:
-				for i in xrange(len(thisRow)):
+				for i in range(len(thisRow)):
 					if thisRow[i].endswith('"') and thisRow[i].startswith('"'):
 						thisRow[i] = thisRow[i][1:len(thisRow[i]) - 1]
 			
@@ -841,7 +841,7 @@ def arrangeSubData(inStats = "",
 	theorList = []
 	experList = []
 	N = len(ZijList)
-	for i in xrange(N):
+	for i in range(N):
 		theorList.append([ZijList[i][0], ZijList[i][1], norm.cdf(float(ZijList[i][1]))])
 		experList.append([ZijList[i][0], ZijList[i][1], (float(i) + 0.5) / float(N)])
 	
@@ -899,7 +899,7 @@ def createBigTable(data = None):
 	
 	# data[j][0] contains the name of the category
 	# each data[j][1][i] contains a list with [id, Zij, rank/N]
-	for j in xrange(len(data)):
+	for j in range(len(data)):
 		if j == 0:
 			header1 += str(data[0][0]) + "\t\t\t"
 			header2 += "id\tZ\tp\t"
@@ -908,7 +908,7 @@ def createBigTable(data = None):
 		else:
 			header1 += str(data[j][0]) + "\t\t\t"
 			header2 += "id\tZ\trank/N\t"
-			for i in xrange(len(bigTable)):
+			for i in range(len(bigTable)):
 				if type(data[j][1]) == type([]):
 				
 					if i < len(data[j][1]):
@@ -964,7 +964,7 @@ def stringList2inputDataFile(input, format = ['s', 'f', 'f'], fillEmptyPositions
 			resultRow = []
 			
 			if len(format) > 0:
-				for i in xrange(len(format)):
+				for i in range(len(format)):
 					if i > len(myRow) - 1:
 						resultRow.append(emptyFiller)
 					else:
@@ -1057,7 +1057,7 @@ def removeRedundantUpper(mergedList):
 	currHigher = relationsClone[0][0]
 	higherList = []
 	lowerList = [relationsClone[0][1]]
-	for i in xrange(len(relationsClone)):
+	for i in range(len(relationsClone)):
 		if i >= 0:
 			if relationsClone[i][0] != currHigher:
 				lowerList.sort()
@@ -1076,17 +1076,17 @@ def removeRedundantUpper(mergedList):
 	# create list of removed (duplicated) higher level elements
 	newList = []
 	maxLower = max(extractColumns(higherList, 1))
-	for i in xrange(maxLower):
+	for i in range(maxLower):
 		shortList = filterByElement(higherList, i + 1, 1)
-		for j in xrange(len(shortList)):
-			for k in xrange(len(shortList)):
+		for j in range(len(shortList)):
+			for k in range(len(shortList)):
 				if k > j and shortList[k][2] == False:
 					if shortList[j][3] == shortList[k][3]:
 						shortList[k][2] = True
 						newList.append(shortList[k][0])
 	
 	newMergedList = []
-	for i in xrange(len(relationsClone)):
+	for i in range(len(relationsClone)):
 		if not relationsClone[i][0] in newList:
 			newMergedList.append(relationsClone[i])
 	
@@ -1147,8 +1147,8 @@ def mergeInput(inputData, inputRelations, hideWarnings = True, removeDuplicateUp
 				break
 		
 		if not hideWarnings and not rowUsed:
-			print "Warning: some input data element(s) have not been used,"
-			print "such as: " + id1
+			print("Warning: some input data element(s) have not been used,")
+			print("such as: " + id1)
 			hideWarnings = True
 		
 		if counter >= len(inputRelations):
@@ -1170,7 +1170,7 @@ def addTagToRelations(relations, relationsToTag, tagToAdd = "unspecifiedTag"):
 	
 	if len(relationsToTag) > 0:
 		for eachRelation in relationsToTag:
-			for i in xrange(len(newRelations)):
+			for i in range(len(newRelations)):
 				if newRelations[i][0] == eachRelation[0] and newRelations[i][1] == eachRelation[1]:
 					if len(newRelations[i]) > 2:
 						if not tagIsPresent(newRelations[i][2], tagToAdd):
@@ -1243,7 +1243,7 @@ def loadFile(fileName):
 		provList = []
 		newProvList = []
 		provList.append(myRow.split("\t"))
-		if provList[0][2] <> "NeuN" and provList[0][3] <> "NeuN":
+		if provList[0][2] != "NeuN" and provList[0][3] != "NeuN":
 			newProvList.append(provList[0][0])
 			newProvList.append(provList[0][1])
 			newProvList.append(float(provList[0][2]))
@@ -1448,7 +1448,7 @@ def firstIndex(list = [],
 			try:
 				newList = []
 				if len(listWithId) == 0:
-					for i in xrange(len(list)):
+					for i in range(len(list)):
 						newList.append([list[i], i])
 					newList = sortByIndex(newList, 0)
 					listWithId = newList[:]
@@ -1509,12 +1509,15 @@ def sortByIndex(list, index, index2 = -1):
 
 #------------------------------------------------------
 
-def sortByInstance(list, instanceName, isDescendent = False):	
+def sortByInstance(list, instanceName, isDescendent = False):
 
-	list.sort(key = operator.attrgetter(instanceName), reverse = isDescendent)
+	# begin: jmrc
+	# list.sort(key = operator.attrgetter(instanceName), reverse = isDescendent)
+    list.sort(key=lambda x: getattr(x, instanceName) if getattr(x, instanceName) is not None and isinstance(getattr(x, instanceName), float) else -math.inf, reverse=isDescendent)
+	# end: jmrc
 	
-	return list
-	
+    return list
+
 #------------------------------------------------------
 
 def removeRows(myList, element, index = 0):
@@ -1542,11 +1545,17 @@ def median(list): # for lists of lists use medianByIndex
 def medianByIndex(list, index = 0):
 	list = sortByIndex(list, index)
 	
+	# begin: jmrc
+	# if len(list) % 2 == 0:
+	# 	med = (list[len(list) / 2 - 1][index] + list[len(list) / 2][index]) / 2
+	# else:
+	# 	med = list[(len(list) - 1) / 2][index]
 	if len(list) % 2 == 0:
-		med = (list[len(list) / 2 - 1][index] + list[len(list) / 2][index]) / 2
+		med = (list[int( len(list) / 2 - 1 )][index] + list[int( len(list) / 2 )][index]) / 2
 	else:
-		med = list[(len(list) - 1) / 2][index]
-	
+		med = list[int( (len(list) - 1) / 2 )][index]
+	# end: jmrc
+
 	return med
 
 #------------------------------------------------------
@@ -1683,7 +1692,7 @@ def tagFound(tagCondition = "", tagInRow = "", tagList = [], logicOperatorsAsWor
 		tagList = splitTags(tagInRow)
 			
 	if "(" in tagCondition and not ")" in tagCondition:
-			print "Wrong parentheses"
+			print("Wrong parentheses")
 			return False
 			
 	if ")" in tagCondition:
@@ -1695,7 +1704,7 @@ def tagFound(tagCondition = "", tagInRow = "", tagList = [], logicOperatorsAsWor
 			newTagCondition = tagCondition[:startPos-1].strip() + str(tagFound(subCondition, tagList = tagList, logicOperatorsAsWords = logicOperatorsAsWords)) + tagCondition[endPos+1:].strip()
 			return tagFound(newTagCondition, tagList = tagList, logicOperatorsAsWords = logicOperatorsAsWords)
 		else:
-			print "Wrong parentheses"
+			print("Wrong parentheses")
 			return False
 			
 	if "&" in tagCondition:
@@ -1793,12 +1802,12 @@ def getIdXW(idXWall, relations, variance, giveMergedData = False, removeDuplicat
 #######################################################
 
 if __name__ == "__main__":
-	print
-	print """This is stats %s.
+	print()
+	print("""This is stats %s.
 	
 It is a library used by SanXoT and its satellite programs, a software package
 created in the Jesus Vazquez Cardiovascular Proteomics Lab at Centro Nacional
 de Investigaciones Cardiovasculares.
 
 Check the help of the other individual programs for more info.
-""" % version()
+""" % version())

@@ -1,4 +1,4 @@
-﻿import pdb
+import pdb
 import sys
 import getopt
 import stats
@@ -113,9 +113,9 @@ def varDiff(params,
 	logResults.append([printLine])
 	
 	if verbose:
-		print printLine
+		print(printLine)
 	
-	if forHtml: print "</br>"
+	if forHtml: print("</br>")
 	
 	return asarray([fabs(variance - 1.0)])
 
@@ -159,8 +159,8 @@ def integrate(data = None,
 	
 	if data == None:
 		if len(dataFile) == 0:
-			print "Error: no input data"
-			if forHtml: print "</br>"
+			print("Error: no input data")
+			if forHtml: print("</br>")
 			sys.exit()
 		else:
 			data = stats.loadInputDataFile(dataFile)
@@ -168,8 +168,8 @@ def integrate(data = None,
 	if relations == None:
 		if len(relationsFile) == 0:
 			if not confluenceRelfile:
-				print "Error: no relations file"
-				if forHtml: print "</br>"
+				print("Error: no relations file")
+				if forHtml: print("</br>")
 				sys.exit()
 			else: # then means a confluence is made from the data file, getting ids from column 0 (first)
 				idsForConfluence = stats.extractColumns(data, 0)
@@ -196,8 +196,8 @@ def integrate(data = None,
 			stats.saveFile(randomisedFileName, filteredRelations, "idsup\tidinf")
 
 	if filteredRelations == None and len(filteredRelations) == 0:
-		print "Error: no relations data"
-		if forHtml: print "</br>"
+		print("Error: no relations data")
+		if forHtml: print("</br>")
 		sys.exit()
 	
 	success = True
@@ -206,12 +206,12 @@ def integrate(data = None,
 			# informing the used about forced negative variance being corrected to zero
 			message = "Since variance is negative, it will be reset to zero.\nOriginal forced variance was %s." % str(varianceSeed)
 			logResults.extend([[], [message], []])
-			print
-			if forHtml: print "</br>"
-			print message
-			if forHtml: print "</br>"
-			print
-			if forHtml: print "</br>"
+			print()
+			if forHtml: print("</br>")
+			print(message)
+			if forHtml: print("</br>")
+			print()
+			if forHtml: print("</br>")
 			varianceSeed = 0
 			
 		variance = varianceSeed
@@ -238,12 +238,12 @@ def integrate(data = None,
 					stopAnyway = True
 					message = "After %i iterations, the Levenberg-Marquardt algorithm was unable to find a solution" % iterationCounter
 					logResults.extend([[], [message], []])
-					print
-					if forHtml: print "</br>"
-					print message
-					if forHtml: print "</br>"
-					print
-					if forHtml: print "</br>"
+					print()
+					if forHtml: print("</br>")
+					print(message)
+					if forHtml: print("</br>")
+					print()
+					if forHtml: print("</br>")
 				
 				if not stopAnyway:
 					firstCalc = True
@@ -262,31 +262,31 @@ def integrate(data = None,
 					
 					message = "Solution did not converge, retrying with variance seed = %f" % varianceSeed
 					logResults.extend([[], [message], []])
-					print
-					if forHtml: print "</br>"
-					print message
-					if forHtml: print "</br>"
-					print
-					if forHtml: print "</br>"
+					print()
+					if forHtml: print("</br>")
+					print(message)
+					if forHtml: print("</br>")
+					print()
+					if forHtml: print("</br>")
 				
 		if success:
 			message = "Solution found with variance seed = %f, after %i iterations and %i tries" % (varianceSeed, iterationCounter, tries)
 			logResults.extend([[], [message], []])
-			print
-			if forHtml: print "</br>"
-			print message
-			if forHtml: print "</br>"
-			print
-			if forHtml: print "</br>"
+			print()
+			if forHtml: print("</br>")
+			print(message)
+			if forHtml: print("</br>")
+			print()
+			if forHtml: print("</br>")
 		else:
 			message = "SOLUTION *NOT* FOUND, after %i iterations and %i tries" % (iterationCounter, tries)
 			logResults.extend([[], [message], []])
-			print
-			if forHtml: print "</br>"
-			print message
-			if forHtml: print "</br>"
-			print
-			if forHtml: print "</br>"
+			print()
+			if forHtml: print("</br>")
+			print(message)
+			if forHtml: print("</br>")
+			print()
+			if forHtml: print("</br>")
 			
 			if emergencySweep:
 				stepsTakenEachSide = 10
@@ -295,9 +295,9 @@ def integrate(data = None,
 				
 				message = "Performing sweep to get best variance upto %i decimals" % sweepDecimals
 				logResults.extend([[], [message], []])
-				print
-				print message
-				print
+				print()
+				print(message)
+				print()
 				
 				for decimal in range(sweepDecimals + 1):
 					startVariance = bestVariance
@@ -309,7 +309,7 @@ def integrate(data = None,
 						message = "Variance difference when sweeping with variance %f -> %f." % (varianceTry, varianceDifference)
 						logResults.extend([[message]])
 						if verbose:
-							print message
+							print(message)
 						
 						if varianceDifference < leastDif:
 							leastDif = varianceDifference
@@ -318,18 +318,18 @@ def integrate(data = None,
 				variance = bestVariance
 				message = "After sweeping, the best variance found was: %f.\nForcing this variance, as requested by user." % variance
 				logResults.extend([[], [message], []])
-				print
-				print message
-				print
+				print()
+				print(message)
+				print()
 				
 				success = True
 
 			if forceEmergencyVariance and not emergencySweep:
 				message = "Forcing seed variance %f as emergency variance, as requested by user" % varianceSeed
 				logResults.extend([[], [message], []])
-				print
-				print message
-				print
+				print()
+				print(message)
+				print()
 				
 				variance = varianceSeedOriginal
 				success = True
@@ -337,8 +337,8 @@ def integrate(data = None,
 		if success and not forceEvenNegativeVariance and variance < 0:
 			message = "Calculated variance was %s.\nSince variance is negative, it will be reset to zero." % str(variance)
 			logResults.extend([[], [message], []])
-			print message
-			print
+			print(message)
+			print()
 			
 			variance = 0
 			
@@ -507,11 +507,11 @@ def calculateExcluded(relsExcludedOriginal,
 
 def printErrorFileMissing(file = "file", argument = None):
 
-	print
-	print "Error: file name for " + file + " is missing."
+	print()
+	print("Error: file name for " + file + " is missing.")
 	if argument != None:
-		print "Use " + argument + " for this parameter (using the short path)."
-	print "Use -h for help."
+		print("Use " + argument + " for this parameter (using the short path).")
+	print("Use -h for help.")
 	sys.exit()
 
 #------------------------------------------------------
@@ -533,7 +533,7 @@ def getNextIdX_sanxot(idXVall, relations, variance = 0.0, giveMergedData = False
 	XWlist = []
 	
 	if len(mergedData) == 0:
-		print "Error, merged data list is empty. Please check the provided files do exist and are not corrupt."
+		print("Error, merged data list is empty. Please check the provided files do exist and are not corrupt.")
 		sys.exit()
 	
 	while position < len(mergedData):
@@ -577,7 +577,7 @@ def makeStats(variance = 0.0, inputFile = "", input = None):
 	# ***
 	if not input:
 		if len(inputFile) == 0:
-			print 'Error: no input file'
+			print('Error: no input file')
 			sys.exit()
 		
 		input = loadFile(inputFile)
@@ -591,7 +591,7 @@ def makeStats(variance = 0.0, inputFile = "", input = None):
 			# when the list of id1's within an id2 is complete, then...
 			statsResults, higherResult, lowerResults = getAverage(element, variance)
 
-			for i in xrange(len(statsResults)):
+			for i in range(len(statsResults)):
 				statsResults[i].nij = len(element) # degrees of freedom
 				statsResults[i].Zij = getZ(lowerResults[i].XiXj, lowerResults[i].Wij, statsResults[i].nij)
 						
@@ -606,7 +606,7 @@ def makeStats(variance = 0.0, inputFile = "", input = None):
 	
 	statsResults, higherResult, lowerResults = getAverage(element, variance)
 
-	for i in xrange(len(statsResults)):
+	for i in range(len(statsResults)):
 		statsResults[i].nij = len(element) # degrees of freedom
 		statsResults[i].Zij = getZ(lowerResults[i].XiXj, lowerResults[i].Wij, statsResults[i].nij)
 
@@ -644,7 +644,7 @@ def addFDR(statsList):
 		if statsResult.absZij != None: totN += 1
 		
 	rank = 1
-	for i in [x for x in xrange(len(statsList))]:
+	for i in [x for x in range(len(statsList))]:
 			
 		if statsList[i].absZij != None:
 			statsList[i].FDRij = 2 * (1 - norm.cdf(statsList[i].absZij)) / (float(rank) / float(totN))
@@ -786,12 +786,12 @@ def getVarConf(variance,
 	
 	# fix next
 	varianceArray = []
-	for simulation in xrange(totSimulations):
+	for simulation in range(totSimulations):
 		
-		print "Generating simulation #%i..." % simulation
+		print("Generating simulation #%i..." % simulation)
 		dataRnd = randomData(data, variance)
 
-		print "Calculating variance for simulation #%i..." % simulation
+		print("Calculating variance for simulation #%i..." % simulation)
 		newVariance, higherLevel, outStats, lowerNorm, logResults, success = \
 					integrate(data = dataRnd,
 								relations = relations,
@@ -804,8 +804,8 @@ def getVarConf(variance,
 								removeDuplicateUpper = removeDuplicateUpper,
 								tags = tags,
 								logicOperatorsAsWords = logicOperatorsAsWords)
-		print "New variance: %f" % newVariance
-		print
+		print("New variance: %f" % newVariance)
+		print()
 		
 		varianceArray.append(newVariance)
 	
@@ -820,7 +820,7 @@ def getVarConf(variance,
 	
 def printHelp(version = None, advanced = False):
 
-	print """
+	print("""
 SanXoT %s is a program made in the Jesus Vazquez Cardiovascular Proteomics
 Lab at Centro Nacional de Investigaciones Cardiovasculares, used to perform
 integration of experimental data to a higher level (such as integration from
@@ -880,10 +880,10 @@ And delivers six output file:
      stats file, compared to the theoretical normal distribution. By default,
      this file is suffixed "_outGraph".
      
-Usage: sanxot.py -d[data file] -r[relations file] [OPTIONS]""" % version
+Usage: sanxot.py -d[data file] -r[relations file] [OPTIONS]""" % version)
 
 	if advanced:
-		print """
+		print("""
    -h, --help          Display basic help and exit.
    -H, --advanced-help Display this help and exit.
    -A, --outrandom=filename
@@ -1046,10 +1046,10 @@ C:\\data\\infofile.txt, and saving the resulting graph in C:\\data\\ instead
 of C:\\temp\\:
 
 sanxot -dC:\\temp\\datafile.txt -rrelationsfile.txt -f -VC:\\data\\infofile.txt -GC:\\data\\graphFile.png
-"""
+""")
 	else:
-		print """
-Use -H or --advanced-help for more details."""
+		print("""
+Use -H or --advanced-help for more details.""")
 
 	return
 
@@ -1058,7 +1058,7 @@ Use -H or --advanced-help for more details."""
 def main(argv):
 
 	# general
-	version = "v2.16"
+	version = "v2.17"
 	
 	# filename options
 	analysisName = ""
@@ -1090,7 +1090,7 @@ def main(argv):
 	defaultOutputConfluencedFile = "outConfluRels"
 	
 	# filename options - file extensions
-	defaultTableExtension = ".xls"
+	defaultTableExtension = ".tsv"
 	defaultTextExtension = ".txt"
 	defaultGraphExtension = ".png"
 	
@@ -1421,19 +1421,19 @@ def main(argv):
 		stats.saveFile(outputLowerV, lowerVTable, "idinf\tX'inf\tVinf")
 	
 	if verbose:
-		print
-		print "*** results ***"
+		print()
+		print("*** results ***")
 		if success:
-			print "variance = " + str(variance)
+			print("variance = " + str(variance))
 		else:
-			print "variance not found"
+			print("variance not found")
 		
-		print
-		print "Higher file in: " + outputHigher
-		print "Lower file in: " + outputLowerW
-		print "Stats file in: " + outputStats
-		print "Graph in: " + graphFile
-		print "Info file in: " + infoFile
+		print()
+		print("Higher file in: " + outputHigher)
+		print("Lower file in: " + outputLowerW)
+		print("Stats file in: " + outputStats)
+		print("Graph in: " + graphFile)
+		print("Info file in: " + infoFile)
 	
 	if success:
 		logList.append(["Variance = " + str(variance)])
@@ -1442,8 +1442,8 @@ def main(argv):
 	
 	if totSimulations > 0:
 		if verbose:
-			print
-			print "Calculating confidence limits of variance..."
+			print()
+			print("Calculating confidence limits of variance...")
 			
 		varMedian, varLower, varUpper = getVarConf(variance, dataFile, relationsFile, totSimulations, varConfLimit, tags = tags, logicOperatorsAsWords = logicOperatorsAsWords)
 		# very important, do not include the word "Variance" here
@@ -1467,7 +1467,7 @@ def main(argv):
 			FDRijList.append(element.FDRij)
 		
 		# this is a trick to remove "not a number" element fast
-		for i in xrange(len(ZijList)):
+		for i in range(len(ZijList)):
 			if str(FDRijList[i]).lower() == "nan" or str(FDRijList[i]).lower() == "excluded":
 				ZijList[i] = sys.float_info.max
 				
@@ -1481,7 +1481,7 @@ def main(argv):
 		
 		newZijList = []
 		N = len(ZijList)
-		for i in xrange(N):
+		for i in range(N):
 			newZijList.append([ZijList[i], float(i) / float(N)])
 		
 		if len(graphTitle) == 0:

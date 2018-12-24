@@ -1,4 +1,5 @@
-﻿import pdb
+
+import pdb
 import sys
 import getopt
 import stats
@@ -43,11 +44,11 @@ from optparse import OptionParser
 
 def easterEgg():
 
-	print u"""
+	print("""
 ... pero dígame vuestra merced, señor bachiller: ¿qué hazañas mías son las que
 más se ponderan en esa historia?
 
-Don Quixote, Part Two, Chapter III."""
+Don Quixote, Part Two, Chapter III.""")
 
 #------------------------------------------------------
 
@@ -74,26 +75,26 @@ def calibrate(inputRawData = None,
 	extraLog = []
 	extraLog.append([])
 	if verbose:
-		print
-		print "loading input raw data file"
+		print()
+		print("loading input raw data file")
 		extraLog.append(["loading input raw data file"])
 	
 	if inputRawData == None:
 		if len(rawDataFile) == 0:
-			print "Error: no input raw data"
+			print("Error: no input raw data")
 			extraLog.append(["Error: no input raw data"])
 			
 		else:
 			inputRawData = stats.loadInputDataFile(rawDataFile)
 	
 	if verbose:
-		print "loading relations file"
+		print("loading relations file")
 		extraLog.append(["loading relations file"])
 	
 	if inputRelations == None:
 		if len(relationsFile) == 0:
 			if not forceParameters:
-				print "Error: no relations file"
+				print("Error: no relations file")
 				extraLog.append(["Error: no relations file"])
 				return None, None, None, None, extraLog
 		else:
@@ -104,7 +105,7 @@ def calibrate(inputRawData = None,
 	alpha = 1.0
 	if not forceParameters:
 		if verbose:
-			print "calculating K and variance"
+			print("calculating K and variance")
 			extraLog.append(["calculating K and variance"])
 
 		# *** just to see it
@@ -182,8 +183,8 @@ def getMADDistribution(nextIdX,
 	
 	if len(newlist) < medianSide * 2:
 		if verbose:
-			print 'Not enough data to perform statistics,'
-			print 'len(newlist) = %s, while medianSide = %s' % (str(len(newlist)), str(medianSide))
+			print('Not enough data to perform statistics,')
+			print('len(newlist) = %s, while medianSide = %s' % (str(len(newlist)), str(medianSide)))
 		sys.exit()
 	
 	for i in range(len(newlist))[medianSide:len(newlist) - medianSide]:
@@ -205,7 +206,7 @@ def getMADDistribution(nextIdX,
 		distrWeight.append(newlist[i][3])
 
 	if verbose:
-		print 'k = %f, var = %f' % (k, variance)
+		print('k = %f, var = %f' % (k, variance))
 
 	return MADDistribution, distrWeight
 
@@ -244,7 +245,7 @@ def residuals(params, inputRawData, inputRelations, medianSide, verbose = False,
 	
 	windowWidth = medianSide * 2 + 1
 	if len(inputRawData) < windowWidth:
-		print 'Error: window for median is bigger than total input size'
+		print('Error: window for median is bigger than total input size')
 		sys.exit()
 	
 	# output = makeStats(k, variance, input = input)
@@ -260,7 +261,7 @@ def residuals(params, inputRawData, inputRelations, medianSide, verbose = False,
 	theorArray = asarray(theoretical[medianSide:len(experimental) - medianSide + 1])
 	
 	if len(experArray) != len(theorArray):
-		print 'Error: experimental and theoretical array do not match'
+		print('Error: experimental and theoretical array do not match')
 		sys.exit()
 	
 	if verbose:
@@ -270,14 +271,14 @@ def residuals(params, inputRawData, inputRelations, medianSide, verbose = False,
 				totSumSQ += (experArray[i] - theorArray[i]) ** 2
 			
 			if useCooperativity:
-				print 'k = %g, var = %g, alpha = %g, sumSQ = %e' % (k, variance, alpha, totSumSQ)
+				print('k = %g, var = %g, alpha = %g, sumSQ = %e' % (k, variance, alpha, totSumSQ))
 			else:
-				print 'k = %g, var = %g, sumSQ = %e' % (k, variance, totSumSQ)
+				print('k = %g, var = %g, sumSQ = %e' % (k, variance, totSumSQ))
 		else:
 			if useCooperativity:
-				print 'k = ' + str(k) + ', var = ' + str(variance) + ', alpha = ' + str(alpha)
+				print('k = ' + str(k) + ', var = ' + str(variance) + ', alpha = ' + str(alpha))
 			else:
-				print 'k = ' + str(k) + ', var = ' + str(variance)
+				print('k = ' + str(k) + ', var = ' + str(variance))
 		
 	diff = experArray - theorArray
 	return diff
@@ -301,7 +302,7 @@ def getNextIdX_klibrate(idXVall, relations, k = 1.0, variance = 0.0, alpha = 1.0
 	XWlist = []
 	
 	if len(mergedData) == 0:
-		print "Error, merged data list is empty. Please check the provided files do exist and are not corrupt."
+		print("Error, merged data list is empty. Please check the provided files do exist and are not corrupt.")
 		sys.exit()
 	
 	while position < len(mergedData):
@@ -383,10 +384,10 @@ def getKandVariance(inputRawData,
 	# varianceOut = variance
 	
 	if verbose:
-		print
-		print "K = " + str(kOut)
-		print "Variance = " + str(varianceOut)
-		if useCooperativity: print "Alpha = " + str(alphaOut)
+		print()
+		print("K = " + str(kOut))
+		print("Variance = " + str(varianceOut))
+		if useCooperativity: print("Alpha = " + str(alphaOut))
 		
 	if useCooperativity: return [kOut, varianceOut, alphaOut]
 	else: return [kOut, varianceOut]
@@ -412,7 +413,7 @@ def showGraphTool(inputRawData,
 	
 	windowWidth = medianSide * 2 + 1
 	if len(inputRawData) < windowWidth:
-		print 'Error: window for median is bigger than total input size'
+		print('Error: window for median is bigger than total input size')
 		sys.exit()
 	
 	# output = makeStats(k, variance, input = input)
@@ -434,14 +435,14 @@ def showGraphTool(inputRawData,
 	# stats.saveFile(folderToSave + "weights.txt", weights)
 	
 	if showRank:
-		plt.plot(range(len(MADdistrOut)), MADdistrOut, 'g.', range(len(invOfFitOut)), invOfFitOut, 'r', linewidth=1.0, markersize=2.0, markeredgewidth=0.0)
+		plt.plot(list(range(len(MADdistrOut))), MADdistrOut, 'g.', list(range(len(invOfFitOut))), invOfFitOut, 'r', linewidth=1.0, markersize=2.0, markeredgewidth=0.0)
 		plt.xlabel('rank($V_s$)')
 		plt.ylabel('1 / MSD')
 		
 		# to save data
 		# *** use a better filename
 		dataToSave = []
-		for i in xrange(len(MADdistrOut)):
+		for i in range(len(MADdistrOut)):
 			dataToSave.append([i, weights[i], MADdistrOut[i], invOfFitOut[i]])
 			
 		if graphData:
@@ -499,7 +500,7 @@ def printHelp(version):
 	
 	# add alpha constant
 	
-	print """
+	print("""
 Klibrate %s is a program made in the Jesus Vazquez Cardiovascular Proteomics
 Lab at Centro Nacional de Investigaciones Cardiovasculares, used to perform the
 calibration of experimental data, as a first step to integrate these data into
@@ -601,16 +602,16 @@ examples:
 
 * To calculate the variance and k starting with a seed v = 0.03 and k = 40, printing the steps of the Levenberg-Marquardt algorithm and results, showing the rank(Vs) vs 1 / MSD graph afterwards:
 
-klibrate.py -gbs -v0.03 -k40 -dC:\\temp\\originalDataFile.txt -rC:\\temp\\relationsFile.txt -oC:\\temp\\calibratedWeights.xls
+klibrate.py -gbs -v0.03 -k40 -dC:\\temp\\originalDataFile.txt -rC:\\temp\\relationsFile.txt -oC:\\temp\\calibratedWeights.tsv
 
 * To get fast results of an integration forcing a variance = 0.02922 and a k = 35.28:
 
-klibrate.py -f -v0.02922 -k35.28 -dC:\\temp\\originalDataFile.txt -rC:\\temp\\relationsFile.txt -oC:\\temp\\calibratedWeights.xls
+klibrate.py -f -v0.02922 -k35.28 -dC:\\temp\\originalDataFile.txt -rC:\\temp\\relationsFile.txt -oC:\\temp\\calibratedWeights.tsv
 
 * To see the graph resulting from a calculation with variance = 0.02922 and a k = 35.28:
 
-klibrate.py -gf -v0.02922 -k35.28 -dC:\\temp\\originalDataFile.txt -rC:\\temp\\relationsFile.txt -oC:\\temp\\calibratedWeights.xls
-""" % version
+klibrate.py -gf -v0.02922 -k35.28 -dC:\\temp\\originalDataFile.txt -rC:\\temp\\relationsFile.txt -oC:\\temp\\calibratedWeights.tsv
+""" % version)
 
 	return
 
@@ -618,7 +619,7 @@ klibrate.py -gf -v0.02922 -k35.28 -dC:\\temp\\originalDataFile.txt -rC:\\temp\\r
 
 def main(argv):
 	
-	version = "v1.16"
+	version = "v1.18"
 	verbose = True
 	showGraph = True
 	graphDPI = 100 # default of Matplotlib's savefig method
@@ -653,7 +654,7 @@ def main(argv):
 	defaultOutputGraphVValue = "outGraph_VValue"
 	defaultGraphDataFile = "outGraph_Data"
 	defaultOutputCalibrated = "calibrated"
-	defaultTableExtension = ".xls"
+	defaultTableExtension = ".tsv"
 	defaultTextExtension = ".txt"
 	defaultGraphExtension = ".png"
 	
@@ -661,7 +662,7 @@ def main(argv):
 		opts, args = getopt.getopt(argv, "a:p:k:v:c:d:r:o:w:m:L:G:D:R:K:V:bgsfh", ["analysis=", "folder=", "kseed=", "varianceseed=", "alphaseed=", "datafile=", "relfile=", "outputfile=", "window=", "maxiterations=", "infofile=", "outgraphvrank=", "outgraphvvalue=", "outgraphdata=", "kfile=", "varfile=", "no-verbose", "no-showgraph", "no-showsteps", "forceparameters", "showrank", "help", "egg", "easteregg"])
 	except getopt.GetoptError:
 		message = "Error while getting parameters."
-		print message
+		print(message)
 		logList.append([message])
 		# stats.saveFile(infoFile, logList, "INFO FILE")
 		sys.exit(2)
@@ -836,16 +837,16 @@ def main(argv):
 		stats.saveFile(infoFile, logList, "INFO FILE")
 	
 	if verbose:
-		print
-		print "*** results ***"
-		print "k = " + str(k)
-		print "variance = " + str(variance)
-		if useCooperativity: print "alpha = " + str(alpha)
-		print
-		print "Output calibrated file in: " + outputCalibrated
-		print "Graph with rank of V in: " + graphFileVRank
-		print "Graph with value of V in: " + graphFileVValue
-		print "Info file in: " + infoFile
+		print()
+		print("*** results ***")
+		print("k = " + str(k))
+		print("variance = " + str(variance))
+		if useCooperativity: print("alpha = " + str(alpha))
+		print()
+		print("Output calibrated file in: " + outputCalibrated)
+		print("Graph with rank of V in: " + graphFileVRank)
+		print("Graph with value of V in: " + graphFileVValue)
+		print("Info file in: " + infoFile)
 	
 #######################################################
 

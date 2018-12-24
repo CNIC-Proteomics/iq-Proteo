@@ -1,4 +1,4 @@
-﻿from __future__ import division
+
 import pdb
 import sys
 import getopt
@@ -20,7 +20,7 @@ conditions = [">=", "<=", "!=", "<>", "==", "!~", "~~", ">", "<"]
 
 def easterEgg():
 
-	print u"""
+	print("""
 Estando yo un día en el Alcaná de Toledo, llegó un muchacho a vender unos
 cartapacios y papeles viejos a un sedero; y, como yo soy aficionado a leer,
 aunque sean los papeles rotos de las calles, llevado desta mi natural
@@ -32,7 +32,7 @@ volviendo de improviso el arábigo en castellano, dijo que decía: Historia de
 don Quijote de la Mancha, escrita por Cide Hamete Benengeli, historiador
 arábigo.
 
-Don Quixote, Part One, Chapter IX."""
+Don Quixote, Part One, Chapter IX.""")
 
 #------------------------------------------------------
 
@@ -178,7 +178,7 @@ def checkFilter(filter, isXML = True, columns = None, currentRow = [], headers =
 		
 		endParenth = findEndParenth(filter, startParenth, curlyBrackets = curlyBrackets)
 		if endParenth < startParenth:
-			print "\nError, please check that all brackets are properly formed.\n"
+			print("\nError, please check that all brackets are properly formed.\n")
 			sys.exit(2)
 		
 		subFilter = filter[startParenth + 1:endParenth].strip()
@@ -298,7 +298,7 @@ def checkFilterPartDOM(columns, filter):
 	
 	if len(filterVariable) > 0 and len(filterCondition) > 0 and len(filterValue) > 0:
 		filterOk = False
-		for i in xrange(len(columns)):
+		for i in range(len(columns)):
 			if columns[i].nodeType == columns[i].ELEMENT_NODE:
 				nodeNameBrackets = "[" + columns[i].nodeName + "]"
 				if nodeNameBrackets == filterVariable:
@@ -334,7 +334,7 @@ def checkFilterPartTXT(currentRow, headers, filter, useNumbers = False):
 	
 	if len(filterVariable) > 0 and len(filterCondition) > 0 and len(filterValue) > 0:
 		filterOk = False
-		for i in xrange(len(headers)):
+		for i in range(len(headers)):
 			nodeNameBrackets = "[" + headers[i] + "]"
 			if nodeNameBrackets == filterVariable:
 				cellContents = currentRow[i]
@@ -365,7 +365,7 @@ def checkFilterPartXML(columns, filter, useNumbers = False):
 	
 	if len(filterVariable) > 0 and len(filterCondition) > 0 and len(filterValue) > 0:
 		filterOk = False
-		for i in xrange(len(columns)):
+		for i in range(len(columns)):
 			nodeNameBrackets = "[" + columns[i].tag + "]"
 			if nodeNameBrackets == filterVariable:
 				cellContents = columns[i].text
@@ -378,7 +378,7 @@ def checkFilterPartXML(columns, filter, useNumbers = False):
 
 def printHelp(version = None):
 
-	print """
+	print("""
 Aljamia %s is a program made in the Jesus Vazquez Cardiovascular
 Proteomics Lab at Centro Nacional de Investigaciones Cardiovasculares, used to
 convert data in xml tables into a tab-separated values archive.
@@ -501,7 +501,7 @@ Usage: aljamia.py -x[xml file] -i[fold field] [-j[weight field] -k[id string], .
                        (see options -f and -F).
    -x, --input=filename, --filename=filename
                        Input xml or txt (tsv) file.
-""" % version
+""" % version)
 
 	return
 
@@ -534,13 +534,13 @@ def getDataFromTXT(fileName,
 		if currentRowNumber >= initialRow:
 			thisRow = myRow.strip().split(inputSeparator)
 			if removeCommas:
-				for i in xrange(len(thisRow)):
+				for i in range(len(thisRow)):
 					if thisRow[i].endswith('"') and thisRow[i].startswith('"'):
 						thisRow[i] = thisRow[i][1:-1]
 			
 			if currentRowNumber == initialRow:
 				# remove brackets if present
-				for i in xrange(len(thisRow)):
+				for i in range(len(thisRow)):
 					if thisRow[i].startswith('[') and thisRow[i].endswith(']'):
 						thisRow[i] = thisRow[i][1:-1]
 					thisHeader = thisRow
@@ -656,7 +656,7 @@ def replaceValuesDOM(columns, field):
 	# deprecated: it was intended to work with minidom
 	
 	value = field
-	for i in xrange(len(columns)):
+	for i in range(len(columns)):
 
 		if columns[i].nodeType == columns[i].ELEMENT_NODE:
 			
@@ -673,7 +673,7 @@ def replaceValuesTXT(currentRow, headers, field, allowOperations = True):
 	# version to work with tab separated values text
 
 	value = field
-	for i in xrange(len(headers)):
+	for i in range(len(headers)):
 		nodeNameBrackets = "[" + headers[i] + "]"
 		if nodeNameBrackets in value:
 			if i >= len(currentRow):
@@ -697,7 +697,7 @@ def replaceValuesXML(columns, field):
 	# version to work with ElementTree
 	
 	value = field
-	for i in xrange(len(columns)):
+	for i in range(len(columns)):
 		nodeNameBrackets = "[" + columns[i].tag + "]"
 		if nodeNameBrackets in value:
 			value = value.replace(nodeNameBrackets, columns[i].text)
@@ -871,7 +871,7 @@ def main(argv):
 			#xmlDocument = dom.parse(fileName)
 			xmlDocument = ElementTree.parse(fileName).getroot()
 		except:
-			print "Error while reading xml file."
+			print("Error while reading xml file.")
 			logList.append(["Error while reading xml file."])
 			stats.saveFile(logFile, logList, "LOG FILE")
 			sys.exit(2)

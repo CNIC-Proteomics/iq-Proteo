@@ -12,6 +12,16 @@ Checkout the current version from the SVN repository
 svn co svn://aitne.cnic.es/proteomica/integrador/tags/current SanXoT
 ```
 
+### Convert Python2 to Python3
+```bash
+cd SanXoT_svn && python3 "c:/Python27/Tools/Scripts/2to3.py" --output-dir=../SanXoT -w -n aljamia.py klibrate.py sanxot.py sanxotsieve.py stats.py
+
+cd ../SanXoT_py3_bak && cp -rp category2all.py p2site.py peptide2all.py peptide2protein.py protein2all.py protein2category.py rels2pq* rels2sp.py scan2peptide.* wf.py ../SanXoT/.
+
+cd ../SanXoT && dos2unix.exe *.py && chmod -x *.py
+
+```
+
 
 ## pRatio
 

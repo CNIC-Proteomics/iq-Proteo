@@ -2,32 +2,33 @@ import sys
 import os
 import logging
 import re
-
 import aljamia
 import klibrate
 import sanxot
 import sanxotsieve
 
-
 # Module metadata variables
 __author__ = "Jose Rodriguez"
-__credits__ = ["Marco Trevisan", "Jesus Vazquez"]
+__credits__ = ["Jose Rodriguez", "Jesus Vazquez"]
 __license__ = "Creative Commons Attribution-NonCommercial-NoDerivs 4.0 Unported License https://creativecommons.org/licenses/by-nc-nd/4.0/"
 __version__ = "1.0.1"
 __maintainer__ = "Jose Rodriguez"
 __email__ = "jmrodriguezc@cnic.es"
 __status__ = "Development"
 
-from cStringIO import StringIO
+from io import StringIO
 class capturing(list):
     def __enter__(self):
         self._stdout = sys.stdout
+        self._stderr = sys.stderr
         sys.stdout = self._stringio = StringIO()
+        sys.stderr = self._stringio = StringIO()
         return self
     def __exit__(self, *args):
         self.extend(self._stringio.getvalue().splitlines())
         del self._stringio    # free up some memory
         sys.stdout = self._stdout
+        sys.stderr = self._stderr
 
 class builder:
     '''
@@ -50,6 +51,7 @@ class builder:
             # TODO!! improve the logger instance when it is not given by input
             self.logger = logging.getLogger(__name__)        
         
+
     def _convert_dict_list(self, r, o):
         '''
         Convert the dictionary to list
@@ -67,7 +69,7 @@ class builder:
             elif type(o) is str:
                 dlist.extend( o.split() )
         # create parameter list
-        for key, value in params.iteritems():
+        for key, value in params.items():
             dlist.append( str(key) )
             if value != "":
                 dlist.append( str(value) )
@@ -145,24 +147,23 @@ class builder:
             self._print_exception(2, "Exception occured: executing sanxotsieve")
 
 
-    # DEPRECATED ------------------------
 
+
+    # DEPRECATED ------------------------
     # def scan2peptide(self, iparams, optparams=None):
     #     '''
     #     Function scan to peptide
     #     '''
     #     corename = "scan2peptide"
     #     coreabrv = "S2P"
-
     #     # execution ---
     #     method = 'aljamia1'
     #     self.logger.info(coreabrv+": execute "+method)
     #     optparam = self._get_opt_params(corename, method, optparams)
     #     self.aljamia({
     #         "-x": iparams['-x'],
-    #         "-o": "s2p_uncalibrated.xls",
+    #         "-o": "s2p_uncalibrated.tsv",
     #     }, optparam)
-
     #     # execution ---
     #     method = 'aljamia2'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -171,17 +172,15 @@ class builder:
     #         "-x": iparams['-x'],
     #         "-o": iparams['-r'],
     #     }, optparam)
-
     #     # execution ---
     #     method = 'klibrate1'
     #     self.logger.info(coreabrv+": execute "+method)
     #     optparam = self._get_opt_params(corename, method, optparams)
     #     self.klibrate({
-    #         "-d": "s2p_uncalibrated.xls",
+    #         "-d": "s2p_uncalibrated.tsv",
     #         "-r": iparams['-r'],
     #         "-o": iparams['-d'],
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxot1'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -191,7 +190,6 @@ class builder:
     #         "-d": iparams['-d'],
     #         "-r": iparams['-r'],
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxotsieve1'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -202,7 +200,6 @@ class builder:
     #         "-f": iparams['-f'],
     #         "-V": "s2p_outs_infoFile.txt",
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxot2'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -210,19 +207,17 @@ class builder:
     #     self.sanxot({
     #         "-a": "s2p_nouts",
     #         "-d": iparams['-d'],
-    #         "-r": "scans_tagged.xls",
+    #         "-r": "scans_tagged.tsv",
     #         "-o": iparams['-o'],
     #         "-V": "s2p_outs_infoFile.txt",
     #     }, optparam)
         
-
     # def peptide2protein(self, iparams, optparams=None):
     #     '''
     #     Function peptide to protein
     #     '''
     #     corename = "peptide2protein"
     #     coreabrv = "P2Q"
-
     #     # execution ---
     #     method = 'aljamia1'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -231,7 +226,6 @@ class builder:
     #         "-x": iparams['-x'],
     #         "-o": iparams['-r'],
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxot1'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -241,7 +235,6 @@ class builder:
     #         "-d": iparams['-d'],
     #         "-r": iparams['-r'],
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxotsieve1'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -252,7 +245,6 @@ class builder:
     #         "-f": iparams['-f'],
     #         "-V": "p2q_outs_infoFile.txt",
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxot2'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -260,26 +252,21 @@ class builder:
     #     self.sanxot({
     #         "-a": "p2q_nouts",
     #         "-d": iparams['-d'],
-    #         "-r": "peptides_tagged.xls",
+    #         "-r": "peptides_tagged.tsv",
     #         "-o": iparams['-o'],
     #         "-V": "p2q_outs_infoFile.txt",
     #     }, optparam)
-
-
     # def peptide2category(self):
     #     '''
     #     Function peptide to category
     #     '''
     #     print("peptide to category")
-
-
     # def protein2category(self, iparams, optparams=None):
     #     '''
     #     Function protein to category
     #     '''
     #     corename = "protein2category"
     #     coreabrv = "Q2C"
-
     #     # execution ---
     #     method = 'sanxot1'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -289,7 +276,6 @@ class builder:
     #         "-d": iparams['-d'],
     #         "-r": iparams['-r'],
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxotsieve1'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -300,7 +286,6 @@ class builder:
     #         "-f": iparams['-f'],
     #         "-V": "q2c_outs_infoFile.txt",
     #     }, optparam)
-
     #     # execution ---
     #     method = 'sanxot2'
     #     self.logger.info(coreabrv+": execute "+method)
@@ -308,24 +293,20 @@ class builder:
     #     self.sanxot({
     #         "-a": "q2c_nouts",
     #         "-d": iparams['-d'],
-    #         "-r": "proteins_tagged.xls",
+    #         "-r": "proteins_tagged.tsv",
     #         "-o": iparams['-o'],
     #         "-V": "q2c_outs_infoFile.txt",
     #     }, optparam)
-
-
     # def peptide2all(self):
     #     '''
     #     Function peptide to all
     #     '''
     #     print("peptide to all")
-
     # def protein2all(self):
     #     '''
     #     Function protein to all
     #     '''
     #     print("protein to all")
-
     # def protein2all(self):
     #     '''
     #     Function category to all

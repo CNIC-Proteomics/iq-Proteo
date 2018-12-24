@@ -69,7 +69,7 @@ def main(args):
     w.sanxotsieve(p, params["sanxotsieve1"])
 
     logging.info("execute sanxot")
-    tagfile = os.path.splitext( os.path.basename(args.pepfile) )[0] + "_tagged.xls"
+    tagfile = os.path.splitext( os.path.basename(args.pepfile) )[0] + "_tagged.tsv"
     p = { "-a": "p2q_nouts", "-d": args.pepfile, "-r": tagfile, "-o": args.profile }
     if args.variance:
         p["-v"] = args.variance

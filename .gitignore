@@ -23,6 +23,8 @@ wf/.snakemake
 # SanXoT
 src/SanXoT/.svn
 src/SanXoT/*.pyc
+src/SanXoT/__pycache__
+
 src/SanXoT/help
 src/SanXoT/standalone exes
 src/SanXoT/Desktop.ini

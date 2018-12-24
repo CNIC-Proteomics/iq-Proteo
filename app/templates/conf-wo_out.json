@@ -66,8 +66,8 @@
           },
           "outfile":  "scans.tsv",
           "outfile2": "peptides.tsv",
-          "outfile3": "s2p_nouts_outStats.xls",
-          "outfile4": "s2p_outs_outStats.xls"
+          "outfile3": "s2p_nouts_outStats.tsv",
+          "outfile4": "s2p_outs_outStats.tsv"
         },
         "peptide2protein": {
           "enabled": true,
@@ -78,8 +78,8 @@
             "sanxot2": " -g  -f "
           },
           "outfile":  "proteins.tsv",
-          "outfile2": "p2q_nouts_outStats.xls",
-          "outfile3": "p2q_outs_outStats.xls"
+          "outfile2": "p2q_nouts_outStats.tsv",
+          "outfile3": "p2q_outs_outStats.tsv"
         },
         "protein2category": {
           "enabled": true,
@@ -90,8 +90,8 @@
             "sanxot2": " -g  -f "
           },
           "outfile":  "categories.tsv",
-          "outfile2": "q2c_nouts_outStats.xls",
-          "outfile3": "q2c_outs_outStats.xls"
+          "outfile2": "q2c_nouts_outStats.tsv",
+          "outfile3": "q2c_outs_outStats.tsv"
         },
         "peptide2all": {
           "enabled": true,
@@ -99,7 +99,7 @@
             "sanxot1": " -C -g "
           },
           "outfile":  "pep2all.tsv",
-          "outfile2": "p2a_outs_outStats.xls"
+          "outfile2": "p2a_outs_outStats.tsv"
         },
         "protein2all": {
           "enabled": true,
@@ -107,7 +107,7 @@
             "sanxot1": " -C -g -f "
           },
           "outfile":  "pro2all.tsv",
-          "outfile2": "q2a_outs_outStats.xls"
+          "outfile2": "q2a_outs_outStats.tsv"
         },
         "category2all": {
           "enabled": true,
@@ -115,22 +115,22 @@
             "sanxot1": " -v 0 -C -g -f "
           },
           "outfile":  "cat2all.tsv",
-          "outfile2": "c2a_outs_outStats.xls"
+          "outfile2": "c2a_outs_outStats.tsv"
         }
       },
       "compilator": {
         "compilator": {
           "enabled": true,
           "prefixes": [
-            "s2p_nouts_outStats.xls",
-            "s2p_outs_outStats.xls",
-            "p2q_nouts_outStats.xls",
-            "p2q_outs_outStats.xls",
-            "q2c_nouts_outStats.xls",
-            "q2c_outs_outStats.xls",
-            "p2a_outs_outStats.xls",
-            "q2a_outs_outStats.xls",
-            "c2a_outs_outStats.xls"
+            "s2p_nouts_outStats.tsv",
+            "s2p_outs_outStats.tsv",
+            "p2q_nouts_outStats.tsv",
+            "p2q_outs_outStats.tsv",
+            "q2c_nouts_outStats.tsv",
+            "q2c_outs_outStats.tsv",
+            "p2a_outs_outStats.tsv",
+            "q2a_outs_outStats.tsv",
+            "c2a_outs_outStats.tsv"
           ]
         }
       }

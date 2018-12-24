@@ -271,11 +271,11 @@ def main(args):
     logging.info("aljamia for peptide to protein")
     w.aljamia({
         "-x": args.idqfile,
-        "-o": "p2q_rels_aux.xls"
+        "-o": "p2q_rels_aux.tsv"
     }, params["aljamia1"])
 
     logging.info('create corrector object')
-    co = corrector(w.tmpdir+"/p2q_rels_aux.xls", args.species, args.pretxt, args.indb)
+    co = corrector(w.tmpdir+"/p2q_rels_aux.tsv", args.species, args.pretxt, args.indb)
 
     logging.info('calculate the unique protein')
     co.get_unique_protein()

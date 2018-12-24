@@ -6,6 +6,9 @@ import sys
 import os
 import gc
 from time import strftime
+# begin: jmrc
+import math
+# end: jmrc
 
 import pprint
 pp = pprint.PrettyPrinter(indent=4)
@@ -84,7 +87,10 @@ def detectRelationWithLeastFDR(statsData, FDRLimit = 0.01, modeUsed = mode.onlyO
 			
 	if modeUsed == mode.onePerHigher:
 		for statsRow in sortedStats:
-			if statsRow.FDRij < FDRLimit:
+			# begin: jmrc
+			# if statsRow.FDRij < FDRLimit:
+			if isinstance(statsRow.FDRij, float) and statsRow.FDRij < FDRLimit:
+			# end: jmrc
 				higherSelection = stats.filterByElement(relationsToRemove, statsRow.id2)
 				if len(higherSelection) == 0:
 					# add new outlier relation
@@ -111,8 +117,13 @@ def detectOutliers(statsData, FDRLimit = 0.01):
 	relationUnderFDR = []
 	
 	for row in statsData:
-		if row.FDRij < FDRLimit:
-			relationUnderFDR.append([row.id2, row.id1])
+		# begin: jmrc
+		# if row.FDRij < FDRLimit:
+		#	relationUnderFDR.append([row.id2, row.id1])
+		if isinstance(row.FDRij, float) and not math.isnan(row.FDRij):
+			if row.FDRij < FDRLimit:
+				relationUnderFDR.append([row.id2, row.id1])
+		# end: jmrc
 
 	return relationUnderFDR
 	
@@ -170,12 +181,12 @@ def getRelationsWithoutOutliers(data, relations, variance, FDRLimit = 0.01, mode
 		totOutliers = detectOutliers(newStats, FDRLimit = FDRLimit)
 		outliers = detectRelationWithLeastFDR(newStats, FDRLimit = FDRLimit, modeUsed = modeUsed)
 		
-		print
+		print()
 		if len(outliers) > 0:
-			print "%i outliers found, removing %i of them, and recalculating..." % (len(totOutliers), len(outliers))
+			print("%i outliers found, removing %i of them, and recalculating..." % (len(totOutliers), len(outliers)))
 		else:
-			print "No outliers found at %f FDR." % FDRLimit
-			print
+			print("No outliers found at %f FDR." % FDRLimit)
+			print()
 		
 		dummyHigher = []
 		newStats = []
@@ -213,12 +224,12 @@ def tagRelationsWithoutOutliers(data, relations, variance, FDRLimit = 0.01, mode
 		totOutliers = detectOutliers(newStats, FDRLimit = FDRLimit)
 		outliers = detectRelationWithLeastFDR(newStats, FDRLimit = FDRLimit, modeUsed = modeUsed)
 		
-		print
+		print()
 		if len(outliers) > 0:
-			print "%i outliers found, tagging %i of them as 'out', and recalculating..." % (len(totOutliers), len(outliers))
+			print("%i outliers found, tagging %i of them as 'out', and recalculating..." % (len(totOutliers), len(outliers)))
 		else:
-			print "No outliers found at %f FDR." % FDRLimit
-			print
+			print("No outliers found at %f FDR." % FDRLimit)
+			print()
 		
 		dummyHigher = []
 		newStats = []
@@ -232,7 +243,7 @@ def tagRelationsWithoutOutliers(data, relations, variance, FDRLimit = 0.01, mode
 	
 def printHelp(version = None, advanced = False):
 
-	print """
+	print("""
 SanXoTSieve %s is a program made in the Jesus Vazquez Cardiovascular
 Proteomics Lab at Centro Nacional de Investigaciones Cardiovasculares, used to
 perform automatical removal of lower level outliers in an integration
@@ -252,10 +263,10 @@ commands -V (assigned from the info file of the integration.) or -v.
      
      * the log file.
      
-Usage: sanxotsieve.py -d[data file] -r[relations file] -V[info file] [OPTIONS]""" % version
+Usage: sanxotsieve.py -d[data file] -r[relations file] -V[info file] [OPTIONS]""" % version)
 
 	if advanced:
-		print """
+		print("""
    -h, --help          Display basic help and exit.
    -H, --advanced-help Display this help and exit.
    -a, --analysis=string
@@ -319,10 +330,10 @@ Usage: sanxotsieve.py -d[data file] -r[relations file] -V[info file] [OPTIONS]""
                             --tags="!out&(dig0|dig1)"
                             --tags="(!dig0&!dig1)|mod1"
                             --tags="mod1|mod2|mod3"
-"""
+""")
 	else:
-		print """
-Use -H or --advanced-help for more details."""
+		print("""
+Use -H or --advanced-help for more details.""")
 
 	return
 	
@@ -330,7 +341,7 @@ Use -H or --advanced-help for more details."""
 
 def main(argv):
 	
-	version = "v0.16"
+	version = "v0.17"
 	analysisName = ""
 	analysisFolder = ""
 	varianceSeed = 0.001
@@ -352,7 +363,7 @@ def main(argv):
 	defaultOutputInfo = "infoFile"
 	infoFile = ""
 	varFile = ""
-	defaultTableExtension = ".xls"
+	defaultTableExtension = ".tsv"
 	defaultTextExtension = ".txt"
 	defaultGraphExtension = ".png"
 	verbose = True
