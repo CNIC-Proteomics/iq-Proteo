@@ -16,6 +16,8 @@
 
 7. Now that R is installed, you need to download and install RStudio. 
 
+Recommendation: Use R 3.5 or higger because fix a bug moving temporal files
+
 ## Linux distribution
 
 1. Open an internet browser and go to [www.r-project.org](http://www.r-project.org/).
