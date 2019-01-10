@@ -6,8 +6,9 @@ ECHO **
 ECHO ** sets the env. variables from input parameters:
 
 ECHO **
-FOR  %%i in ("%~dp0") do SET "SRC_HOME=%%~fi"
+SET  SRC_HOME="%~dp0"
 SET  SRC_HOME=%SRC_HOME:"=%
+SET  SRC_HOME=%SRC_HOME:~0,-1%
 
 ECHO **
 SET  LIB_VERSION=0.1
@@ -30,14 +31,6 @@ ECHO **
 SET  NODE_HOME=%LIB_HOME%/node
 SET  NODE_PATH=%NODE_HOME%/node_modules
 
-ECHO **
-ECHO %SRC_HOME%
-ECHO %LIB_HOME%
-ECHO %PYTHON3x_HOME%
-ECHO %R_HOME%
-ECHO %R_LIB%
-ECHO %NODE_HOME%
-ECHO %NODE_PATH%
 
 :: create env variables ----------------------
 ECHO **
@@ -53,6 +46,15 @@ SETX IQPROTEO_NODE_PATH "%NODE_PATH%"
 
 REM Stablish this env variable for the git python
 SETX GIT_PYTHON_REFRESH quiet
+
+ECHO **
+ECHO %SRC_HOME%
+ECHO %LIB_HOME%
+ECHO %PYTHON3x_HOME%
+ECHO %R_HOME%
+ECHO %R_LIB%
+ECHO %NODE_HOME%
+ECHO %NODE_PATH%
 
 
 :: create library directory ----------------------

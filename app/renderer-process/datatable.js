@@ -210,3 +210,30 @@ autoColumnSize: {
 //         }
 //     }); 
 // },false);
+
+
+// let header_tasktbl = ["experiment", "name", "ratio_numerator", "ratio_denominator", "s2p_FDR", "p2q_FDR", ];
+// let container_tasktbl = $('#hot_tasktbl').handsontable({
+//     data: data,
+//     colHeaders: header,
+//     minRows: 1,
+//     minCols: 2,
+//     minSpareRows: 1,
+//     rowHeaders: true,
+//     contextMenu: true,
+//     manualColumnResize: true,
+//     // formulas: true,
+//     // manualRowMove: true,
+//     // manualColumnMove: true,
+//     // filters: true,
+//     // dropdownMenu: true,
+//     // mergeCells: true,
+//     // columnSorting: true,
+//     // sortIndicator: true,
+//     autoColumnSize: {
+//         samplingRatio: 23
+//     }
+//     // fixedRowsTop: 2,
+//     // fixedColumnsLeft: 3        
+//     });
+    
