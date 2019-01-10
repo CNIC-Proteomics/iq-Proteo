@@ -1,5 +1,13 @@
+#!/usr/bin/env Rscript
+args = commandArgs(trailingOnly=TRUE)
+
+# test if there is at least one argument: if not, return an error
+if ( length(args)==0 ) {
+    stop("At least one argument must be supplied: output directory\n", call.=FALSE)
+}
+
 # stablish the library path
-lib_path <- paste0( Sys.getenv(c("IQPROTEO_R_LIB")), "")
+lib_path <- args[1]
 .libPaths( lib_path )
 
 # create library directory
