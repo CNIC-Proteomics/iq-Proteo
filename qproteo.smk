@@ -313,7 +313,7 @@ if WF_PRESANXOT_HOME["rels2sp"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_rels2sp.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/rels2sp.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/rels2sp.py" \
               --idqfile "{input.idqfile}" \
               --relfile "{output.relfile}" \
               --scanfile "{output.scanfile}" \
@@ -337,7 +337,7 @@ if WF_PRESANXOT_HOME["rels2pq"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_rels2pq.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/rels2pq.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/rels2pq.py" \
               --idqfile "{input.idqfile}" \
               --relfile "{output.relfile}" \
               --params "{params.optparams}" \
@@ -362,7 +362,7 @@ if WF_PRESANXOT_HOME["rels2pq_unique"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_rels2pq_unique.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/rels2pq_unique.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/rels2pq_unique.py" \
               --idqfile "{input.idqfile}" \
               --species "{params.species}" \
               --pretxt {params.pretxt} \
@@ -397,7 +397,7 @@ if WF_SANXOT_HOME["scan2peptide"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_sanxot_s2p.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/scan2peptide.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/scan2peptide.py" \
               --uscanfile "{input.uscanfile}" \
               --relfile "{input.relfile}" \
               --scanfile "{output.scanfile}" \
@@ -429,7 +429,7 @@ if WF_SANXOT_HOME["peptide2protein"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_sanxot_p2q.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/peptide2protein.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/peptide2protein.py" \
               --pepfile "{input.pepfile}" \
               --relfile "{input.relfile}" \
               --profile "{output.profile}" \
@@ -459,7 +459,7 @@ if WF_SANXOT_HOME["protein2category"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_sanxot_q2c.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/protein2category.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/protein2category.py" \
               --profile "{input.profile}" \
               --relfile "{input.relfile}" \
               --catfile "{output.catfile}" \
@@ -486,7 +486,7 @@ if WF_SANXOT_HOME["peptide2all"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_sanxot_p2all.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/peptide2all.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/peptide2all.py" \
               --pepfile "{input.pepfile}" \
               --p2afile "{output.p2afile}" \
               --params "{params.optparams}" \
@@ -510,7 +510,7 @@ if WF_SANXOT_HOME["protein2all"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_sanxot_q2all.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/protein2all.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/protein2all.py" \
               --profile "{input.profile}" \
               --q2afile "{output.q2afile}" \
               --params "{params.optparams}" \
@@ -534,7 +534,7 @@ if WF_SANXOT_HOME["category2all"]["enabled"]:
         log:
             "{outdir}/../logs/{exp}_{name}_sanxot_c2all.log"
         shell:
-            '"{IQPROTEO_PYTHON3x_HOME}/tools/python "{WF_SANXOT_SRC}/category2all.py" \
+            '"{IQPROTEO_PYTHON3x_HOME}/tools/python" "{WF_SANXOT_SRC}/category2all.py" \
               --catfile "{input.catfile}" \
               --c2afile "{output.c2afile}" \
               --params "{params.optparams}" \
