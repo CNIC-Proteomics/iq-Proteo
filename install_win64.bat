@@ -80,7 +80,7 @@ CMD /C " "%PYTHON3x_HOME%/tools/python" "%SRC_HOME%/install/get-pip.py"  --no-wa
 ECHO **
 ECHO **
 ECHO ** install required packages
-CMD /C " "%PYTHON3x_HOME%/tools/Scripts/pip3.exe" install numpy matplotlib scipy pytest-shutil snakemake pandas pprint --no-warn-script-location "
+CMD /C " "%PYTHON3x_HOME%/tools/Scripts/pip3.exe" install numpy matplotlib scipy snakemake pandas pprint --no-warn-script-location "
 
 
 :: install R packages ----------------------
