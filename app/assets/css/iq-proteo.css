@@ -13,6 +13,8 @@ section.executor {
     width: 100%;
     padding: 1em;
     background-color: goldenrod;
+    height: 5em;
+    z-index: 2;
 }
 footer {
     position: fixed;
@@ -22,11 +24,12 @@ footer {
     height: 1.7em;
     text-align: right;
     background-color: #f0f0f0;
+    z-index: 2;
 }
 
 /* Tab settings */
 .tabs-main .tab-pane {
-    height: 640px;
+    /* height: 640px; */
     overflow-y: auto;
     overflow-x: auto;
     width: 100%;   
@@ -57,16 +60,26 @@ footer {
 }
 
 input#indir, input#outdir, input#modfile, input#catfile {
-    width: 400px;
+    /* width: 400px; */
+    /* width: 100%; */
+}
+#tasktable [type^="button"] {
+    /* margin-top: 3px; */
 }
 input#modfile, input#catfile {
-    margin-right: 3px;
+    /* margin-right: 3px; */
 }
 .dirs {
     margin-bottom: 10px;
+    width: 99%;
 }
-.dirs > .in {
+/* .dirs > .in { */
+.dirs > .form-inline {
     margin-bottom: 5px;
+}
+
+.dirs > .row {
+    /* margin-right: 0px; */
 }
 
 /* executor */

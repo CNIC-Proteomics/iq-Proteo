@@ -8,7 +8,7 @@ let dtablefilename = '/iq-proteo_data.csv';
 let cfgfilename = '/iq-proteo_conf.json'
 
 /*
-* Export Datatable to CSV
+* Export tasktable to CSV
 */
 function parseRow(sizeData, index, infoArray) {
     let cont = "";
@@ -22,10 +22,10 @@ function parseRow(sizeData, index, infoArray) {
     }
     return cont;
 }
-function exportDatatableCSV(datatable) {
+function exporttasktableCSV(tasktable) {
     // add header
-    let csvContent = datatable.getColHeader().join(",") + "\n";
-    let data = datatable.getData();
+    let csvContent = tasktable.getColHeader().join(",") + "\n";
+    let data = tasktable.getData();
     let sizeData = data.length;
     data.forEach(function(row,idx) {
         csvContent += parseRow(sizeData, idx, row);
@@ -33,14 +33,14 @@ function exportDatatableCSV(datatable) {
     return csvContent;
 }
 
-// Create Datatable file
-function createDatatableFile(outdir) {
-    // export Datatable to CSV
+// Create tasktable file
+function createtasktableFile(outdir) {
+    // export tasktable to CSV
     try {
-        let datatable = $("#hot").data('handsontable');
-        var cont = exportDatatableCSV(datatable);
+        let tasktable = $("#hot").data('handsontable');
+        var cont = exporttasktableCSV(tasktable);
     } catch (err) {
-        console.log("Error exporting datatable: " + err);
+        console.log("Error exporting tasktable: " + err);
         return false;
     }
 
@@ -49,7 +49,7 @@ function createDatatableFile(outdir) {
     try {
         fs.writeFileSync(file, cont, 'utf-8');
     } catch (err) {    
-        console.log("Error writing datatable file: " + err);
+        console.log("Error writing tasktable file: " + err);
         return false;
     }
 
@@ -165,7 +165,6 @@ function createConfFile(conf, indir, outdir, dtable, modfile, catfile) {
  */
 function getInDir() {
     let dir = document.querySelector('#indir').value;
-    // let outdir = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\PESA_omicas\\3a_Cohorte_120_V2\\TMT_Fraccionamiento";
     try {
         if (!fs.existsSync(dir)){
             console.log("Input directory does not exist");
@@ -179,7 +178,6 @@ function getInDir() {
 }
 function createLocalDir() {
     let dir = document.querySelector('#outdir').value;
-    // let dir = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\WF";
     try {
         if (!fs.existsSync(dir)){
             fs.mkdirSync(dir);
@@ -192,7 +190,6 @@ function createLocalDir() {
 }
 function getModificationFile() {
     let file = document.querySelector('#modfile').value;
-    // let file = "D:/projects/iq-Proteo/src/pRatio/modifications.xml";
     try {
         if (!fs.existsSync(file)){
             console.log("Modification file does not exist");
@@ -206,7 +203,6 @@ function getModificationFile() {
 }
 function getCategoryFile() {
     let file = document.querySelector('#catfile').value;
-    // let file = "S:/U_Proteomica/PROYECTOS/PESA_omicas/AteroPreclin_140_V1/Proteomics/Resultados/scripts-miscelaneas/q2cIPA-DAVID-CORUM-Manual-Human3_nd.txt";
     try {
         if (!fs.existsSync(file)){
             console.log("Category file does not exist");
@@ -237,10 +233,10 @@ function createParameters() {
     }
     else { params.outdir = outdir }
 
-    // create datatable file
-    let dtablefile = createDatatableFile(outdir); 
+    // create tasktable file
+    let dtablefile = createtasktableFile(outdir); 
     if ( !dtablefile ) {
-        exceptor.showMessageBox('Error Message', 'Creating datatable file');
+        exceptor.showMessageBox('Error Message', 'Creating tasktable file');
         return false;
     }
 
@@ -284,43 +280,103 @@ module.exports.createParameters = createParameters;
  */
 
 // for Database
-document.getElementById('select-indir').addEventListener('click', function(){
-    dialog.showOpenDialog({ properties: ['openDirectory']}, function (dirs) {
-        if(dirs === undefined){
-            console.log("No input directory selected");
-        } else{
-            document.getElementById("indir").value = dirs[0];
-        }
-    }); 
-},false);
-document.getElementById('select-outdir').addEventListener('click', function(){
-    dialog.showOpenDialog({ properties: ['openDirectory']}, function (dirs) {
-        if(dirs === undefined){
-            console.log("No output directory selected");
-        } else{
-            document.getElementById("outdir").value = dirs[0];
-        }
-    }); 
-},false);
+if ( document.getElementById('select-indir') != null ) {
+    document.getElementById('select-indir').addEventListener('click', function(){
+        dialog.showOpenDialog({ properties: ['openDirectory']}, function (dirs) {
+            if(dirs === undefined){
+                console.log("No input directory selected");
+            } else{
+                document.getElementById("indir").value = dirs[0];
+            }
+        }); 
+    },false);    
+}
+if ( document.getElementById('select-outdir') != null ) {
+    document.getElementById('select-outdir').addEventListener('click', function(){
+        dialog.showOpenDialog({ properties: ['openDirectory']}, function (dirs) {
+            if(dirs === undefined){
+                console.log("No output directory selected");
+            } else{
+                document.getElementById("outdir").value = dirs[0];
+            }
+        }); 
+    },false);
+}
 
-// for pRatio
-document.getElementById('select-modfile').addEventListener('click', function(){
+document.getElementById('select-catfile').addEventListener('change', function(){
+if ( this.value === "personal"){
     dialog.showOpenDialog({ properties: ['openFile']}, function (files) {
-        if(files === undefined){
-            console.log("No modification file selected");
-        } else{
-            document.getElementById("modfile").value = files[0];
-        }
-    }); 
-},false);
-
-// for SanXot
-document.getElementById('select-catfile').addEventListener('click', function(){
-    dialog.showOpenDialog({ properties: ['openFile']}, function (files) {
-        if(files === undefined){
+        if( files === undefined ){
             console.log("No category file selected");
         } else{
             document.getElementById("catfile").value = files[0];
         }
-    }); 
-},false);
+    });
+}
+else {        
+    document.getElementById("catfile").value = this.value;
+}
+});
+
+// if ( document.getElementById('sample_adv') != null ) {
+//     document.getElementById('sample_adv').addEventListener('change', function(){    
+//     if(this.checked) {
+//         var data = data_test.slice();
+//         container.handsontable('loadData', data);
+//         container.handsontable('render');
+//     } else {
+//         // Checkbox is not checked..
+//         container.handsontable('clear');
+//         container.handsontable('render');
+//     }
+//     },false);
+// }
+  
+/* ---------------- Specific: Simple Mode ------------------ */
+
+// for pRatio
+if ( document.getElementById('select-modfile') != null ) {
+    document.getElementById('select-modfile').addEventListener('click', function(){
+        dialog.showOpenDialog({ properties: ['openFile']}, function (files) {
+            if( files === undefined ){
+                console.log("No modification file selected");
+            } else{
+                document.getElementById("modfile").value = files[0];
+            }
+        }); 
+    },false);
+}
+
+// for SanXot
+// if ( document.getElementById('select-catfile') != null ) {
+//     document.getElementById('select-catfile').addEventListener('click', function(){
+//         dialog.showOpenDialog({ properties: ['openFile']}, function (files) {
+//             if(files === undefined){
+//                 console.log("No category file selected");
+//             } else{
+//                 document.getElementById("catfile").value = files[0];
+//             }
+//         }); 
+//     },false);
+// }
+
+if ( document.getElementById('sample') != null ) {
+    document.getElementById('sample').addEventListener('change', function(){    
+        if(this.checked) {
+            // <!-- test 1 -->
+            // document.getElementById('indir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\PESA_omicas\\3a_Cohorte_120_V2\\TMT_Fraccionamiento";
+            // document.getElementById('outdir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\WF";
+            // tasktable.container.handsontable('loadData', tasktable.dtatest);
+            // <!-- test 2 -->
+            document.getElementById('indir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\Calsequestrin_null_mice_Sept_17___LC-MS_1st_round";
+            document.getElementById('outdir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\Calsequestrin_null_mice_Sept_17___LC-MS_1st_round\\WF";
+            tasktable.container.handsontable('loadData', tasktable.dtatest2);
+        } else {
+            // Checkbox is not checked..
+            document.getElementById('indir').value = "";
+            document.getElementById('outdir').value = "";
+            tasktable.container.handsontable('loadData', [[]]);
+            tasktable.container.handsontable('deselectCell');
+        }
+    },false);
+}  

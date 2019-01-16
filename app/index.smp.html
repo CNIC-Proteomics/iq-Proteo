@@ -19,10 +19,9 @@
     <script>if (window.module) module = window.module;</script>
 
     <!-- Imports HTML Templates -->
-    <link rel="import" href="sections/datatable.html">
-    <link rel="import" href="sections/params_pratio.html">
-    <!-- <link rel="import" href="sections/params_presanxot.html"> -->
-    <link rel="import" href="sections/params_sanxot.html">
+    <link rel="import" href="sections/simple/tasktable.html">
+    <link rel="import" href="sections/simple/params_pratio.html">
+    <link rel="import" href="sections/simple/params_sanxot.html">
     <link rel="import" href="sections/processes.html">
     <link rel="import" href="sections/footer.html">
 
@@ -37,14 +36,11 @@
   <section class="content tabs-main">
     <ul class="nav nav-tabs" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="datatable-tab" data-toggle="tab" href="#datatable" role="tab" aria-controls="datatable">Datatable</a>
+        <a class="nav-link active" id="tasktable-tab" data-toggle="tab" href="#tasktable" role="tab" aria-controls="tasktable">Tasktable</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" id="params_pratio-tab" data-toggle="tab" href="#params_pratio" role="tab" aria-controls="params_pratio">pRatio</a>
       </li>
-      <!-- <li class="nav-item">
-        <a class="nav-link" id="params_presanxot-tab" data-toggle="tab" href="#params_presanxot" role="tab" aria-controls="params_presanxot">Pre-SanXoT</a>
-      </li> -->
       <li class="nav-item">
         <a class="nav-link" id="params_sanxot-tab" data-toggle="tab" href="#params_sanxot" role="tab" aria-controls="params_sanxot">SanXoT</a>
       </li>
@@ -53,9 +49,8 @@
       </li>
     </ul>  
     <div class="tab-content main">
-      <div class="tab-pane active" id="datatable" role="tabpanel" aria-labelledby="datatable-tab"></div>
+      <div class="tab-pane active" id="tasktable" role="tabpanel" aria-labelledby="tasktable-tab"></div>
       <div class="tab-pane" id="params_pratio" role="tabpanel" aria-labelledby="params_pratio-tab"></div>
-      <!-- <div class="tab-pane" id="params_presanxot" role="tabpanel" aria-labelledby="params_presanxot-tab"></div> -->
       <div class="tab-pane" id="params_sanxot" role="tabpanel" aria-labelledby="params_sanxot-tab"></div>
       <div class="tab-pane" id="processes" role="tabpanel" aria-labelledby="processes-tab"></div>
     </div>
@@ -74,10 +69,11 @@
 
   <script>
     // Global processes
-    require('./renderer-process/imports.js');
-    require('./renderer-process/executor.js');
-    var exceptor = require('./renderer-process/exceptions.js');
-    var parameters = require('./renderer-process/parameters.js');
+    require('./renderer-process/imports');
+    require('./renderer-process/executor');
+    var tasktable = require('./renderer-process/simple/tasktable');
+    var exceptor = require('./renderer-process/exceptions');
+    var parameters = require('./renderer-process/parameters');
 
     // Print the version
     document.querySelector('#footer > .version').innerHTML = require('electron').remote.app.getVersion();

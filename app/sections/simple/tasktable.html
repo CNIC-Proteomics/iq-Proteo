@@ -1,0 +1,43 @@
+<template class="task-template" id="tasktable">
+  <div class="dirs">
+    <div class="form-group row form-check">  
+      <input type="checkbox" id="sample">
+      <label for="sample">Try with an example</label>      
+    </div>
+    <!-- <div class="in">
+      <input type="text" placeholder="Please select the input folder" id="indir">
+      <input type="button" value="Choose a folder" id="select-indir"/>
+    </div>
+    <div class="out">
+        <input type="text" placeholder="Please select an output folder" id="outdir"/>
+        <input type="button" value="Choose a folder" id="select-outdir"/>
+    </div>   
+  </div> -->
+
+  <h6 for="select-indir">Select input directory</h6>
+  <div class="in form-inline row">
+    <div class="input-group col">
+      <input type="text" class="form-control" placeholder="" id="indir">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="select-indir">Choose directory</button>
+      </div>
+    </div>
+  </div>
+
+  <h6 for="select-outdir">Select output directory</h6>
+  <div class="out form-inline row">
+    <div class="input-group col">
+      <input type="text" class="form-control" placeholder="" id="outdir">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" id="select-outdir">Choose directory</button>
+      </div>
+    </div>
+  </div>
+
+  <h6 for="select-outdir">Experiment parameters</h6>
+  <div id="hot" class="handsontable"></div>
+
+  <script type="text/javascript">
+    // require('./renderer-process/simple/tasktable')
+  </script>
+</template>

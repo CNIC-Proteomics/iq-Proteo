@@ -78,7 +78,8 @@ document.getElementById('executor').addEventListener('click', function() {
   let params = parameters.createParameters();
   if ( params ) {
     // Execute the workflow
-    let smkfile = process.env.IQPROTEO_SRC_HOME + '/qproteo.smk';
+    // let smkfile = process.env.IQPROTEO_SRC_HOME + '/qproteo.smk';
+    let smkfile = tasktable.smkfile;
     let cmd_smk = '"'+process.env.IQPROTEO_PYTHON3x_HOME + '/tools/Scripts/snakemake.exe" --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" -j '+params.nthreads+' -d "'+params.outdir+'" ';
     let cmd = cmd_smk+' --unlock && '+cmd_smk+' --rerun-incomplete ';
 
@@ -101,10 +102,13 @@ document.getElementById('executor').addEventListener('click', function() {
 // Kill all shell processes
 document.getElementById('stopproc').addEventListener('click', function() {
   if ( proc != null ) {
-    console.log("Look for child processes from: ", proc.pid);
+    let sms = "Look for child processes from: "+proc.pid+"\n";
+    console.log(sms);
+    appendToDroidOutput("\n\nThe processes have been stopped!\n\n");
     psTree(proc.pid, function (err, children) {  // check if it works always
       children.forEach(function (p) {
-        console.log( 'Process %s has been killed!', p.PID );
+        let sms = "Process has been killed!"+p.PID+"\n";
+        console.log(sms);
         process.kill(p.PID); 
       });
       // enable the Start button
