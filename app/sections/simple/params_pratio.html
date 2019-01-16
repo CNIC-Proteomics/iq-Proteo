@@ -1,7 +1,7 @@
 <template class="task-template" id="params_pratio">
-  <section class="content tabs-parameters">
+  <section class="tab-content">
 
-    <div class="form-group row col-md-2">
+    <div class="form-group row col-md-3">
       <label for="tagMass">Select the mass of tag's:</label>
       <select class="form-control" id="tagMass">
         <option value="229.162932">TMT6plex (229.162932)</option>
@@ -10,12 +10,12 @@
       </select>
     </div>
 
-    <div class="form-group row col-md-2">
+    <div class="form-group row col-md-3">
       <label for="deltaMassThreshold">Write the threshold of the Delta Mass:</label>
       <input type="number" class="form-control" id="deltaMassThreshold" step="1" value="15" data-bind="value:replyNumber">
     </div>
 
-    <div class="form-group row col-md-2">
+    <div class="form-group row col-md-3">
       <label for="deltaMassAreas">Select the Delta Mass Areas, number of jumps (1, 3 or 5):</label>
       <select class="form-control" id="deltaMassAreas">
         <option value="1">1</option>
@@ -24,24 +24,26 @@
       </select>
     </div>
 
-    <div class="form-group row col-md-2">
+    <div class="form-group row col-md-3">
       <label for="tagDecoy">Write the label which describe your decoy sequences:</label>
       <input type="text" class="form-control" id="tagDecoy" value="_INV_">
     </div>
 
-    <div class="form-group row col-md-12">
-      <input type="text" placeholder="Please select a category file" id="modfile" value="D:/projects/iq-Proteo/src/pRatio/modifications.xml" disabled="disabled"/>
-      <input type="button" value="Choose a file" id="select-modfile"/>
+    <h6 for="select-catfile">Choose a Modification file (by default, or your modification file)</h6>
+    <div class="custom-control custom-checkbox">
+      <input type="checkbox" class="custom-control-input" id="def-modfile" value="" checked/>
+      <label class="custom-control-label" for="def-modfile">Default modification file</label>
     </div>    
-    <h6 for="select-catfile">Choose a Modification file (by default, our modification file)</h6>
-    <div class="form-inline row">      
+    <div class="form-inline row col">      
       <div class="input-group col">
-        <input type="text" class="form-control" placeholder="By default" id="modfile" value="src/pRatio/modifications.xml"/>
+        <input type="text" class="form-control" placeholder="Select your modification file" id="modfile" value="" disabled/>
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" id="select-modfile">Choose a file</button>
+            <button class="btn btn-outline-secondary" type="button" id="select-modfile" disabled>Choose a file</button>
           </div>
       </div>
     </div>
+  
+
 
     
   </section>

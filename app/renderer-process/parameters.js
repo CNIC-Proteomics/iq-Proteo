@@ -190,6 +190,10 @@ function createLocalDir() {
 }
 function getModificationFile() {
     let file = document.querySelector('#modfile').value;
+    // by default
+    if ( document.querySelector('#def-modfile:checked') ) {
+        file = process.env.IQPROTEO_SRC_HOME + '/src/pRatio/modifications.xml';
+    }
     try {
         if (!fs.existsSync(file)){
             console.log("Modification file does not exist");
@@ -203,6 +207,10 @@ function getModificationFile() {
 }
 function getCategoryFile() {
     let file = document.querySelector('#catfile').value;
+    // by default
+    if ( document.querySelector('#def-catfile').value !== "personal" ) {
+        file = process.env.IQPROTEO_SRC_HOME + '/dbs/' + document.querySelector('#def-catfile').value;
+    }
     try {
         if (!fs.existsSync(file)){
             console.log("Category file does not exist");
@@ -303,8 +311,18 @@ if ( document.getElementById('select-outdir') != null ) {
     },false);
 }
 
-document.getElementById('select-catfile').addEventListener('change', function(){
-if ( this.value === "personal"){
+document.getElementById('def-catfile').addEventListener('change', function(){
+    if ( this.value === "personal" ) {
+        document.getElementById("catfile").disabled = false;
+        document.getElementById("select-catfile").disabled = false;
+    }
+    else {
+        document.getElementById("catfile").disabled = true;
+        document.getElementById("select-catfile").disabled = true;
+    }
+});
+
+document.getElementById('select-catfile').addEventListener('click', function(){
     dialog.showOpenDialog({ properties: ['openFile']}, function (files) {
         if( files === undefined ){
             console.log("No category file selected");
@@ -312,29 +330,24 @@ if ( this.value === "personal"){
             document.getElementById("catfile").value = files[0];
         }
     });
-}
-else {        
-    document.getElementById("catfile").value = this.value;
-}
 });
-
-// if ( document.getElementById('sample_adv') != null ) {
-//     document.getElementById('sample_adv').addEventListener('change', function(){    
-//     if(this.checked) {
-//         var data = data_test.slice();
-//         container.handsontable('loadData', data);
-//         container.handsontable('render');
-//     } else {
-//         // Checkbox is not checked..
-//         container.handsontable('clear');
-//         container.handsontable('render');
-//     }
-//     },false);
-// }
-  
+ 
 /* ---------------- Specific: Simple Mode ------------------ */
 
 // for pRatio
+if ( document.getElementById('def-modfile') != null ) {
+    document.getElementById('def-modfile').addEventListener('click', function(){
+        if(this.checked) {
+            document.getElementById("modfile").disabled = true;
+            document.getElementById("select-modfile").disabled = true;
+        }
+        else {
+            document.getElementById("modfile").disabled = false;
+            document.getElementById("select-modfile").disabled = false;
+        }
+    },false);    
+}
+
 if ( document.getElementById('select-modfile') != null ) {
     document.getElementById('select-modfile').addEventListener('click', function(){
         dialog.showOpenDialog({ properties: ['openFile']}, function (files) {
@@ -361,22 +374,38 @@ if ( document.getElementById('select-modfile') != null ) {
 // }
 
 if ( document.getElementById('sample') != null ) {
-    document.getElementById('sample').addEventListener('change', function(){    
+    document.getElementById('sample').addEventListener('click', function(){    
         if(this.checked) {
             // <!-- test 1 -->
-            // document.getElementById('indir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\PESA_omicas\\3a_Cohorte_120_V2\\TMT_Fraccionamiento";
-            // document.getElementById('outdir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\WF";
-            // tasktable.container.handsontable('loadData', tasktable.dtatest);
-            // <!-- test 2 -->
-            document.getElementById('indir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\Calsequestrin_null_mice_Sept_17___LC-MS_1st_round";
-            document.getElementById('outdir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\Calsequestrin_null_mice_Sept_17___LC-MS_1st_round\\WF";
-            tasktable.container.handsontable('loadData', tasktable.dtatest2);
+            document.getElementById('indir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\PESA_omicas\\3a_Cohorte_120_V2\\TMT_Fraccionamiento";
+            document.getElementById('outdir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\PESA_3a_Cohorte_120_V2_TMTfrac_WF";
+            tasktable.container.handsontable('loadData', tasktable.dtatest);
+            document.getElementById("sample2").checked = false;
         } else {
             // Checkbox is not checked..
             document.getElementById('indir').value = "";
             document.getElementById('outdir').value = "";
             tasktable.container.handsontable('loadData', [[]]);
             tasktable.container.handsontable('deselectCell');
+            document.getElementById("sample2").checked = true;
         }
     },false);
-}  
+}
+if ( document.getElementById('sample2') != null ) {
+    document.getElementById('sample2').addEventListener('click', function(){    
+        if(this.checked) {
+            // <!-- test 2 -->
+            document.getElementById('indir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\Calsequestrin_null_mice_Sept_17___LC-MS_1st_round";
+            document.getElementById('outdir').value = "S:\\LAB_JVC\\RESULTADOS\\JM RC\\iq-Proteo\\Calseq_WF";
+            tasktable.container.handsontable('loadData', tasktable.dtatest2);
+            document.getElementById("sample").checked = false;
+        } else {
+            // Checkbox is not checked..
+            document.getElementById('indir').value = "";
+            document.getElementById('outdir').value = "";
+            tasktable.container.handsontable('loadData', [[]]);
+            tasktable.container.handsontable('deselectCell');
+            document.getElementById("sample").checked = true;
+        }
+    },false);
+}

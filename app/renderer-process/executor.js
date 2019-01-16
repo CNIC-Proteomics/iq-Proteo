@@ -82,11 +82,6 @@ document.getElementById('executor').addEventListener('click', function() {
     let smkfile = tasktable.smkfile;
     let cmd_smk = '"'+process.env.IQPROTEO_PYTHON3x_HOME + '/tools/Scripts/snakemake.exe" --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" -j '+params.nthreads+' -d "'+params.outdir+'" ';
     let cmd = cmd_smk+' --unlock && '+cmd_smk+' --rerun-incomplete ';
-
-    // let cmd_smk = 'snakemake.exe --configfile "'+params.cfgfile+'" --snakefile "'+smkfile+'" -j '+params.nthreads+' -d "'+params.outdir+'" ';
-    // let cmd = '"'+process.env.IQPROTEO_LIB_HOME + '/python_venv/Scripts/activate.bat" && ';
-    // cmd += cmd_smk+' --unlock && ';
-    // cmd += cmd_smk+' --rerun-incomplete ';
     console.log( cmd );
     backgroundProcess( cmd );
 

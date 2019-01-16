@@ -31,7 +31,7 @@ library("XML")
 option_list = list(
   make_option(c("-i", "--msf_dir"), type="character", default=NULL, help="input directory (per experiment) with MSF files", metavar="character"),
   make_option(c("-r", "--regex"), type="character", default=NULL, help="Regular expression that select specific MSF files parsing the file name. By default, we take all files", metavar="character"),
-  make_option(c("-m", "--mod_file"), type="character", default=NULL, help="XML input file with modifications", metavar="character"),
+  make_option(c("-m", "--mod_file"), type="character", default="modifications.xml", help="XML input file with modifications", metavar="character"),
   make_option(c("-t", "--threshold"), type="integer", default=15, help="threshold of delta mass in ppm [default= %default]", metavar="character"),
   make_option(c("-d", "--delta_mass"), type="integer", default=5, help="number of jumps: 1,3 or 5 [default= %default]", metavar="character"),
   make_option(c("-a", "--tag_mass"), type="double", default=229.162932, help="mass for the tag's [default= %default]", metavar="character"),
@@ -41,7 +41,7 @@ option_list = list(
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
 
-if ( is.null(opt$msf_dir) || is.null(opt$mod_file) || is.null(opt$outfile) ) {
+if ( is.null(opt$msf_dir) || is.null(opt$outfile) ) {
   print_help(opt_parser)
   stop("All arguments must be supplied.n", call.=FALSE)
 }
