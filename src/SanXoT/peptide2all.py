@@ -57,7 +57,7 @@ def main(args):
     w.sanxot({
         "-a": "p2a_outs",
         "-d": args.pepfile,
-        "-o": args.p2afile
+        "-z": args.p2afile
     }, params["sanxot1"])
 
 if __name__ == "__main__":

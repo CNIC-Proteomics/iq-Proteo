@@ -127,12 +127,46 @@ function addConfParams(file, indir, outdir, dtable, modfile, catfile) {
         wf_sanxot['protein2category']['optparams']['sanxot2'] += ' --tags !out ';
     }
 
+    return data;
+
+} // end addConfParams
+
+function addAdvConfParams(file, indir, outdir, dtable, modfile, catfile) {
+    // get object from template
+    let data = JSON.parse(file);
+
+    // add tabledata file
+    data['indata'] = dtable;
+
+    // add tabledata file
+    data['indir'] = indir;
+
+    // add tabledata file
+    data['outdir'] = outdir;
+
+    // add modification
+    data['modfile'] = modfile;
+
+    // add category
+    data['catfile'] = catfile;
+
+    // wf parameters
+    let wf = data['workflow'];
+    let wf_sanxot = wf['sanxot'];
+
+    /* --- SanXoT --- */
+    // Discard outliers
+    let discardOutliers = document.querySelector('#discardOutliers').checked;
+    if ( discardOutliers ) {
+        wf_sanxot['scan2peptide']['optparams']['sanxot2'] += ' --tags !out ';
+        wf_sanxot['peptide2protein']['optparams']['sanxot2'] += ' --tags !out ';
+        wf_sanxot['protein2category']['optparams']['sanxot2'] += ' --tags !out ';
+    }
 
     return data;
-}
+} // end addAdvConfParams
 
 function createConfFile(conf, indir, outdir, dtable, modfile, catfile) {
-
     // read template file
     try {
         //file exists, get the contents
@@ -158,7 +192,36 @@ function createConfFile(conf, indir, outdir, dtable, modfile, catfile) {
     }
 
     return file;
-}
+} // end createConfFile
+
+function createAdvConfFile(conf, indir, outdir, dtable, modfile, catfile) {
+    // read template file
+    try {
+        //file exists, get the contents
+        let d = fs.readFileSync(conf);
+
+        // create config data with the parameters
+        let data = addAdvConfParams(d, indir, outdir, dtable, modfile, catfile);
+
+        // convert JSON to string
+        var cont = JSON.stringify(data, undefined, 2);
+    } catch (err) {
+        console.log("Error creating config file: " + err);
+        return false;
+    }
+
+    // write file sync
+    let file = outdir + cfgfilename;
+    try {
+        fs.writeFileSync(file, cont, 'utf-8');
+    } catch (err) {    
+        console.log("Error writing config file: " + err);
+        return false;
+    }
+
+    return file;
+} // end createAdvConfFile
+
 
 /*
  * Create parameters to workflow
@@ -276,10 +339,64 @@ function createParameters() {
 
     return params;
 }
+function createAdvParameters() {
+    let params = {};
 
+    // get input directory
+    let indir = getInDir();
+    if ( !indir ) {
+        exceptor.showMessageBox('Error Message', 'Input directory is required');
+        return false;
+    }
+    else { params.indir = indir }
+
+    // get and create check and get: output directory
+    let outdir = createLocalDir();
+    if ( !outdir ) {
+        exceptor.showMessageBox('Error Message', 'Output directory is required');
+        return false;
+    }
+    else { params.outdir = outdir }
+
+    // create tasktable file
+    let dtablefile = createtasktableFile(outdir); 
+    if ( !dtablefile ) {
+        exceptor.showMessageBox('Error Message', 'Creating tasktable file');
+        return false;
+    }
+
+    let modfile = getModificationFile();
+    if ( !modfile ) {
+        exceptor.showMessageBox('Error Message', 'Modification file is required');
+        return false;
+    }
+
+    let catfile = getCategoryFile();
+    if ( !catfile ) {
+        exceptor.showMessageBox('Error Message', 'Category file is required');
+        return false;
+    }
+
+    // check and retrieve: workflow template
+    let conf = remote.app.getAppPath() + '/templates/conf-wo_out.json'
+
+    // Create Config file
+    let cfgfile = createAdvConfFile(conf, indir, outdir, dtablefile, modfile, catfile);
+    if ( !cfgfile ) {
+        exceptor.showMessageBox('Error Message', 'Creating config file');
+        return false;
+    }
+    else { params.cfgfile = cfgfile }
+
+    // get: num threads
+    params.nthreads = document.querySelector('#nthreads').value;
+
+    return params;
+}
 // We assign properties to the `module.exports` property, or reassign `module.exports` it to something totally different.
 // In  the end of the day, calls to `require` returns exactly what `module.exports` is set to.
-module.exports.createParameters = createParameters;
+module.exports.createParameters    = createParameters;
+module.exports.createAdvParameters = createAdvParameters;
 
 
 

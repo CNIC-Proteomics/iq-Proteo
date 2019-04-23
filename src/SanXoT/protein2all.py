@@ -57,7 +57,7 @@ def main(args):
     w.sanxot({
         "-a": "q2a_outs",
         "-d": args.profile,
-        "-o": args.q2afile
+        "-z": args.q2afile
     }, params["sanxot1"])
 
 if __name__ == "__main__":

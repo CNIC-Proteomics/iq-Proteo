@@ -2,8 +2,7 @@
   Global variables
 */
 
-// let header = ["experiment", "name", "tag", "ratio_numerator", "ratio_denominator", "s>p FDR", "p>q FDR", "q>c FDR","s>p FDR", "p>q FDR", "q>c FDR"];
-let header = ["experiment", "name", "tag", "ratio_numerator", "ratio_denominator", "s>p FDR", "p>q FDR", "q>c FDR","s>p FDR", "p>q FDR", "q>c FDR"];
+let header = ["experiment", "name", "tag", "ratio_numerator", "ratio_denominator", "s>p FDR", "p>q FDR", "q>c FDR","s>p Var(x)", "p>q Var(x)", "q>c Var(x)"];
 
 // nestedHeaders: [
 //   ['A', {label: 'B', colspan: 8}, 'C'],
@@ -13,39 +12,39 @@ let header = ["experiment", "name", "tag", "ratio_numerator", "ratio_denominator
 // ]
 
 let dtatest = [
-  ["TMT1","wt 1","126","",""],
-  ["TMT1","wt 2","127_N","127_N","126,131"],
-  ["TMT1","wt 3","127_C","127_C","126,131"],
-  ["TMT1","wt 4","128_N","128_N","126,131"],
-  ["TMT1","KO 1","128_C","128_C","126,131"],
-  ["TMT1","KO 2","129_N","129_N","126,131"],
-  ["TMT1","KO3","129_C","129_C","126,131"],
-  ["TMT1","KO4","130_N","130_N","126,131"],
-  ["TMT1","h34571","130_C","130_C","126,131"],
-  ["TMT1","h34572","131","131","126,131"],
-  ["TMT2","wt 1","126","",""],
-  ["TMT2","wt 2","127_N","127_N","126,131"],
-  ["TMT2","wt 3","127_C","127_C","126,131"],
-  ["TMT2","wt 4","128_N","128_N","126,131"],
-  ["TMT2","KO 1","128_C","128_C","126,131"],
-  ["TMT2","KO 2","129_N","129_N","126,131"],
-  ["TMT2","KO3","129_C","129_C","126,131"],
-  ["TMT2","KO4","130_N","130_N","126,131"],
-  ["TMT2","h34571","130_C","130_C","126,131"],
-  ["TMT2","h34572","131","131","126,131"]
+  ["TMT1","wt 1","126","","",0.01,0.01,0.01,false,false,false],
+  ["TMT1","wt 2","127_N","127_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","wt 3","127_C","127_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","wt 4","128_N","128_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","KO 1","128_C","128_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","KO 2","129_N","129_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","KO3","129_C","129_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","KO4","130_N","130_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","h34571","130_C","130_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT1","h34572","131","131","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","wt 1","126","","",0.01,0.01,0.01,false,false,false],
+  ["TMT2","wt 2","127_N","127_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","wt 3","127_C","127_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","wt 4","128_N","128_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","KO 1","128_C","128_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","KO 2","129_N","129_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","KO3","129_C","129_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","KO4","130_N","130_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","h34571","130_C","130_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["TMT2","h34572","131","131","126,131",0.01,0.01,0.01,false,false,false]
 ];
   
 let dtatest2 = [
-  ["Calseq2","wt 1","126","",""],
-  ["Calseq2","wt 2","127_N","127_N","126,131"],
-  ["Calseq","wt 3","127_C","127_C","126,131"],
-  ["Calseq","wt 4","128_N","128_N","126,131"],
-  ["Calseq","wt 5","128_C","128_C","126,131"],
-  ["Calseq","KO 1","129_N","129_N","126,131"],
-  ["Calseq","KO 2","129_C","129_C","126,131"],
-  ["Calseq","KO 3","130_N","130_N","126,131"],
-  ["Calseq","KO 4","130_C","130_C","126,131"],
-  ["Calseq","KO 5","131","131","126,131"],
+  ["Calseq2","wt 1","126","","",0.01,0.01,0.01,false,false,false],
+  ["Calseq2","wt 2","127_N","127_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","wt 3","127_C","127_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","wt 4","128_N","128_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","wt 5","128_C","128_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","KO 1","129_N","129_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","KO 2","129_C","129_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","KO 3","130_N","130_N","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","KO 4","130_C","130_C","126,131",0.01,0.01,0.01,false,false,false],
+  ["Calseq","KO 5","131","131","126,131",0.01,0.01,0.01,false,false,false]
 ];
 
 let container = $('#hot').handsontable({

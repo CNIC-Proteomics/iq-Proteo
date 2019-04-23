@@ -57,7 +57,6 @@
       "sanxot": {
         "scan2peptide": {
           "enabled": true,
-          "fdr": 0.01,
           "optparams": {
             "klibrate1": " -g  ",
             "sanxot1": " -g -b -s ",
@@ -71,7 +70,6 @@
         },
         "peptide2protein": {
           "enabled": true,
-          "fdr": 0.01,
           "optparams": {
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
@@ -83,7 +81,6 @@
         },
         "protein2category": {
           "enabled": true,
-          "fdr": 0.01,
           "optparams": {
             "sanxot1": " -g -b -s ",
             "sanxotsieve1": "",
